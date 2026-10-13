@@ -1,0 +1,1 @@
+"""RydeResolve MVP skeleton."""

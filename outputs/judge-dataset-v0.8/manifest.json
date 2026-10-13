@@ -1,0 +1,127 @@
+{
+  "version": "0.8",
+  "total": 15,
+  "cases": [
+    {
+      "file": "input-001.json",
+      "sha256": "9cc92545194ba461bb57a5c9b51b2360398686d960a6c0898adc8eb59afc7aa1",
+      "snapshot_id": "7e30f1a73924807803f201f5813d92342c135e2025e146b063081a68575b65b7",
+      "split": "development",
+      "data_origin": "organizer_sample",
+      "policy_origin": "organizer_sample"
+    },
+    {
+      "file": "input-002.json",
+      "sha256": "b9863ff3f024aed5c8f53be52fe985d432b98578385a1c59f9fd51f9aa4da4d4",
+      "snapshot_id": "0c88315da7121b2a26957b7b678b30103809cb8fc0f157f2f40da1dfda48bec9",
+      "split": "development",
+      "data_origin": "synthetic",
+      "policy_origin": "team_authored_synthetic"
+    },
+    {
+      "file": "input-003.json",
+      "sha256": "f506028ba2973cc22c126114a3346d011b2c7dec1b310094d139ba591696c53f",
+      "snapshot_id": "2478042595d93e42323d70cbfa4f107cf999e8d2e49e2836e6672aa890c90431",
+      "split": "development",
+      "data_origin": "synthetic",
+      "policy_origin": "team_authored_synthetic"
+    },
+    {
+      "file": "input-004.json",
+      "sha256": "9f7bb7d13692043cc064b84ebf543d6dfb3db98e05ed2030f55c4dddda8d24a8",
+      "snapshot_id": "69f840603653de97b875e70bf756ef61a5f559270ddd8407c161de0282804648",
+      "split": "development",
+      "data_origin": "synthetic",
+      "policy_origin": "team_authored_synthetic"
+    },
+    {
+      "file": "input-005.json",
+      "sha256": "09b3e43fa29e258bfd445936eb04ff86e7bb8f059d932ab25be79f0220648213",
+      "snapshot_id": "d9d99f8085615d86cc85fcab0207018b2cc32253671e1226fdc97b68d95f6d50",
+      "split": "development",
+      "data_origin": "synthetic",
+      "policy_origin": "team_authored_synthetic"
+    },
+    {
+      "file": "input-006.json",
+      "sha256": "c4ecd81d0ceecdaff9f42675e7b8053cf91c9dc155b029b840bc79f844e1d575",
+      "snapshot_id": "0c88315da7121b2a26957b7b678b30103809cb8fc0f157f2f40da1dfda48bec9",
+      "split": "development",
+      "data_origin": "synthetic",
+      "policy_origin": "team_authored_synthetic"
+    },
+    {
+      "file": "input-007.json",
+      "sha256": "03d787aad53cf25d66e72d49d3b797b81da7aff9b91333b957012cf28969c0ee",
+      "snapshot_id": "0c88315da7121b2a26957b7b678b30103809cb8fc0f157f2f40da1dfda48bec9",
+      "split": "development",
+      "data_origin": "synthetic",
+      "policy_origin": "team_authored_synthetic"
+    },
+    {
+      "file": "input-008.json",
+      "sha256": "9f7bb7d13692043cc064b84ebf543d6dfb3db98e05ed2030f55c4dddda8d24a8",
+      "snapshot_id": "69f840603653de97b875e70bf756ef61a5f559270ddd8407c161de0282804648",
+      "split": "development",
+      "data_origin": "synthetic",
+      "policy_origin": "team_authored_synthetic"
+    },
+    {
+      "file": "input-009.json",
+      "sha256": "005558ba42ab62dd1cf4e0c62f31699700b30c1e08cc6ff35710b24cdc631596",
+      "snapshot_id": "69f840603653de97b875e70bf756ef61a5f559270ddd8407c161de0282804648",
+      "split": "development",
+      "data_origin": "synthetic",
+      "policy_origin": "team_authored_synthetic"
+    },
+    {
+      "file": "input-010.json",
+      "sha256": "ace0bee13b96be7439ca5df77d25d3e0557ae200bb6f3b499b6f85b646fae239",
+      "snapshot_id": "618a7b9e7a260f1ae48a406de76ff4e3023b97881ab3f5e852c7e7156a451924",
+      "split": "holdout_candidate",
+      "data_origin": "synthetic",
+      "policy_origin": "team_authored_synthetic"
+    },
+    {
+      "file": "input-011.json",
+      "sha256": "5a9005f92bca202b7b48984fde67afccca915ebde422bfac0c14f6ead8c124fa",
+      "snapshot_id": "35ae9a7368d68c400f19be89a1b340bb3823af8df7573d210862b53350584e94",
+      "split": "holdout_candidate",
+      "data_origin": "synthetic",
+      "policy_origin": "team_authored_synthetic"
+    },
+    {
+      "file": "input-012.json",
+      "sha256": "6f8888b70e685d995394e076c99c9fbb2c1e8157398ead3277c93dc05b8e5364",
+      "snapshot_id": "e550ed0e6c88d75d86dc4671985c437c51d7c098f3619008f916d04ee498cee3",
+      "split": "holdout_candidate",
+      "data_origin": "synthetic",
+      "policy_origin": "team_authored_synthetic"
+    },
+    {
+      "file": "input-013.json",
+      "sha256": "e19f461a86940a31516d08bfccfa0ab9f52e17fed97bf2e4a5d332f8c8db72a2",
+      "snapshot_id": "4d861d8c2676c9ec5704308d07f2080f0b57b0be1770fd33dcd6baa6d806f99e",
+      "split": "holdout_candidate",
+      "data_origin": "synthetic",
+      "policy_origin": "team_authored_synthetic"
+    },
+    {
+      "file": "input-014.json",
+      "sha256": "b73735f9f79e99f027d9b1cde871c1e5794f351232726dfc3971df1f4ca5c886",
+      "snapshot_id": "6147212c6f91dd0db87df45560e2657c019032e0eb3fd91498f862416575b297",
+      "split": "holdout_candidate",
+      "data_origin": "synthetic",
+      "policy_origin": "team_authored_synthetic"
+    },
+    {
+      "file": "input-015.json",
+      "sha256": "c1fbe043482276ede162a7a933a0540d429e1c0ea73624c2ef748bdf083dffdb",
+      "snapshot_id": "a986742ff4b3f693b2ab51b7e655b7373ce8c99f2b450aa617e98b648bf2d789",
+      "split": "holdout_candidate",
+      "data_origin": "synthetic",
+      "policy_origin": "team_authored_synthetic"
+    }
+  ],
+  "limitations": "Two seed cases only. Holdout candidates share a seed family; no independent or real-world accuracy claim. Labels are team expectations, never official answers."
+}

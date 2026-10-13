@@ -1,0 +1,164 @@
+{
+  "runs": [
+    {
+      "report": "outputs/judge-evaluation-vertex-v0.8-2026-10-13.json",
+      "prompt_sha256": "05321f120bae540310bc4c8e865002039eba0ccbe60d51cdaad1045bbba4edb9",
+      "total": 9,
+      "strict_matches": 3,
+      "direction_agreement_before_validation": 9,
+      "invalid_outputs": 6,
+      "by_expected_decision": {
+        "uphold_charge": {
+          "matched": 2,
+          "total": 3
+        },
+        "refund_full": {
+          "matched": 0,
+          "total": 0
+        },
+        "refund_partial": {
+          "matched": 0,
+          "total": 1
+        },
+        "escalate": {
+          "matched": 1,
+          "total": 5
+        }
+      },
+      "recorded_token_usage": {
+        "promptTokenCount": 95070,
+        "candidatesTokenCount": 24306,
+        "totalTokenCount": 171689,
+        "thoughtsTokenCount": 52313
+      }
+    },
+    {
+      "report": "outputs/judge-evaluation-vertex-v0.8-final-2026-10-13.json",
+      "prompt_sha256": "7e63d98a94ddd450fea374effaff5ac8307ef394efb4d27063dfc590fe5bbc8f",
+      "total": 9,
+      "strict_matches": 3,
+      "direction_agreement_before_validation": 8,
+      "invalid_outputs": 6,
+      "by_expected_decision": {
+        "uphold_charge": {
+          "matched": 0,
+          "total": 3
+        },
+        "refund_full": {
+          "matched": 0,
+          "total": 0
+        },
+        "refund_partial": {
+          "matched": 0,
+          "total": 1
+        },
+        "escalate": {
+          "matched": 3,
+          "total": 5
+        }
+      },
+      "recorded_token_usage": {
+        "promptTokenCount": 97995,
+        "candidatesTokenCount": 20037,
+        "totalTokenCount": 181268,
+        "thoughtsTokenCount": 63236
+      }
+    },
+    {
+      "report": "outputs/judge-evaluation-vertex-v0.8-low-2026-10-13.json",
+      "prompt_sha256": "0152910bb2702519a7d099428f7783394047059a36e711cc0946d4c0640c8edf",
+      "total": 9,
+      "strict_matches": 5,
+      "direction_agreement_before_validation": 8,
+      "invalid_outputs": 4,
+      "by_expected_decision": {
+        "uphold_charge": {
+          "matched": 0,
+          "total": 3
+        },
+        "refund_full": {
+          "matched": 0,
+          "total": 0
+        },
+        "refund_partial": {
+          "matched": 0,
+          "total": 1
+        },
+        "escalate": {
+          "matched": 5,
+          "total": 5
+        }
+      },
+      "recorded_token_usage": {
+        "promptTokenCount": 88436,
+        "candidatesTokenCount": 15978,
+        "totalTokenCount": 104414,
+        "cachedContentTokenCount": 8113
+      }
+    },
+    {
+      "report": "outputs/judge-evaluation-vertex-v0.8-release-2026-10-13.json",
+      "prompt_sha256": "adf0ff8f12162a8edf161c170fb8c98d22f0a447cf4e6de2dc4b17d0fd3cdee1",
+      "total": 9,
+      "strict_matches": 8,
+      "direction_agreement_before_validation": 8,
+      "invalid_outputs": 1,
+      "by_expected_decision": {
+        "uphold_charge": {
+          "matched": 3,
+          "total": 3
+        },
+        "refund_full": {
+          "matched": 0,
+          "total": 0
+        },
+        "refund_partial": {
+          "matched": 0,
+          "total": 1
+        },
+        "escalate": {
+          "matched": 5,
+          "total": 5
+        }
+      },
+      "recorded_token_usage": {
+        "promptTokenCount": 99804,
+        "candidatesTokenCount": 18152,
+        "totalTokenCount": 117956,
+        "cachedContentTokenCount": 8114
+      }
+    },
+    {
+      "report": "outputs/judge-evaluation-money-fix-2026-10-13.json",
+      "prompt_sha256": "346c602a966cbae3a457a1e4608d62f61eebd2281221025fd900ff6fec5d542f",
+      "total": 1,
+      "strict_matches": 1,
+      "direction_agreement_before_validation": 1,
+      "invalid_outputs": 0,
+      "by_expected_decision": {
+        "uphold_charge": {
+          "matched": 0,
+          "total": 0
+        },
+        "refund_full": {
+          "matched": 0,
+          "total": 0
+        },
+        "refund_partial": {
+          "matched": 1,
+          "total": 1
+        },
+        "escalate": {
+          "matched": 0,
+          "total": 0
+        }
+      },
+      "recorded_token_usage": {
+        "promptTokenCount": 11112,
+        "candidatesTokenCount": 1811,
+        "totalTokenCount": 12923
+      }
+    }
+  ],
+  "boundary": "Direction agreement ignores validation and amount; it is diagnostic, not a pass score. Development prompts were refined using these cases; never pool runs or report these as independent test accuracy."
+}

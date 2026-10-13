@@ -1,0 +1,30 @@
+# Credentials and machine-specific configuration
+.local/
+.env
+.env.*
+!.env.example
+application_default_credentials.json
+*service-account*.json
+*.pem
+*.key
+
+# Runtime and build files
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.DS_Store
+work/
+build/
+dist/
+*.zip
+
+# Generated outputs; retain reviewed baseline artifacts already tracked
+outputs/*
+!outputs/judge-dataset-v0.8/
+!outputs/team-live-2026-10-13/
+!outputs/judge-development-comparison-2026-10-13.json
+!outputs/judge-evaluation-*-2026-10-13.json
+!outputs/judge-evaluation-*-2026-10-13.md

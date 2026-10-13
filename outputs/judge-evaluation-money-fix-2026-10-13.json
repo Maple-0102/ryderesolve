@@ -1,0 +1,371 @@
+{
+  "generated_at": "2026-10-13T01:44:05.339695+00:00",
+  "mode": "google_vertex",
+  "model_quality_measured": true,
+  "metrics": {
+    "by_expected_decision": {
+      "uphold_charge": {
+        "matched": 0,
+        "total": 0
+      },
+      "refund_full": {
+        "matched": 0,
+        "total": 0
+      },
+      "refund_partial": {
+        "matched": 1,
+        "total": 1
+      },
+      "escalate": {
+        "matched": 0,
+        "total": 0
+      }
+    },
+    "confusion": {
+      "uphold_charge": {},
+      "refund_full": {},
+      "refund_partial": {
+        "refund_partial": 1
+      },
+      "escalate": {}
+    },
+    "invalid_outputs": 0,
+    "false_escalations": 0,
+    "unsafe_decisive_recommendations": 0,
+    "refund_amount_mismatches": 0,
+    "error_counts": {},
+    "latency_ms": {
+      "median": 11836.52,
+      "p95_sample": 11836.52
+    },
+    "recorded_token_usage": {
+      "promptTokenCount": 11112,
+      "candidatesTokenCount": 1811,
+      "totalTokenCount": 12923
+    },
+    "calls_with_recorded_usage": 1,
+    "usage_complete": true,
+    "boundary": "Descriptive results on this small shared-seed suite only. Invalid outputs fail scoring; they are not correct escalations. Token sums are not billed costs."
+  },
+  "limitations": "Small synthetic exercise set; behaviour matching is not real-world accuracy or fairness. Offline scores test the harness only.",
+  "summary": {
+    "total": 1,
+    "all_checks_pass": 1,
+    "required_review": {
+      "matched": 0,
+      "total": 0
+    },
+    "resolvable_cases": {
+      "matched": 1,
+      "total": 1
+    },
+    "order_pairs": {}
+  },
+  "results": [
+    {
+      "exercise_id": "ROUTE-UNSUPPORTED-FEE",
+      "purpose": "Test-only records reject the extra fee; supported excess is SGD 5.",
+      "input_sha256": "16202ffb449ee7266d1fac9e9846e6b8a9d3972cf42ebce95554a140467c9428",
+      "snapshot_id": "d9d99f8085615d86cc85fcab0207018b2cc32253671e1226fdc97b68d95f6d50",
+      "prompt_sha256": "346c602a966cbae3a457a1e4608d62f61eebd2281221025fd900ff6fec5d542f",
+      "expected": {
+        "decision": "refund_partial",
+        "refund_amount": 5
+      },
+      "model_decision": "refund_partial",
+      "effective_decision": "refund_partial",
+      "shared_contract_pass": true,
+      "all_checks_pass": true,
+      "behaviour_match": true,
+      "accepted_output": {
+        "case_id": "SYN-ROUTE-001",
+        "decision": "refund_partial",
+        "refund_amount": 5.0,
+        "currency": "SGD",
+        "amount_unit": "major",
+        "findings": [
+          {
+            "finding": "The route deviation and resulting SGD 5.00 extra charge are unjustified under route policy because the structured route context verification record explicitly confirmed that neither the detour justification nor the extra charge was verified, entitling the rider to a refund of the excess charged fare over the original fixed quote.",
+            "evidence_refs": [
+              "E-013",
+              "E-015",
+              "E-016",
+              "E-017",
+              "E-018",
+              "E-022",
+              "E-024"
+            ],
+            "policy_refs": [
+              "P-001",
+              "P-005",
+              "P-007"
+            ],
+            "finding_type": "inference",
+            "topic": "responsibility",
+            "condition_refs": [
+              "route_justification",
+              "extra_charge"
+            ]
+          }
+        ],
+        "uncertainties": [],
+        "escalate_to_human": false,
+        "confidence": 0.95,
+        "case_analysis": {
+          "question": "Whether the driver's route deviation and resulting SGD 5.00 extra charge above the SGD 10.00 quote were justified under policy, entitling the rider to a refund of the excess fare.",
+          "sides": {
+            "rider": {
+              "argument_refs": [
+                "/opening/rider/claims/0",
+                "/opening/rider/claims/1",
+                "/response/rider/claims/0",
+                "/response/rider/claims/1"
+              ],
+              "assessment": "accepted",
+              "reason": "The rider's assertion that the extra charge lacks support is corroborated by contemporaneous chat records objecting to the route and app verification showing the route justification and extra charge were not verified.",
+              "evidence_refs": [
+                "E-013",
+                "E-015",
+                "E-018",
+                "E-022"
+              ],
+              "policy_refs": [
+                "P-001",
+                "P-005"
+              ]
+            },
+            "driver": {
+              "argument_refs": [
+                "/opening/driver/claims/0",
+                "/opening/driver/claims/1",
+                "/response/driver/claims/0",
+                "/response/driver/claims/1"
+              ],
+              "assessment": "partly_supported",
+              "reason": "While a fare difference alone does not establish fault, the driver's unverified traffic claim does not justify the extra charge given express rider objection and failed verification.",
+              "evidence_refs": [
+                "E-014",
+                "E-018",
+                "E-022"
+              ],
+              "policy_refs": [
+                "P-001",
+                "P-007"
+              ]
+            }
+          },
+          "disputed_points": [
+            {
+              "issue": "Whether the driver had valid justification for the route detour and the SGD 5.00 extra charge.",
+              "reasoning": "The driver asserted heavy traffic in chat, but the rider explicitly objected and the structured route context verification event confirmed justification_verified=false and extra_charge_verified=false, rendering the extra charge unjustified under P-001 and P-005.",
+              "evidence_refs": [
+                "E-013",
+                "E-014",
+                "E-015",
+                "E-018",
+                "E-022"
+              ],
+              "policy_refs": [
+                "P-001",
+                "P-005"
+              ]
+            }
+          ],
+          "review_responses": [
+            {
+              "issue_code": "ROUTE_JUSTIFICATION_REQUIRES_REVIEW",
+              "status": "resolved",
+              "explanation": "The route context verification record (E-018) explicitly specifies justification_verified=false and extra_charge_verified=false. Applying context_rule (P-001) and refund_rule (P-005), the extra charge of SGD 5.00 is confirmed unjustified, permitting refund of the excess.",
+              "evidence_refs": [
+                "E-013",
+                "E-015",
+                "E-018",
+                "E-022"
+              ],
+              "policy_refs": [
+                "P-001",
+                "P-005"
+              ]
+            }
+          ],
+          "missing_information": [],
+          "argument_assessments": [
+            {
+              "argument_ref": "/opening/rider/claims/0",
+              "assessment": "supported",
+              "reason": "The fare breakdown records a SGD 5.00 excess above the SGD 10.00 quote, which is refundable because the deviation lacks verified justification.",
+              "supporting_evidence_refs": [
+                "E-018",
+                "E-022"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-005"
+              ],
+              "missing_information": []
+            },
+            {
+              "argument_ref": "/opening/rider/claims/1",
+              "assessment": "supported",
+              "reason": "Under P-001 and P-005, route deviations and extra charges require verified justification and applicable policy support.",
+              "supporting_evidence_refs": [
+                "E-018",
+                "E-022"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-001",
+                "P-005"
+              ],
+              "missing_information": []
+            },
+            {
+              "argument_ref": "/opening/driver/claims/0",
+              "assessment": "supported",
+              "reason": "As an abstract principle and per P-007, excess distance or fare difference triggers review rather than automatic fault.",
+              "supporting_evidence_refs": [
+                "E-022"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-007"
+              ],
+              "missing_information": []
+            },
+            {
+              "argument_ref": "/opening/driver/claims/1",
+              "assessment": "not_factual_claim",
+              "reason": "This is a procedural request to review evidence rather than a substantive factual assertion regarding the incident.",
+              "supporting_evidence_refs": [],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-001"
+              ],
+              "missing_information": []
+            },
+            {
+              "argument_ref": "/response/rider/claims/0",
+              "assessment": "supported",
+              "reason": "The fare difference of SGD 5.00 is supported as refundable since the verification record confirms the extra charge was not verified.",
+              "supporting_evidence_refs": [
+                "E-018",
+                "E-022"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-005"
+              ],
+              "missing_information": []
+            },
+            {
+              "argument_ref": "/response/rider/claims/1",
+              "assessment": "supported",
+              "reason": "Policy P-001 requires independent context or rider approval to substantiate an extra charge.",
+              "supporting_evidence_refs": [
+                "E-018",
+                "E-022"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-001",
+                "P-005"
+              ],
+              "missing_information": []
+            },
+            {
+              "argument_ref": "/response/driver/claims/0",
+              "assessment": "supported",
+              "reason": "Fare difference alone is an arithmetic calculation and does not inherently prove fault without examining route context.",
+              "supporting_evidence_refs": [
+                "E-022"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-007"
+              ],
+              "missing_information": []
+            },
+            {
+              "argument_ref": "/response/driver/claims/1",
+              "assessment": "not_factual_claim",
+              "reason": "This is a procedural request directed at evidence evaluation rather than a factual incident claim.",
+              "supporting_evidence_refs": [],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-001"
+              ],
+              "missing_information": []
+            }
+          ],
+          "decision_conditions": [
+            {
+              "condition_id": "route_justification",
+              "status": "not_met",
+              "reason": "The app route context verification record specifically determined justification_verified is false, and the rider objected to the route.",
+              "evidence_refs": [
+                "E-013",
+                "E-015",
+                "E-018"
+              ],
+              "policy_refs": [
+                "P-001"
+              ]
+            },
+            {
+              "condition_id": "extra_charge",
+              "status": "not_met",
+              "reason": "The app route context verification record confirmed extra_charge_verified is false, making the extra SGD 5.00 charge unjustified under policy.",
+              "evidence_refs": [
+                "E-018",
+                "E-022"
+              ],
+              "policy_refs": [
+                "P-005"
+              ]
+            }
+          ]
+        }
+      },
+      "transport": {
+        "provider": "google_cloud",
+        "requested_model": "gemini-3.8-flash",
+        "reported_model": "gemini-3.8-flash",
+        "location": "global",
+        "thinking_level": "LOW",
+        "max_output_tokens": 16384,
+        "usage": {
+          "promptTokenCount": 11112,
+          "candidatesTokenCount": 1811,
+          "totalTokenCount": 12923
+        },
+        "duration_ms": 11823.35,
+        "finish_reason": "STOP"
+      },
+      "errors": [],
+      "warnings": [
+        {
+          "code": "UNRESOLVED_REVIEW_FLAGS",
+          "path": "/judge/escalate_to_human",
+          "message": "The case has unresolved data/policy review flags; a no-review decision needs explicit justification"
+        },
+        {
+          "code": "SEMANTIC_CHECK_LIMITATION",
+          "message": "Typed checks cannot prove free-text entailment, evidence authenticity or LLM fairness."
+        }
+      ],
+      "duration_ms": 11836.52,
+      "order_pair": null,
+      "split": "development",
+      "data_origin": "synthetic",
+      "policy_origin": "team_authored_synthetic",
+      "policy_provenance_sha256": "38413c55e64bd261dce619ad471332c8d17ae653c39b3f59fba80d8f741793d3",
+      "rejected_output": null
+    }
+  ],
+  "status": "complete",
+  "suite": "development",
+  "thinking_level": "LOW",
+  "analysis_schema_sha256": "c4e2d90e038a1e8961c5b536cd3579e5bb63f0f476e7dd8934697e230d9ad906",
+  "model": "gemini-3.8-flash",
+  "prompt_sha256": "346c602a966cbae3a457a1e4608d62f61eebd2281221025fd900ff6fec5d542f"
+}

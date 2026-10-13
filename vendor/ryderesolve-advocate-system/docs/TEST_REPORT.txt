@@ -1,0 +1,35 @@
+Verification date: 2026-10-13
+Environment: Python 3.12, jsonschema 4.26.0
+
+PASS: 15 unittest tests (offline).
+- Both case contracts / both sides
+- Unknown evidence and policy references rejected
+- Case and role mismatch rejected
+- Unsupported statement warning
+- Nested counterpoint schema checked
+- Duplicate input references rejected
+- Invalid model JSON rejected
+- Non-finite output values rejected
+- Symmetric second-round visibility
+- Input not mutated; runtime path does not include expected ruling
+- Missing credentials rejected
+- Invalid model identifier rejected before network
+- Provider failure does not silently fall back
+- Gemini REST request/response shape (mock transport)
+
+PASS: hand-authored DISP-002 fixture contract check.
+PASS: real teammate Evidence Tools 0.2.0 prepare_case + local stub advocate
+      + teammate validate_outputs, snapshot pinned, for both sides of
+      DISP-002 and SYN-ROUTE-001, including symmetric second round.
+      Teammate validator emitted UNSUPPORTED_STATEMENT warnings for the
+      deliberately empty counterpoints array in stub fixtures. Warnings
+      were preserved, not removed. Structural validity was true.
+PASS: pip wheel --no-deps --no-build-isolation build.
+
+NOT VERIFIED:
+- Real Gemini requests, credentials, model availability, latency or cost.
+- Semantic correctness, bias/fairness, prompt injection resistance.
+- Judge and UI end-to-end behavior.
+- Official Ryde waiting-start policy or competition product compliance.
+
+No live model outputs are included. Offline fixtures are explicitly labeled.
