@@ -26,7 +26,8 @@ class RydeOrchestrator:
         result = {'run_id': run_id, 'case_id': case_id, 'modes': modes,
                   'snapshot': None, 'calculations': {},
                   'arguments': {'opening': {}, 'response': {}},
-                  'ruling': None, 'judge_proposal': None, 'validation_errors': [],
+                  'ruling': None, 'judge_proposal': None, 'judge_adjustments': [],
+                  'judge_raw_validation_errors': [], 'validation_errors': [],
                   'validation_warnings': [], 'communication_log': self.events}
 
         def step(name, agent, inputs, fn):
@@ -92,16 +93,33 @@ class RydeOrchestrator:
                 result['judge_transport'] = deepcopy(self.judge.last_metadata)
             # validate() rejects NaN and non-JSON values; do not serialize rejected proposals.
             errors, warnings = check_judge(snapshot, proposal, result['arguments'])
+            result['judge_raw_validation_errors'] = list(errors)
+            adopted = proposal
+            if errors:
+                from .statement_gate import downgrade_statement_only_review
+                candidate, adjustments = downgrade_statement_only_review(snapshot, proposal)
+                if adjustments:
+                    candidate_errors, candidate_warnings = check_judge(snapshot, candidate, result['arguments'])
+                    if not candidate_errors:
+                        adopted = candidate
+                        errors, warnings = candidate_errors, candidate_warnings
+                        result['judge_adjustments'] = adjustments
+                        warnings = list(warnings) + [
+                            {'code': 'STATEMENT_ONLY_REVIEW_DOWNGRADE', 'path': a['argument_ref'],
+                             'message': 'Program downgraded a statement-only support label; inspect the retained original Judge proposal.'}
+                            for a in adjustments]
             result['validation_errors'].extend(errors)
             result['validation_warnings'].extend(warnings)
             if errors:
                 result['ruling'] = review_ruling(snapshot, ['JUDGE_OUTPUT_REJECTED'] + errors)
             else:
                 result['judge_proposal'] = deepcopy(proposal)
-                result['ruling'] = deepcopy(proposal)
+                result['ruling'] = deepcopy(adopted)
             step('validate_and_gate', 'Orchestrator', {'snapshot_id': snapshot['snapshot_id']},
                  lambda: {'accepted': not errors, 'errors': errors, 'warnings': warnings,
-                          'effective_decision': result['ruling']['decision']})
+                          'effective_decision': result['ruling']['decision'],
+                          'raw_model_errors': result['judge_raw_validation_errors'],
+                          'program_adjustments': result['judge_adjustments']})
         except AgentError as exc:
             from .vertex import VertexJudge
             if isinstance(self.judge, VertexJudge):

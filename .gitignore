@@ -1,4 +1,5 @@
 # Credentials and machine-specific configuration
+.local
 .local/
 .env
 .env.*
@@ -9,6 +10,7 @@ application_default_credentials.json
 *.key
 
 # Runtime and build files
+.venv
 .venv/
 venv/
 __pycache__/
@@ -28,3 +30,11 @@ outputs/*
 !outputs/judge-development-comparison-2026-10-13.json
 !outputs/judge-evaluation-*-2026-10-13.json
 !outputs/judge-evaluation-*-2026-10-13.md
+
+# Reviewed Route repair results
+!outputs/route-fix-reviewed-2026-10-13/
+outputs/route-fix-reviewed-2026-10-13/*
+!outputs/route-fix-reviewed-2026-10-13/fix-summary.json
+!outputs/route-fix-reviewed-2026-10-13/judge-targeted.json
+!outputs/route-fix-reviewed-2026-10-13/judge-targeted.md
+!outputs/route-fix-reviewed-2026-10-13/live-final/

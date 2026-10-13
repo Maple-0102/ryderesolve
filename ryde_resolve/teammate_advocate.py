@@ -2,6 +2,7 @@
 from copy import deepcopy
 from .agents import AgentError
 from .vertex import VertexJudge
+from .evidence_boundaries import EVIDENCE_BOUNDARIES
 
 
 class TeammateAdvocate:
@@ -19,7 +20,7 @@ class TeammateAdvocate:
     def _generate(self, system, user):
         self._invoked = True
         # Advocate emits arguments, not a Judge ruling; use the shared low-level JSON transport.
-        return self.model.generate(system, user, max_output_tokens=8192)
+        return self.model.generate(system + '\n\n' + EVIDENCE_BOUNDARIES, user, max_output_tokens=8192)
 
     def __call__(self, snapshot, side, round_name, opponent=None):
         self.last_metadata = {}; self._invoked = False

@@ -3,6 +3,7 @@
 No API key, no tools, no automatic retry. Access tokens stay in process memory.
 """
 import json
+from hashlib import sha256
 import math
 import os
 import re
@@ -104,19 +105,25 @@ class VertexJudge:
 
     def __call__(self, snapshot, arguments, calculations):
         messages = build_judge_messages(snapshot, arguments, calculations)
-        result = self.generate(messages[0]['content'], messages[1]['content'])
+        from .output_schema import judge_output_schema, vertex_response_schema
+        result = self.generate(messages[0]['content'], messages[1]['content'],
+                               response_schema=vertex_response_schema(judge_output_schema()))
         value = result.get('confidence')
         if type(value) not in (int, float) or not math.isfinite(value) or not 0 <= value <= 1:
             raise AgentError('VERTEX_CONFIDENCE_REQUIRED')
         return result
 
-    def generate(self, system, user, max_output_tokens=16384):
+    def generate(self, system, user, max_output_tokens=16384, *, response_schema=None):
         self.last_metadata = {}
         started = monotonic()
         body = {'systemInstruction': {'parts': [{'text': system}]},
                 'contents': [{'role': 'user', 'parts': [{'text': user}]}],
                 'generationConfig': {'responseMimeType': 'application/json',
                                      'candidateCount': 1, 'maxOutputTokens': max_output_tokens}}
+        schema_hash = None
+        if response_schema is not None:
+            body['generationConfig']['responseSchema'] = response_schema
+            schema_hash = sha256(json.dumps(response_schema, sort_keys=True).encode()).hexdigest()
         if self.config.thinking_level is not None:
             body['generationConfig']['thinkingConfig'] = {'thinkingLevel': self.config.thinking_level}
         token = self.token_provider(self.config)
@@ -144,6 +151,7 @@ class VertexJudge:
                                   'reported_model': reported_model if isinstance(reported_model, str) else None,
                                   'location': self.config.location, 'thinking_level': self.config.thinking_level or 'provider_default',
                                   'max_output_tokens': max_output_tokens, 'usage': usage,
+                                  'response_schema_sha256': schema_hash,
                                   'duration_ms': round((monotonic() - started) * 1000, 2)}
             reason = candidate.get('finishReason')
             self.last_metadata['finish_reason'] = reason if isinstance(reason, str) and re.fullmatch(r'[A-Z_]{1,64}', reason) else 'UNKNOWN'

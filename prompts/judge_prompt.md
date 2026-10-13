@@ -20,7 +20,7 @@ argument_refs and unresolved; do not invent its position. State the disputed poi
 why each side is accepted/partly_supported/unsupported/contradicted/unresolved, which records
 support the assessment, and what material information remains missing.
 
-Local integration policy v0.8 (team implementation choice, not organizer policy):
+Local integration policy v0.9.1 (team implementation choice, not organizer policy):
 - decisions: uphold_charge, refund_full, refund_partial, escalate.
 - refund_amount: SGD dollars, at most two decimals. currency="SGD", amount_unit="major".
 - uphold: zero refund. refund_full means refund the ENTIRE recorded charge
@@ -63,6 +63,11 @@ Local integration policy v0.8 (team implementation choice, not organizer policy)
   an uncalibrated model self-assessment, NOT measured accuracy or a probability of fault.
   Explain material uncertainty; confidence can never override missing evidence or a review gate.
 
+All required properties must be present in EVERY array item, including the final
+items of long ledgers. Empty arrays must be explicit []; never omit
+opposing_evidence_refs or missing_information just because there are no entries.
+Do not compress repeated rows by leaving out their keys.
+
 Return case_id, decision, refund_amount, currency, amount_unit, findings,
 uncertainties, escalate_to_human, confidence and case_analysis.
 findings item: {finding, evidence_refs, policy_refs, finding_type, topic, condition_refs}.
@@ -103,6 +108,25 @@ V0.5 consistency requirements:
   require supporting records, contradicted requires opposing records; party claims
   or historical context alone are not proof. This ledger assesses the substantive
   assertion, not merely whether somebody uttered it.
+  A compound claim is fully supported only if ALL substantive parts are supported.
+  If sample speeds are recorded but a claim adds "throughout the trip", do not rate
+  that entire claim supported. Mark it partly_supported or insufficient_evidence,
+  name the unproved continuous-speed part in reason and missing_information, and
+  retain the supported sampled measurements.
+  If a claim conflates route justification with charging entitlement, identify the
+  conflation and assess each proposition against its separate condition and policy.
+  Never silently rewrite an Advocate's proposition into a different, defensible
+  statement and then label the original supported. For example, "refund requires
+  proving the DETOUR was unjustified" is not the same as "refund requires proving
+  the EXTRA CHARGE was unjustified". Name that distinction in the assessment reason;
+  a mismatched prerequisite cannot be labelled fully supported.
+  If a substantive consent assertion is supported only by party chat, its ledger
+  status must be insufficient_evidence or unresolved: describe the documented
+  objection in reason, but retain the missing consent/approval verification.
+  "I did not request a longer route" does not prove that no approval was given
+  at any time. Do not add unrelated GPS/trip records just to satisfy the support
+  check. This conservative incident-ledger rule also applies to claims that a
+  recorded objection establishes absence of permission; speech remains attributed.
   This also applies when an Advocate mechanically copies a communication-log entry:
   evaluate the substantive assertion inside the quoted message. A driver saying
   "I arrived" or "I am waiting" is not proof of arrival/presence, even if the entry
@@ -125,7 +149,11 @@ V0.5 consistency requirements:
   Route conditions are route_justification and extra_charge; their statuses must
   agree with the supplied verification records and context/refund policy respectively.
   Uphold needs both met. Refund needs extra_charge not_met, with route context also
-  resolved; enforce supported fee bounds. No-show uses no_show_charge and cannot be
+  resolved; enforce supported fee bounds. In particular, route_justification=met
+  and extra_charge=not_met may support a partial refund: never force these two
+  condition statuses to agree. For synthetic cases cite missing SOURCE POLICY
+  provisions precisely; do not replace them with a generic demand for official
+  platform rules. No-show uses no_show_charge and cannot be
   resolved while the authoritative clock/data issues remain unresolved.
 - Every final responsibility inference also needs condition_refs containing ALL
   required condition IDs. Its evidence/policy refs must include those used by the
@@ -174,3 +202,20 @@ Compact output requirements (same evidence gates, less duplicated prose):
 - Keep each ledger reason to a brief sentence and include every required row.
   Do not write essays, repeated narratives or hidden assumptions. Concision never
   permits omitting a condition, counterargument, citation or unresolved material issue.
+
+Evidence-scope rules (team software guidance, not case evidence or charging policy):
+1. SAMPLED VERSUS CONTINUOUS: a speed or location at individual GPS samples does not
+   prove the same speed/location throughout the trip or between samples. Even if all
+   interior speeds match, do not say "steady throughout", "always" or "continuous".
+   Attribute measurements to recorded timestamps; do not invent interpolation.
+2. UNVERIFIED VERSUS DISPROVED: absent independent traffic verification does not mean
+   the traffic claim is false, the detour is unjustified, or a refund is owed. A party's
+   statement establishes that it was said. Unknown material facts remain unknown.
+3. ROUTE VERSUS CHARGE: assess the reason for a route change separately from the basis
+   for an extra charge. A justified detour does not authorize a fare increase; an
+   unjustified extra charge does not require proving that the detour itself was wrong.
+   A missing surcharge line does not itself make a quote increase valid or invalid.
+4. POLICY ORIGIN: apply the supplied policy within its declared scope. Clearly labelled
+   synthetic policies are valid test assumptions, never official Ryde rules. Synthetic
+   origin alone is not a reason to escalate. Name the specific missing provision or
+   evidence instead of demanding an official policy merely because the case is synthetic.

@@ -1,0 +1,860 @@
+{
+  "snapshot_id": "0c88315da7121b2a26957b7b678b30103809cb8fc0f157f2f40da1dfda48bec9",
+  "provenance": "Actual raw model proposal, before conservative review-only gate. No silent repair.",
+  "arguments": {
+    "opening": {
+      "rider": {
+        "case_id": "SYN-ROUTE-001",
+        "side": "rider",
+        "position": "request_review",
+        "claims": [
+          {
+            "claim": "The rider was charged SGD 15.00 despite an initial fixed quote of SGD 10.00, resulting in an unverified SGD 5.00 fare increase.",
+            "evidence_refs": [
+              "E-002",
+              "E-016",
+              "E-017",
+              "E-021"
+            ],
+            "policy_refs": [
+              "P-005"
+            ]
+          },
+          {
+            "claim": "The rider explicitly queried the deviation and stated they did not request a longer route, demonstrating lack of rider approval for the detour.",
+            "evidence_refs": [
+              "E-013",
+              "E-015"
+            ],
+            "policy_refs": [
+              "P-001"
+            ]
+          },
+          {
+            "claim": "The sampled route excess ratio of 1.000255 exceeds the 0.25 review trigger threshold under policy, necessitating formal review rather than an automatic charge adjustment.",
+            "evidence_refs": [
+              "E-023"
+            ],
+            "policy_refs": [
+              "P-006",
+              "P-007"
+            ]
+          },
+          {
+            "claim": "Under team-authored synthetic policy rules, when material justifications such as traffic or safety cannot be verified, the missing evidence must be reported for human review before confirming or refunding the excess charge.",
+            "evidence_refs": [
+              "E-017",
+              "E-022"
+            ],
+            "policy_refs": [
+              "P-001",
+              "P-003",
+              "P-004",
+              "P-005"
+            ]
+          }
+        ],
+        "counterpoints": [
+          {
+            "claim": "The driver stated in chat logs that traffic was worse on the direct route, but no independent live traffic feed or verification is supplied in the record.",
+            "evidence_refs": [
+              "E-014",
+              "E-017"
+            ],
+            "policy_refs": [
+              "P-001",
+              "P-003"
+            ]
+          },
+          {
+            "claim": "Sampled distance comparison and polyline measurements alone do not prove driver fault or an unauthorized detour without considering full context.",
+            "evidence_refs": [
+              "E-022",
+              "E-023"
+            ],
+            "policy_refs": [
+              "P-002",
+              "P-007"
+            ]
+          }
+        ],
+        "missing_information": [
+          "Independent historical or live traffic feed data for the direct reference route between 10:00:00 and 10:14:00 to verify whether a traffic condition justified the deviation.",
+          "System pricing documentation or recalculation breakdown explaining the specific basis for increasing the synthetic fixed quote from SGD 10.00 to SGD 15.00."
+        ],
+        "snapshot_id": "0c88315da7121b2a26957b7b678b30103809cb8fc0f157f2f40da1dfda48bec9",
+        "round": "opening"
+      },
+      "driver": {
+        "case_id": "SYN-ROUTE-001",
+        "side": "driver",
+        "position": "request_review",
+        "claims": [
+          {
+            "claim": "The driver timely arrived before the scheduled pickup time and actively communicated the operational reason for the detour, specifically stating that traffic was worse on the direct route.",
+            "evidence_refs": [
+              "E-003",
+              "E-004",
+              "E-005",
+              "E-014"
+            ],
+            "policy_refs": [
+              "P-001"
+            ]
+          },
+          {
+            "claim": "Sampled distance variance alone does not establish driver fault or an unjustified route change, as the supplied reference route is synthetic and does not represent an independently established road-network optimal path.",
+            "evidence_refs": [
+              "E-020",
+              "E-022",
+              "E-023"
+            ],
+            "policy_refs": [
+              "P-002",
+              "P-007"
+            ]
+          },
+          {
+            "claim": "A refund of the excess fare cannot be granted automatically without first verifying whether the detour and extra charge were unjustified under applicable review standards.",
+            "evidence_refs": [
+              "E-017",
+              "E-021"
+            ],
+            "policy_refs": [
+              "P-005",
+              "P-007"
+            ]
+          }
+        ],
+        "counterpoints": [
+          {
+            "claim": "While the rider objected to taking a longer route and stated they did not request it, the driver's assertion of adverse direct-route traffic has not been disproved by independent verification.",
+            "evidence_refs": [
+              "E-013",
+              "E-014",
+              "E-015",
+              "E-017"
+            ],
+            "policy_refs": [
+              "P-001",
+              "P-003"
+            ]
+          },
+          {
+            "claim": "The sampled polyline length exceeded the synthetic reference route by an excess ratio of approximately 1.00, which exceeds the review threshold of 0.25 and necessitates case review rather than an immediate finding of driver fault.",
+            "evidence_refs": [
+              "E-023"
+            ],
+            "policy_refs": [
+              "P-006",
+              "P-007"
+            ]
+          }
+        ],
+        "missing_information": [
+          "Independent historical or live traffic conditions along the direct reference route between 10:00 and 10:14 on 2026-10-01 to evaluate the driver's traffic justification.",
+          "System pricing rules detailing how and why the synthetic fixed quote of SGD 10.00 was recalculated to SGD 15.00 upon trip completion."
+        ],
+        "snapshot_id": "0c88315da7121b2a26957b7b678b30103809cb8fc0f157f2f40da1dfda48bec9",
+        "round": "opening"
+      }
+    },
+    "response": {
+      "rider": {
+        "case_id": "SYN-ROUTE-001",
+        "side": "rider",
+        "position": "request_review",
+        "claims": [
+          {
+            "claim": "The rider was billed SGD 15.00 despite an initial fixed quote of SGD 10.00, and the fare breakdown lists zero surcharges, leaving the SGD 5.00 increase over the quote unexplained by documented pricing rules.",
+            "evidence_refs": [
+              "E-002",
+              "E-016",
+              "E-017",
+              "E-021"
+            ],
+            "policy_refs": [
+              "P-005"
+            ]
+          },
+          {
+            "claim": "The rider explicitly objected to deviating from the app route and never approved taking an extended route or paying an additional charge.",
+            "evidence_refs": [
+              "E-013",
+              "E-015"
+            ],
+            "policy_refs": [
+              "P-001"
+            ]
+          },
+          {
+            "claim": "The sampled polyline length of 4447.226 m exceeded the reference path of 2223.329 m by an excess ratio of approximately 1.00, which exceeds the review threshold of 0.25 and triggers a formal dispute review under policy.",
+            "evidence_refs": [
+              "E-020",
+              "E-023"
+            ],
+            "policy_refs": [
+              "P-006",
+              "P-007"
+            ]
+          },
+          {
+            "claim": "The driver's claimed traffic justification remains an unverified statement without supporting live or historical traffic feeds, requiring human review under the missing context policy before any surcharge can be upheld.",
+            "evidence_refs": [
+              "E-014",
+              "E-017"
+            ],
+            "policy_refs": [
+              "P-001",
+              "P-003"
+            ]
+          }
+        ],
+        "counterpoints": [
+          {
+            "claim": "Although the driver responded to the rider's message stating a belief that traffic was worse on the direct path, an unverified driver statement does not independently establish road conditions or justify increasing a fixed quote.",
+            "evidence_refs": [
+              "E-014",
+              "E-017"
+            ],
+            "policy_refs": [
+              "P-001",
+              "P-003"
+            ]
+          },
+          {
+            "claim": "While the reference route is synthetic and distance variance alone does not conclusively prove driver fault, policy requires confirming whether the extra charge was justified before deciding whether to refund the SGD 5.00 excess over the quote.",
+            "evidence_refs": [
+              "E-020",
+              "E-021",
+              "E-022",
+              "E-023"
+            ],
+            "policy_refs": [
+              "P-002",
+              "P-005",
+              "P-007"
+            ]
+          }
+        ],
+        "missing_information": [
+          "Independent historical or real-time traffic feed data for the direct reference route between 10:00:00 and 10:14:00 on 2026-10-01 to evaluate whether the detour was operationally justified.",
+          "Platform fare calculation rules governing the 'synthetic_fixed_quotes' pricing model, detailing when and under what criteria an initial fixed quote may be increased to a higher completed fare."
+        ],
+        "snapshot_id": "0c88315da7121b2a26957b7b678b30103809cb8fc0f157f2f40da1dfda48bec9",
+        "round": "response"
+      },
+      "driver": {
+        "case_id": "SYN-ROUTE-001",
+        "side": "driver",
+        "position": "request_review",
+        "claims": [
+          {
+            "claim": "The driver timely arrived before the scheduled pickup time and promptly communicated a real-time navigation rationale to the rider, stating that traffic was worse on the direct route.",
+            "evidence_refs": [
+              "E-003",
+              "E-004",
+              "E-005",
+              "E-014"
+            ],
+            "policy_refs": [
+              "P-001"
+            ]
+          },
+          {
+            "claim": "Under applicable synthetic policy, sampled excess distance triggers review rather than an automatic finding of driver fault or an immediate refund.",
+            "evidence_refs": [
+              "E-022",
+              "E-023"
+            ],
+            "policy_refs": [
+              "P-006",
+              "P-007"
+            ]
+          },
+          {
+            "claim": "Policy explicitly requires confirming that an extra charge was unjustified before recommending a refund; unverified traffic conditions require reporting missing evidence for human review rather than presuming fault.",
+            "evidence_refs": [
+              "E-017",
+              "E-021"
+            ],
+            "policy_refs": [
+              "P-001",
+              "P-003",
+              "P-005"
+            ]
+          }
+        ],
+        "counterpoints": [
+          {
+            "claim": "While the rider questioned the route change and stated they did not request a longer path, an absent independent live traffic feed does not disprove the driver's traffic observation.",
+            "evidence_refs": [
+              "E-013",
+              "E-014",
+              "E-015",
+              "E-017"
+            ],
+            "policy_refs": [
+              "P-001",
+              "P-003"
+            ]
+          },
+          {
+            "claim": "The final charge was SGD 15.00 compared to an initial synthetic quote of SGD 10.00, but the record lacks the automated fare recalculation rules determining how the final total was computed.",
+            "evidence_refs": [
+              "E-016",
+              "E-017",
+              "E-021"
+            ],
+            "policy_refs": [
+              "P-004",
+              "P-005"
+            ]
+          }
+        ],
+        "missing_information": [
+          "Independent historical or live traffic conditions on the direct reference route between 10:00:00 and 10:14:00 to objectively evaluate the driver's reported traffic rationale.",
+          "Platform pricing and fare recalculation rules detailing the exact parameters that adjusted the initial synthetic fixed quote from SGD 10.00 to SGD 15.00."
+        ],
+        "snapshot_id": "0c88315da7121b2a26957b7b678b30103809cb8fc0f157f2f40da1dfda48bec9",
+        "round": "response"
+      }
+    }
+  },
+  "judge_output": {
+    "case_id": "SYN-ROUTE-001",
+    "decision": "escalate",
+    "refund_amount": null,
+    "currency": "SGD",
+    "amount_unit": "major",
+    "findings": [],
+    "uncertainties": [
+      "Whether road conditions or adverse traffic along the direct reference route objectively justified the driver's detour between 10:00:00 and 10:14:00.",
+      "Whether the SGD 5.00 extra charge over the SGD 10.00 fixed quote was authorized under platform recalculation and pricing policy given rider non-approval."
+    ],
+    "escalate_to_human": true,
+    "confidence": 0.95,
+    "case_analysis": {
+      "question": "Whether the driver's route deviation and the resulting SGD 5.00 extra charge over the initial fixed quote are justified under applicable route and pricing policy, or if an adjustment/refund is warranted.",
+      "sides": {
+        "rider": {
+          "argument_refs": [
+            "/opening/rider/claims/0",
+            "/opening/rider/claims/1",
+            "/opening/rider/claims/2",
+            "/opening/rider/claims/3",
+            "/opening/rider/counterpoints/0",
+            "/opening/rider/counterpoints/1",
+            "/response/rider/claims/0",
+            "/response/rider/claims/1",
+            "/response/rider/claims/2",
+            "/response/rider/claims/3",
+            "/response/rider/counterpoints/0",
+            "/response/rider/counterpoints/1"
+          ],
+          "assessment": "partly_supported",
+          "reason": "The rider's claims regarding the fare increase, lack of explicit approval, route excess ratio exceeding 0.25, and lack of independent traffic feed are substantiated by chat, telemetry, and event records. However, absence of independent verification does not conclusively prove driver fault without human review under missing_context_rule.",
+          "evidence_refs": [
+            "E-002",
+            "E-013",
+            "E-014",
+            "E-015",
+            "E-016",
+            "E-017",
+            "E-020",
+            "E-021",
+            "E-022",
+            "E-023"
+          ],
+          "policy_refs": [
+            "P-001",
+            "P-002",
+            "P-003",
+            "P-004",
+            "P-005",
+            "P-006",
+            "P-007"
+          ]
+        },
+        "driver": {
+          "argument_refs": [
+            "/opening/driver/claims/0",
+            "/opening/driver/claims/1",
+            "/opening/driver/claims/2",
+            "/opening/driver/counterpoints/0",
+            "/opening/driver/counterpoints/1",
+            "/response/driver/claims/0",
+            "/response/driver/claims/1",
+            "/response/driver/claims/2",
+            "/response/driver/counterpoints/0",
+            "/response/driver/counterpoints/1"
+          ],
+          "assessment": "partly_supported",
+          "reason": "The driver accurately notes that excess distance triggers review rather than automatic fault, arrival/communication occurred, and missing context prevents an automatic refund. However, the driver's substantive claim that direct-route traffic was worse is an unverified assertion without external traffic corroboration.",
+          "evidence_refs": [
+            "E-003",
+            "E-004",
+            "E-005",
+            "E-013",
+            "E-014",
+            "E-015",
+            "E-016",
+            "E-017",
+            "E-020",
+            "E-021",
+            "E-022",
+            "E-023"
+          ],
+          "policy_refs": [
+            "P-001",
+            "P-002",
+            "P-003",
+            "P-004",
+            "P-005",
+            "P-006",
+            "P-007"
+          ]
+        }
+      },
+      "disputed_points": [
+        {
+          "issue": "Whether the detour taken by the driver was operationally justified by adverse traffic conditions.",
+          "reasoning": "The driver messaged that traffic was worse on the direct path, but app event E-017 confirms no independent live traffic feed is supplied. Under P-001 and P-003, traffic reasons must be independently supported, and missing verification must be reported for human review.",
+          "evidence_refs": [
+            "E-014",
+            "E-017"
+          ],
+          "policy_refs": [
+            "P-001",
+            "P-003"
+          ]
+        },
+        {
+          "issue": "Whether the SGD 5.00 extra charge over the fixed quote is justified and whether a refund is payable.",
+          "reasoning": "Under P-005, a refund may only be recommended after confirming an unjustified extra charge. Because traffic justification remains unverified and pricing recalculation rules are absent, the legitimacy of the extra charge cannot be definitively resolved.",
+          "evidence_refs": [
+            "E-016",
+            "E-017",
+            "E-021"
+          ],
+          "policy_refs": [
+            "P-001",
+            "P-003",
+            "P-005"
+          ]
+        }
+      ],
+      "review_responses": [
+        {
+          "issue_code": "ROUTE_JUSTIFICATION_REQUIRES_REVIEW",
+          "status": "unresolved",
+          "explanation": "No structured route_context_verification record or independent traffic feed exists to verify the driver's traffic justification or the extra charge. Under P-001, P-003, and P-005, this material context cannot be assumed and requires human review.",
+          "evidence_refs": [
+            "E-014",
+            "E-017",
+            "E-021",
+            "E-023"
+          ],
+          "policy_refs": [
+            "P-001",
+            "P-003",
+            "P-005"
+          ]
+        }
+      ],
+      "missing_information": [
+        "Independent real-time or historical traffic data for the direct reference route between 10:00:00 and 10:14:00 on 2026-10-01.",
+        "Platform fare recalculation specifications detailing the criteria and authorization for increasing a fixed quote under the synthetic_fixed_quotes pricing model."
+      ],
+      "argument_assessments": [
+        {
+          "argument_ref": "/opening/rider/claims/0",
+          "assessment": "supported",
+          "reason": "The claim states that 'The rider was charged SGD 15.00 despite an initial fixed quote of SGD 10.00, resulting in an unverified SGD 5.00 fare increase', which is directly confirmed by fare records and app events.",
+          "supporting_evidence_refs": [
+            "E-002",
+            "E-016",
+            "E-017",
+            "E-021"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-005"
+          ],
+          "missing_information": []
+        },
+        {
+          "argument_ref": "/opening/rider/claims/1",
+          "assessment": "partly_supported",
+          "reason": "The claim asserts that 'The rider explicitly queried the deviation and stated they did not request a longer route, demonstrating lack of rider approval for the detour'; chat logs prove the queries and objection, but party chat alone does not verify absolute absence of verbal or operational approval throughout.",
+          "supporting_evidence_refs": [
+            "E-013",
+            "E-015"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-001"
+          ],
+          "missing_information": [
+            "Independent verification of in-person communication during the ride."
+          ]
+        },
+        {
+          "argument_ref": "/opening/rider/claims/2",
+          "assessment": "supported",
+          "reason": "The claim states that 'The sampled route excess ratio of 1.000255 exceeds the 0.25 review trigger threshold under policy, necessitating formal review rather than an automatic charge adjustment', fully aligning with route comparison calculations and policy.",
+          "supporting_evidence_refs": [
+            "E-023"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-006",
+            "P-007"
+          ],
+          "missing_information": []
+        },
+        {
+          "argument_ref": "/opening/rider/claims/3",
+          "assessment": "supported",
+          "reason": "The claim asserts that 'Under team-authored synthetic policy rules, when material justifications such as traffic or safety cannot be verified, the missing evidence must be reported for human review before confirming or refunding the excess charge', accurately restating policy provisions.",
+          "supporting_evidence_refs": [
+            "E-017",
+            "E-022"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-001",
+            "P-003",
+            "P-004",
+            "P-005"
+          ],
+          "missing_information": []
+        },
+        {
+          "argument_ref": "/opening/rider/counterpoints/0",
+          "assessment": "supported",
+          "reason": "The counterpoint states that 'The driver stated in chat logs that traffic was worse on the direct route, but no independent live traffic feed or verification is supplied in the record', which matches the chat log and app event records exactly.",
+          "supporting_evidence_refs": [
+            "E-014",
+            "E-017"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-001",
+            "P-003"
+          ],
+          "missing_information": []
+        },
+        {
+          "argument_ref": "/opening/rider/counterpoints/1",
+          "assessment": "supported",
+          "reason": "The counterpoint states that 'Sampled distance comparison and polyline measurements alone do not prove driver fault or an unauthorized detour without considering full context', accurately citing dataset limitations and review trigger policy.",
+          "supporting_evidence_refs": [
+            "E-022",
+            "E-023"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-002",
+            "P-007"
+          ],
+          "missing_information": []
+        },
+        {
+          "argument_ref": "/opening/driver/claims/0",
+          "assessment": "partly_supported",
+          "reason": "The claim asserts that 'The driver timely arrived before the scheduled pickup time and actively communicated the operational reason for the detour, specifically stating that traffic was worse on the direct route'; trip data and chat logs prove arrival and the statement, but do not prove that traffic was actually worse.",
+          "supporting_evidence_refs": [
+            "E-003",
+            "E-004",
+            "E-005",
+            "E-014"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-001"
+          ],
+          "missing_information": [
+            "Independent verification of actual traffic conditions."
+          ]
+        },
+        {
+          "argument_ref": "/opening/driver/claims/1",
+          "assessment": "supported",
+          "reason": "The claim states that 'Sampled distance variance alone does not establish driver fault or an unjustified route change, as the supplied reference route is synthetic and does not represent an independently established road-network optimal path', which matches dataset metadata and policy.",
+          "supporting_evidence_refs": [
+            "E-020",
+            "E-022",
+            "E-023"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-002",
+            "P-007"
+          ],
+          "missing_information": []
+        },
+        {
+          "argument_ref": "/opening/driver/claims/2",
+          "assessment": "supported",
+          "reason": "The claim asserts that 'A refund of the excess fare cannot be granted automatically without first verifying whether the detour and extra charge were unjustified under applicable review standards', which accurately reflects the refund policy rule.",
+          "supporting_evidence_refs": [
+            "E-017",
+            "E-021"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-005",
+            "P-007"
+          ],
+          "missing_information": []
+        },
+        {
+          "argument_ref": "/opening/driver/counterpoints/0",
+          "assessment": "partly_supported",
+          "reason": "The counterpoint states that 'While the rider objected to taking a longer route and stated they did not request it, the driver's assertion of adverse direct-route traffic has not been disproved by independent verification'; while lack of disproof is true, absence of disproof does not substantiate the driver's traffic claim.",
+          "supporting_evidence_refs": [
+            "E-013",
+            "E-015",
+            "E-017"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-001",
+            "P-003"
+          ],
+          "missing_information": [
+            "Objective traffic feed data."
+          ]
+        },
+        {
+          "argument_ref": "/opening/driver/counterpoints/1",
+          "assessment": "supported",
+          "reason": "The counterpoint states that 'The sampled polyline length exceeded the synthetic reference route by an excess ratio of approximately 1.00, which exceeds the review threshold of 0.25 and necessitates case review rather than an immediate finding of driver fault', accurately summarizing calculations and policy.",
+          "supporting_evidence_refs": [
+            "E-023"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-006",
+            "P-007"
+          ],
+          "missing_information": []
+        },
+        {
+          "argument_ref": "/response/rider/claims/0",
+          "assessment": "supported",
+          "reason": "The claim states that 'The rider was billed SGD 15.00 despite an initial fixed quote of SGD 10.00, and the fare breakdown lists zero surcharges, leaving the SGD 5.00 increase over the quote unexplained by documented pricing rules', which is verified by fare breakdown and event records.",
+          "supporting_evidence_refs": [
+            "E-002",
+            "E-016",
+            "E-017",
+            "E-021"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-005"
+          ],
+          "missing_information": []
+        },
+        {
+          "argument_ref": "/response/rider/claims/1",
+          "assessment": "partly_supported",
+          "reason": "The claim states that 'The rider explicitly objected to deviating from the app route and never approved taking an extended route or paying an additional charge'; chat logs prove the objection in text, but party statements alone do not conclusively establish complete lack of approval across the entire encounter.",
+          "supporting_evidence_refs": [
+            "E-013",
+            "E-015"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-001"
+          ],
+          "missing_information": [
+            "Independent verification of passenger consent."
+          ]
+        },
+        {
+          "argument_ref": "/response/rider/claims/2",
+          "assessment": "supported",
+          "reason": "The claim states that 'The sampled polyline length of 4447.226 m exceeded the reference path of 2223.329 m by an excess ratio of approximately 1.00, which exceeds the review threshold of 0.25 and triggers a formal dispute review under policy', aligning with route comparison and trigger policy.",
+          "supporting_evidence_refs": [
+            "E-020",
+            "E-023"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-006",
+            "P-007"
+          ],
+          "missing_information": []
+        },
+        {
+          "argument_ref": "/response/rider/claims/3",
+          "assessment": "supported",
+          "reason": "The claim states that 'The driver's claimed traffic justification remains an unverified statement without supporting live or historical traffic feeds, requiring human review under the missing context policy before any surcharge can be upheld', which is supported by evidence records and policy.",
+          "supporting_evidence_refs": [
+            "E-014",
+            "E-017"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-001",
+            "P-003"
+          ],
+          "missing_information": []
+        },
+        {
+          "argument_ref": "/response/rider/counterpoints/0",
+          "assessment": "supported",
+          "reason": "The counterpoint asserts that 'Although the driver responded to the rider's message stating a belief that traffic was worse on the direct path, an unverified driver statement does not independently establish road conditions or justify increasing a fixed quote', conforming to evidentiary standards and context rules.",
+          "supporting_evidence_refs": [
+            "E-014",
+            "E-017"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-001",
+            "P-003"
+          ],
+          "missing_information": []
+        },
+        {
+          "argument_ref": "/response/rider/counterpoints/1",
+          "assessment": "supported",
+          "reason": "The counterpoint states that 'While the reference route is synthetic and distance variance alone does not conclusively prove driver fault, policy requires confirming whether the extra charge was justified before deciding whether to refund the SGD 5.00 excess over the quote', matching refund and trigger rules.",
+          "supporting_evidence_refs": [
+            "E-020",
+            "E-021",
+            "E-022",
+            "E-023"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-002",
+            "P-005",
+            "P-007"
+          ],
+          "missing_information": []
+        },
+        {
+          "argument_ref": "/response/driver/claims/0",
+          "assessment": "partly_supported",
+          "reason": "The claim states that 'The driver timely arrived before the scheduled pickup time and promptly communicated a real-time navigation rationale to the rider, stating that traffic was worse on the direct route'; records prove arrival and message sending, but do not prove the truth of the traffic rationale.",
+          "supporting_evidence_refs": [
+            "E-003",
+            "E-004",
+            "E-005",
+            "E-014"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-001"
+          ],
+          "missing_information": [
+            "Independent verification of actual traffic conditions."
+          ]
+        },
+        {
+          "argument_ref": "/response/driver/claims/1",
+          "assessment": "supported",
+          "reason": "The claim states that 'Under applicable synthetic policy, sampled excess distance triggers review rather than an automatic finding of driver fault or an immediate refund', which accurately reflects policy and dataset limitations.",
+          "supporting_evidence_refs": [
+            "E-022",
+            "E-023"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-006",
+            "P-007"
+          ],
+          "missing_information": []
+        },
+        {
+          "argument_ref": "/response/driver/claims/2",
+          "assessment": "supported",
+          "reason": "The claim states that 'Policy explicitly requires confirming that an extra charge was unjustified before recommending a refund; unverified traffic conditions require reporting missing evidence for human review rather than presuming fault', consistent with missing_context_rule and refund_rule.",
+          "supporting_evidence_refs": [
+            "E-017",
+            "E-021"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-001",
+            "P-003",
+            "P-005"
+          ],
+          "missing_information": []
+        },
+        {
+          "argument_ref": "/response/driver/counterpoints/0",
+          "assessment": "partly_supported",
+          "reason": "The counterpoint asserts that 'While the rider questioned the route change and stated they did not request a longer path, an absent independent live traffic feed does not disprove the driver's traffic observation'; this accurately states that absence of proof is not disproof, but leaves the substantive traffic claim unverified.",
+          "supporting_evidence_refs": [
+            "E-013",
+            "E-014",
+            "E-015",
+            "E-017"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-001",
+            "P-003"
+          ],
+          "missing_information": [
+            "Objective traffic feed data."
+          ]
+        },
+        {
+          "argument_ref": "/response/driver/counterpoints/1",
+          "assessment": "supported",
+          "reason": "The counterpoint states that 'The final charge was SGD 15.00 compared to an initial synthetic quote of SGD 10.00, but the record lacks the automated fare recalculation rules determining how the final total was computed', which is substantiated by fare breakdown and event records.",
+          "supporting_evidence_refs": [
+            "E-016",
+            "E-017",
+            "E-021"
+          ],
+          "opposing_evidence_refs": [],
+          "policy_refs": [
+            "P-004",
+            "P-005"
+          ],
+          "missing_information": []
+        }
+      ],
+      "decision_conditions": [
+        {
+          "condition_id": "route_justification",
+          "status": "unknown",
+          "reason": "The driver's reported traffic justification cannot be independently verified due to the explicit absence of a live traffic feed in event E-017, and rider approval is disputed under P-001.",
+          "evidence_refs": [
+            "E-013",
+            "E-014",
+            "E-015",
+            "E-017"
+          ],
+          "policy_refs": [
+            "P-001",
+            "P-003"
+          ]
+        },
+        {
+          "condition_id": "extra_charge",
+          "status": "unknown",
+          "reason": "Whether the SGD 5.00 fare increase was justified cannot be determined without verifying the operational justification of the route change and reviewing platform recalculation rules under P-005.",
+          "evidence_refs": [
+            "E-016",
+            "E-017",
+            "E-021"
+          ],
+          "policy_refs": [
+            "P-003",
+            "P-005"
+          ]
+        }
+      ]
+    },
+    "notes": [
+      "Informational issue SYNTHETIC_SCENARIO noted; scenario operates under team-authored synthetic policy rules."
+    ]
+  }
+}

@@ -107,6 +107,13 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
         supplement_html = ''
         if lineage:
             supplement_html = f'<section><h3>补材料后重新分析</h3><p>来源说明：{esc(lineage["source_note"])}</p><p>原结果：{esc(lineage["old_decision"])} → 新结果：{esc(lineage["new_decision"])}</p><p class="muted">双方论点按新快照重跑；来源说明未经过独立认证。</p>{pretty(lineage)}</section>'
+        adjustment_html = ''
+        if result.get('judge_adjustments'):
+            adjustment_html = ('<section><h3>程序保守修正</h3>'
+                '<p>模型对部分论点的支持评级只有当事人陈述作为依据。程序将其降为证据不足，保留原输出并重新检查全部规则；收费或退款建议未因此生成。</p>'
+                '<details><summary>原始模型检查错误</summary>' + pretty(result.get('judge_raw_validation_errors', [])) + '</details>'
+                '<details><summary>逐条修正记录</summary>' + pretty(result['judge_adjustments']) + '</details>'
+                '<details><summary>原始 Judge 建议</summary>' + pretty(result.get('judge_proposal')) + '</details></section>')
         modes = f'Advocate: {result["modes"]["advocate"]} / Judge: {result["modes"]["judge"]}'
         panels.append(f'''<article id="{prefix}" role="tabpanel" aria-labelledby="tab-{i}" {"hidden" if i else ""}>
 <div class="case-head"><div><p class="eyebrow">{esc(origin)}</p><h2>{esc(result['case_id'])}</h2></div><div class="pill">{esc(decision)}</div></div>
@@ -117,6 +124,7 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
 {handoff_html}
 {provenance_html}
 {supplement_html}
+{adjustment_html}
 <section><h3>双方陈述与回应</h3><p class="muted">offline_placeholder 只摘录已有陈述，不代表已完成真实 Agent 辩论。</p><div class="columns">{''.join(arguments)}</div></section>
 <section><h3>证据与原文 <span class="count">{len(s['evidence_pack']['facts'])}</span></h3><p class="muted">点击编号或展开条目查看本次快照的原始记录。</p>{source_cards('evidence',s['evidence_pack']['facts'])}</section>
 <section><h3>政策与原文</h3>{source_cards('policy',s['evidence_pack']['policy'])}</section>
