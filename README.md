@@ -1,7 +1,10 @@
 # RydeResolve
 
 Tencent Cloud 黑客松团队项目：Evidence + Advocate + Judge / Orchestration。
-当前共同起点：2026-10-13 v0.9。官方 DISP-002 已通过 Gemini 完整联调；SYN-ROUTE-001 是合成路线案例。
+共同起点为 2026-10-13 v0.9；本分支在此基础上接入官方 DISP-001 / DISP-002 / DISP-003 和政策 v2.1，更新 Evidence 至 v0.3。SYN-ROUTE-001 继续保留为合成回归案例。
+
+当前团队仓库是 **Maple-0102/ryderesolve**。本轮变更通过 PR 评审，后续协作以本库为准。
+新增数据、政策冲突、兼容接口与验证说明见 [官方数据接入记录](docs/EVIDENCE-v0.3-OFFICIAL-2026-10-15.md)。新政策下尚未重跑真实模型；下方 Gemini 结果仅属于 10 月 13 日旧快照。
 
 ## 安装与离线运行
 
@@ -30,11 +33,11 @@ Windows 用 `.venv\Scripts\python.exe` 替代 `.venv/bin/python`。
 Judge 接入说明见 [Advocate 联调说明](docs/ADVOCATE-INTEGRATION-2026-10-13.md) 和 [v0.8 集成约定](docs/INTEGRATION-v0.8.md)。
 协作流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
-## 已验证的结果
+## 历史验证结果（2026-10-13 旧快照）
 
 - 本地集成测试 124 项通过，Advocate 原包测试 15 项通过。
 - 官方 DISP-002：4 次 Advocate + 1 次 Judge 真实调用，20 条论点，`validation_errors=[]`。
-- 最终 `escalate`：等待起算规则和提前到达是否计入等待仍缺明确政策。
+- 当时最终 `escalate`：当时尚未收到 v2.1，等待起算规则缺失。新版 §2.1 明确免费等待从预约时间起算，但案例内 8 分钟阈值的起点及两份来源的优先级仍待澄清。
 - 最近一次完整 Judge 开发集严格通过 8/9；金额标签修正后专项复测 1/1。不能拼成最新版 9/9。
 - 已导出 15 个合成/衍生测试输入：9 个开发题、6 个尚未实测的留出候选。仅来自两个种子家族，不是官方标准答案或现实准确率。
 
@@ -74,11 +77,12 @@ ADP 适配器已保留，但未部署或验证云端应用，不能称为腾讯 
 
 这些是本地测试，其中部分会启动本机 HTTP 模拟服务，不调用付费模型。
 评估数据中的 `scorer-only-labels.json` 只用于评分，不能发送给模型。
+Windows 请设置 `PYTHONUTF8=1` 或在 Python 命令后加 `-X utf8`。POSIX 凭证权限测试在 Windows 跳过，Linux CI 运行；真实云端适配器仍按原说明使用 Linux/WSL，本轮没有放宽凭证权限。
 
 ## 下一步
 
-1. 两位队友确认各自代码版本、接入方式、证据和政策口径。
-2. 核对 Advocate 的计时推断和 GPS 表述。
-3. 跑通合成 Route 的完整真实流程。
-4. 冻结配置后做完整开发集回归及留出候选评估。
+1. 评审官方数据接入 PR，确认政策来源冲突的处理；不复用旧 snapshot_id 的 Agent 输出。
+2. Advocate/Judge 负责人用自己的授权重跑三份官方样例并检查引用、计时解释与金额语义。
+3. DISP-001 超出距离 4.3 km，政策 §6.2 要求转人工；不要用样例中的推荐裁决绕过此门槛。
+4. 原有评估集是旧规则下的合成测试；确认新规则后另行冻结新的真实模型评估，不混合版本汇总准确率。
 5. 准备演示、提交材料和实际 CodeBuddy / WorkBuddy 使用证明。

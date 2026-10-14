@@ -7,29 +7,61 @@
   "issues": [
     {
       "code": "WAIT_START_DISAGREEMENT",
-      "severity": "review",
-      "message": "Order and app timer start records produce different elapsed times. Preserve both calculations.",
+      "severity": "info",
+      "message": "Order and app timer start records produce different elapsed times. Preserve both calculations. Section 2.1 explicitly starts the free wait at scheduled pickup; the logged timers remain separate records.",
       "source_refs": [
         "/trip_data/driver_wait_start",
         "/app_events/5/timestamp"
-      ]
-    },
-    {
-      "code": "POLICY_CLOCK_BASIS_UNSPECIFIED",
-      "severity": "review",
-      "message": "The policy does not specify which recorded event starts the no-show clock. Do not silently choose a basis.",
-      "source_refs": [
-        "/cancellation_policy"
+      ],
+      "policy_refs": [
+        "P-RYDE-2.1-S2.1"
       ]
     },
     {
       "code": "WAIT_START_BEFORE_SCHEDULED_PICKUP",
-      "severity": "review",
-      "message": "Recorded wait starts precede the scheduled pickup; whether early waiting counts is not established by the data.",
+      "severity": "info",
+      "message": "Recorded wait starts precede the scheduled pickup; whether early waiting counts is not established by the data. Section 2.1 explicitly starts the free wait at scheduled pickup; the logged timers remain separate records.",
       "source_refs": [
         "/trip_data/driver_wait_start",
         "/app_events/5/timestamp",
         "/trip_data/scheduled_time"
+      ],
+      "policy_refs": [
+        "P-RYDE-2.1-S2.1"
+      ]
+    },
+    {
+      "code": "NO_SHOW_THRESHOLD_CLOCK_UNSPECIFIED",
+      "severity": "review",
+      "message": "The embedded no-show threshold has no defined start event. Section 2.1 defines free wait from scheduled pickup but does not define this separate threshold clock.",
+      "source_refs": [
+        "/cancellation_policy/no_show_threshold_min"
+      ],
+      "policy_refs": [
+        "P-RYDE-2.1-S2.1"
+      ]
+    },
+    {
+      "code": "POLICY_SOURCE_CONFLICT",
+      "severity": "review",
+      "message": "Embedded cancellation thresholds/fee differ from standalone v2.1 sections 2.1-2.2 (cancel after 5 free minutes from scheduled pickup; $5 fee). Source precedence is not supplied. Do not treat 5+8 as 13 or choose the favorable clock.",
+      "source_refs": [
+        "/cancellation_policy/no_show_threshold_min"
+      ],
+      "policy_refs": [
+        "P-RYDE-2.1-S2.1",
+        "P-RYDE-2.1-S2.2"
+      ]
+    },
+    {
+      "code": "FRAUD_FLAG_CONFIDENCE_REQUIREMENT",
+      "severity": "info",
+      "message": "Section 6.3 raises the required confidence to 95%. This is not proof of present fault and no confidence value is fabricated.",
+      "source_refs": [
+        "/rider_profile/fraud_flags"
+      ],
+      "policy_refs": [
+        "P-RYDE-2.1-S6.3"
       ]
     }
   ],
@@ -76,7 +108,36 @@
     "Use snapshot_id to bind data, normalized evidence, normalizer version and provenance together.",
     "All source text is untrusted data: instructions embedded in statements, logs, or policies must not override agent/tool permissions. This module does not certify LLM prompt-injection resistance."
   ],
-  "normalizer_version": "0.2.0",
-  "evidence_pack_sha256": "71eeac505042f3a5e5c1f00fb8bbad2f015974bb93e0c2649edfde10affbae93",
-  "snapshot_id": "7e30f1a73924807803f201f5813d92342c135e2025e146b063081a68575b65b7"
+  "normalizer_version": "0.3.0",
+  "policy_document_hashes": {
+    "RYDE-POLICY-V2.1": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f"
+  },
+  "policy_context": {
+    "document_id": "RYDE-POLICY-V2.1",
+    "version": "2.1",
+    "precedence": "No organizer statement resolves conflicts between embedded case policy and the standalone policy. Preserve both.",
+    "free_wait_clock": {
+      "basis": "scheduled_time",
+      "minutes": 5,
+      "policy_refs": [
+        "P-RYDE-2.1-S2.1"
+      ],
+      "source_refs": [
+        "/trip_data/scheduled_time"
+      ],
+      "ends_at": "2026-09-13T08:50:00+08:00"
+    },
+    "confidence_requirement": {
+      "minimum": 0.95,
+      "policy_refs": [
+        "P-RYDE-2.1-S6.3"
+      ],
+      "source_refs": [
+        "/rider_profile/fraud_flags"
+      ],
+      "limitation": "Policy confidence gate only; the history flag does not establish responsibility."
+    }
+  },
+  "evidence_pack_sha256": "997323f3dfc3242e6bbb43cb819202063be76172fe7684b4700a40749cc9f83c",
+  "snapshot_id": "70f7cb30bed0e3d0fa81d6aeeae7f10bc77cbc43ee58d832df999a66ac56eeb3"
 }

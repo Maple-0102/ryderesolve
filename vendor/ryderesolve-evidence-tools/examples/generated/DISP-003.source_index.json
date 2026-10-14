@@ -1,0 +1,293 @@
+{
+  "case_id": "DISP-003",
+  "source_sha256": "a89824de9bf71b2b2dbdce1454d94def7e9097ff50f5bfe554fccfb866ff0838",
+  "snapshot_id": "9c5198fe0896addcd3b5f8262d53374ae97787df31b216bbd9d2299c0bb4c022",
+  "normalizer_version": "0.3.0",
+  "evidence": {
+    "E-001": {
+      "kind": "derived_observation",
+      "source_refs": [
+        "/gps_telemetry/0",
+        "/trip_data/pickup_location"
+      ]
+    },
+    "E-002": {
+      "kind": "party_statement",
+      "source_refs": [
+        "/dispute_ticket/description"
+      ]
+    },
+    "E-003": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/0"
+      ]
+    },
+    "E-004": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/1"
+      ]
+    },
+    "E-005": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/2"
+      ]
+    },
+    "E-006": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/3"
+      ]
+    },
+    "E-007": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/4"
+      ]
+    },
+    "E-008": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/5"
+      ]
+    },
+    "E-009": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/6"
+      ]
+    },
+    "E-010": {
+      "kind": "communication_record",
+      "source_refs": [
+        "/chat_logs/0"
+      ]
+    },
+    "E-011": {
+      "kind": "communication_record",
+      "source_refs": [
+        "/chat_logs/1"
+      ]
+    },
+    "E-012": {
+      "kind": "communication_record",
+      "source_refs": [
+        "/chat_logs/2"
+      ]
+    },
+    "E-013": {
+      "kind": "historical_context",
+      "source_refs": [
+        "/rider_profile"
+      ]
+    },
+    "E-014": {
+      "kind": "historical_context",
+      "source_refs": [
+        "/driver_profile"
+      ]
+    },
+    "E-015": {
+      "kind": "record",
+      "source_refs": [
+        "/fare_breakdown"
+      ]
+    },
+    "E-016": {
+      "kind": "trip_context",
+      "source_refs": [
+        "/trip_data/trip_id",
+        "/trip_data/rider_id",
+        "/trip_data/driver_id",
+        "/trip_data/pickup_location",
+        "/trip_data/dropoff_location"
+      ]
+    },
+    "E-017": {
+      "kind": "record",
+      "source_refs": [
+        "/trip_data/start_time"
+      ]
+    },
+    "E-018": {
+      "kind": "record",
+      "source_refs": [
+        "/trip_data/end_time"
+      ]
+    },
+    "E-019": {
+      "kind": "record",
+      "source_refs": [
+        "/trip_data/estimated_duration_min"
+      ]
+    },
+    "E-020": {
+      "kind": "record",
+      "source_refs": [
+        "/trip_data/actual_duration_min"
+      ]
+    },
+    "E-021": {
+      "kind": "record",
+      "source_refs": [
+        "/trip_data/actual_fare"
+      ]
+    },
+    "E-022": {
+      "kind": "record",
+      "source_refs": [
+        "/trip_data/upfront_quote"
+      ]
+    },
+    "E-023": {
+      "kind": "record",
+      "source_refs": [
+        "/trip_data/fare_difference"
+      ]
+    },
+    "E-024": {
+      "kind": "event_record",
+      "source_refs": [
+        "/surge_pricing_log"
+      ]
+    },
+    "E-025": {
+      "kind": "derived_metric",
+      "source_refs": [
+        "/trip_data/actual_fare",
+        "/trip_data/upfront_quote"
+      ]
+    },
+    "E-026": {
+      "kind": "derived_metric",
+      "source_refs": [
+        "/fare_breakdown/upfront_quote",
+        "/fare_breakdown/actual_fare"
+      ]
+    }
+  },
+  "policy": {
+    "P-RYDE-2.1-S3.1": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/3.1"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S3.2": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/3.2"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S3.3": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/3.3"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S3.4": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/3.4"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S3.5": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/3.5"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S5.1": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/5.1"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S5.2": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/5.2"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S5.3": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/5.3"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S6.1": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/6.1"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S6.2": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/6.2"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S6.3": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/6.3"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S7.2": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/7.2"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    }
+  }
+}

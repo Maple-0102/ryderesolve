@@ -1,5 +1,7 @@
 # 数据核对记录 · 2026-10-02
 
+**历史记录：** 2026-10-15 已收到三案与政策 v2.1。新增原档哈希、DISP-001 答案投影、surge 映射与等待时间结论见 [最新来源审计](../../../docs/EVIDENCE-v0.3-OFFICIAL-2026-10-15.md)。v2.1 已明确五分钟免费等待从预约起算；下文“政策未说明”仅指旧案例内嵌政策，不能泛化到新独立文档。八分钟门槛起点与来源优先级仍缺失。
+
 ## 官方输入
 
 用户提供的 [RydeResolve Sample Dataset — DISP-002](https://drive.google.com/file/d/1f6KAuu5ZFqBKHvsAVlg-ZC_FgHazbqNF/view) 为一份 Markdown，包含一个 No-Show Charge JSON 案例、Evidence Summary 和预期裁决。

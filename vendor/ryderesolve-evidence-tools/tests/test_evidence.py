@@ -25,7 +25,7 @@ class EvidenceTests(unittest.TestCase):
         bundle = self.tools.repository.bundle("DISP-002")
         self.assertEqual(bundle.audit["metrics"]["trip_wait"]["seconds"], 480)
         self.assertEqual(bundle.audit["metrics"]["app_wait_5"]["seconds"], 470)
-        self.assertTrue({"WAIT_START_DISAGREEMENT", "POLICY_CLOCK_BASIS_UNSPECIFIED"} <= self.codes(bundle))
+        self.assertTrue({"WAIT_START_DISAGREEMENT", "NO_SHOW_THRESHOLD_CLOCK_UNSPECIFIED", "POLICY_SOURCE_CONFLICT"} <= self.codes(bundle))
         self.assertTrue(bundle.audit["requires_policy_or_data_review"])
         self.assertNotIn("decision", bundle.pack)
 

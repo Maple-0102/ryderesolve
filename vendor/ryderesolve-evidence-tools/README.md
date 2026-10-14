@@ -2,7 +2,9 @@
 
 这是琪琪负责的 **Evidence/Data + tools** 模块，用于 Tencent Cloud Hackathon Singapore 2026 的 Digital Native / Ryde 赛道。它将案例整理成中性证据，保留原始来源，供双方 Advocate、Judge 和展示层接入。
 
-当前为 **v0.2.0**，包含 **1 个主办方样例**（DISP-002 / No-Show Charge）及 **1 个明确标注的合成案例**（SYN-ROUTE-001 / Route Deviation）。实现使用 Python 3.12+；字段校验使用 jsonschema，版本记录在 constraints.txt；不同语言的队友可以通过 HTTP/JSON 接入。
+当前为 **v0.3.0**，已迁入小组私有仓库 [Maple-0102/ryderesolve](https://github.com/Maple-0102/ryderesolve)，包含 **3 个主办方样例**（DISP-001 路线、DISP-002 no-show、DISP-003 涨价）与独立 v2.1 政策，以及 1 个保留 synthetic 标签的合成案例。实现使用 Python 3.12+、jsonschema；可通过 Python 或 HTTP/JSON 接入。
+
+先读 [本次官方数据接入与交接](../../docs/EVIDENCE-v0.3-OFFICIAL-2026-10-15.md)。以下独立模块运行命令在本目录执行；整个团队项目请使用根目录 README。
 
 ## 第一次运行
 
@@ -54,14 +56,14 @@ Evidence Pack 仍为 `case_id / dispute_type / facts / policy`。每条事实只
 
 JSON Schema（机器可校验的字段规范）保存在 `ryderesolve_evidence/contracts/`。`decision` 暂为非空字符串，完整取值集合仍由团队共同确定。有效引用只能证明编号存在，不能证明模型对证据的解读正确。
 
-旧的 `load_case → normalize_evidence(raw)` 方式仍可用。正式联调推荐 `prepare_case`：其 `snapshot_id` 同时绑定原始数据、规范化版本、证据映射和来源标签。仅保存 `source_sha256` 无法发现规范化代码改变后的旧引用。
+旧的 `load_case → normalize_evidence(raw)` 方式仍可用，但包级函数不会隐式加载独立政策。正式联调使用 `prepare_case`：其 `snapshot_id` 绑定原始记录、规范化版本、证据映射、来源标签和新增 `policy_documents`。文档规则使用 `P-RYDE-2.1-S2.1` 等编号；用 `get_policy` 解析其原文。仅保存 `source_sha256` 无法发现仅政策更新后的旧引用。
 
 ## 当前边界
 
-- 本仓库实现证据处理和只读工具；双方 Agent、Judge 的模型调用、回应轮次及最终展示仍需与队友集成。
-- 官方 Markdown 的预期裁决单独存放在 `evaluation/official_expected.json`，运行时加载路径不读取该目录。
+- 此目录实现证据处理和只读工具；小组根目录提供 Agent、Judge 与 UI 编排。本次验证离线接口，不宣称已验证新规则下的真实模型判决。
+- 官方原档原样归档在 `sources/official/2026-10-15`，DISP-001 运行时显式排除答案与编辑性裁决分析；原档和 `evaluation/` 不进入 runtime wheel。排除路径及哈希见 manifest。
 - 合成路线与规则属于联调用例；距离是采样折线计算，不能声称是地图最优路线或真实 Ryde 政策。
-- 计时口径待主办方澄清；订单起点 480 秒、App 起点 470 秒、预约时间到取消 360 秒均保留，不自行选为收费依据。
+- v2.1 §2.1 明确免费等待从预约时间起算 5 分钟；订单起点 480 秒、App 起点 470 秒、预约到取消 360 秒均保留。案内 8 分钟 no-show 门槛的起点、与新政策的优先级仍待澄清。
 - 本次开发由琪琪主导需求并由 Codex 辅助实现。尚无 CodeBuddy/WorkBuddy 实际使用证明；比赛要求的真实开发记录需要后续补足。
 
 ## GitHub 同步
@@ -69,8 +71,10 @@ JSON Schema（机器可校验的字段规范）保存在 `ryderesolve_evidence/c
 远端应始终保持 **Private**。首次克隆及日常更新：
 
 ```powershell
-gh repo clone Wenqi77Zhang/ryderesolve-evidence-tools
+gh repo clone Maple-0102/ryderesolve
+cd ryderesolve
 git pull --ff-only
+git switch -c evidence/my-change
 ```
 
 在本地完成修改并测试后：
@@ -80,10 +84,11 @@ git status
 git add <本次修改的文件>
 git diff --cached --check
 git commit -m "Describe the evidence change"
-git push origin main
+git push -u origin HEAD
+gh pr create --base main
 gh repo view --json visibility,url
 ```
 
-如果 Git 报 `Could not connect` 且明确指向本机代理 `127.0.0.1`，本次可用 `git -c http.proxy= push origin main` 或 `git -c http.proxy= pull --ff-only` 临时直连；该参数只影响当前命令，不改全局代理设置。
+如果 Git 报 `Could not connect` 且明确指向本机代理 `127.0.0.1`，可用 `git -c http.proxy= push -u origin HEAD` 或 `git -c http.proxy= pull --ff-only` 临时直连；该参数只影响当前命令，不改全局代理设置。
 
-队友访问私有仓库需要你后续明确选择协作者。不要提交 `.venv`、密钥、真实乘客数据或个人邮箱内容。
+访问权限由小组仓库维护者管理。不要提交 `.venv`、密钥、真实乘客数据或个人邮箱内容。

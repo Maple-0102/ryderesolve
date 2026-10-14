@@ -1,5 +1,7 @@
 # 来源、数据与贡献
 
+2026-10-15 更新：用户提供官方 DISP-001、DISP-002、DISP-003 与 Ryde Policy v2.1 四份附件，完整原档和字节哈希见 `sources/official/2026-10-15/manifest.json`；来源处理与三方分工见 [本轮交接](../../../docs/EVIDENCE-v0.3-OFFICIAL-2026-10-15.md)。小组整合仓库为 Maple-0102/ryderesolve；琪琪的本轮贡献是 Evidence 数据、政策来源与必要的集成适配，不把队友 Agent/Judge 实现归为个人工作。
+
 ## 外部来源
 
 - 官方赛事页：<https://tch.tencentcloud.com/contest/44>

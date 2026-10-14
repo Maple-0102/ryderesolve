@@ -1,5 +1,6 @@
 """Credential-safe Gemini transport and CLI integration checks; no external calls."""
 import io
+import os
 import json
 import tempfile
 import subprocess
@@ -98,6 +99,7 @@ class ADCCredentialTests(unittest.TestCase):
             with self.assertRaisesRegex(AgentError,'ADC_MISSING'):adc_token(VertexConfig('sample-project'))
             run.assert_not_called()
 
+    @unittest.skipIf(os.name == 'nt', 'POSIX 0600 permission enforcement; run in Linux CI or WSL')
     def test_quota_mismatch_and_public_file_rejected(self):
         with tempfile.TemporaryDirectory() as temp, patch('ryde_resolve.vertex.ROOT',Path(temp)), patch('ryde_resolve.vertex.subprocess.run') as run:
             p=Path(temp)/'.local/gcloud/application_default_credentials.json';p.parent.mkdir(parents=True)
@@ -107,6 +109,7 @@ class ADCCredentialTests(unittest.TestCase):
             with self.assertRaisesRegex(AgentError,'UNSAFE_FILE'):adc_token(VertexConfig('sample-project'))
             run.assert_not_called()
 
+    @unittest.skipIf(os.name == 'nt', 'POSIX 0600 credential fixture; run in Linux CI or WSL')
     def test_token_captured_not_in_command_and_errors_redacted(self):
         with tempfile.TemporaryDirectory() as temp, patch('ryde_resolve.vertex.ROOT',Path(temp)), patch('ryde_resolve.vertex.subprocess.run') as run:
             p=Path(temp)/'.local/gcloud/application_default_credentials.json';p.parent.mkdir(parents=True)

@@ -1,5 +1,7 @@
 # 队友接入说明
 
+**v0.3 更新（2026-10-15）：** 当前支持三份官方样例和独立政策；请先读 [新版交接](../../../docs/EVIDENCE-v0.3-OFFICIAL-2026-10-15.md)。`prepare_case` 新增可选旁路字段 `policy_documents`，snapshot_id 会随文档变化；`source_index.policy[].source_document_id` 指定引用文档，不能再把所有政策路径都在 raw 中解析。`get_policy` 已兼容两种来源。核心字段和嵌套保持不变，`fare_dispute` 加入枚举。下文宽松 Judge schema 是 Evidence 模块的引用检查边界；完整团队运行仍受根目录 Judge 合同约束。
+
 ## 1. 原始输入 → Evidence Pack
 
 ```python

@@ -74,6 +74,8 @@ def offline_case_analysis(snapshot, arguments):
                        'evidence_refs': list(dict.fromkeys(evidence_refs)), 'policy_refs': []}
     question = ('Which waiting clock governs the no-show charge, and does the evidence meet it?'
                 if snapshot['evidence_pack']['dispute_type'] == 'no_show_charge' else
+                'Does the upfront quote, surge change and notification evidence support the disputed fare difference?'
+                if snapshot['evidence_pack']['dispute_type'] == 'fare_dispute' else
                 'Was the route change justified and was the extra charge supported?')
     return {
         'question': question, 'sides': sides,

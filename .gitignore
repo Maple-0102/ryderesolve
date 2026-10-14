@@ -20,6 +20,9 @@ work/
 build/
 dist/
 *.zip
+*.log
+output/playwright/
+.playwright-cli/
 
 # Generated outputs; retain reviewed baseline artifacts already tracked
 outputs/*
