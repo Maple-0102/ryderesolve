@@ -24,14 +24,17 @@ def judge_output_schema(policy_bound=False, arguments=None):
     if arguments is not None:
         from .reasoning_checks import argument_paths
         all_paths=[]
+        count=sum(len(argument_paths(arguments,side)) for side in ('rider','driver'))
         for side in ('rider','driver'):
             paths=sorted(argument_paths(arguments,side));all_paths.extend(paths)
             listing=analysis['properties']['sides']['properties'][side]['properties']['argument_refs']
-            listing.update(minItems=len(paths),maxItems=len(paths),description='List EVERY actual path for this side in BOTH rounds, including repeated wording; do not deduplicate by claim text.')
-            if paths:listing['items']['enum']=paths
+            listing['description']='List EVERY actual path in BOTH rounds, including repeated wording. Required paths: '+', '.join(paths)
+            if count<=8:
+                listing.update(minItems=len(paths),maxItems=len(paths))
         rows=analysis['properties']['argument_assessments']
-        rows.update(minItems=len(all_paths),maxItems=len(all_paths))
-        if all_paths:rows['items']['properties']['argument_ref']['enum']=sorted(all_paths)
+        if count<=8:
+            rows.update(minItems=len(all_paths),maxItems=len(all_paths))
+        rows['description']='Exactly one assessment per actual argument path; complete coverage is checked locally. Total rows: '+str(len(all_paths))
     ledger['assessment']['description'] = (
         'Rate the ORIGINAL complete claim, not a corrected paraphrase. supported requires every substantive clause. '
         'A charge-based refund rule does not support a claim that refund requires proving the detour was unjustified.')

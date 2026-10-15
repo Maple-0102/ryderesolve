@@ -40,7 +40,9 @@ def check_judge(snapshot, output, arguments=None):
         if not output.get('uncertainties'):
             errors.append('ESCALATION_REASON_MISSING')
     else:
-        required_confidence = snapshot['audit'].get('policy_context', {}).get('confidence_requirement', {}).get('minimum')
+        from .policy_v21 import application
+        applied=application(snapshot)
+        required_confidence = applied['confidence_minimum'] if applied else snapshot['audit'].get('policy_context', {}).get('confidence_requirement', {}).get('minimum')
         if required_confidence is not None:
             confidence = output.get('confidence')
             if type(confidence) not in (int, float) or confidence < required_confidence:

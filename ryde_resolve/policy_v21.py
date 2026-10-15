@@ -208,7 +208,16 @@ def application(snapshot):
         gates.append({'code':'SAFETY_INDICATOR_REQUIRES_HUMAN_REVIEW','reason':'Reported safety indicator: evidence preparation only.','policy_refs':policy_refs(snapshot,['5.1','5.2'])})
     currency=metrics.get('fare_difference',{}).get('currency','SGD')
     if currency!='SGD':gates.append({'code':'UNSUPPORTED_POLICY_CURRENCY','reason':'No currency conversion or alternate tariff is defined.','policy_refs':[]})
+    value=abs(metrics.get('fare_difference',{}).get('difference_cents',0))
+    if kind=='no_show_charge':
+        fee=Decimal(str(trip.get('cancellation_fee',0)));value=int(abs(fee)*100)
+        if fee != Decimal('5'):
+            gates.append({'code':'UNEXPECTED_NO_SHOW_FEE_REQUIRES_REVIEW','reason':'The source policy defines a fixed $5 fee; this adapter does not invent treatment for a different recorded fee.','policy_refs':policy_refs(snapshot,['2.2']),'origin':'team_safeguard'})
+    if value>5000 and not any(g['code']=='DISPUTE_VALUE_REQUIRES_HUMAN_REVIEW' for g in gates):
+        gates.append({'code':'DISPUTE_VALUE_REQUIRES_HUMAN_REVIEW','reason':'Section 6.1 requires human review above $50, independent of category.','policy_refs':policy_refs(snapshot,['6.1'])})
     requirement = source_context.get('confidence_requirement', {}).get('minimum')
+    if 1000<=value<=5000:requirement=max(requirement or 0,.8)
+
     precedents = policy_refs(snapshot, [{'route_deviation':'7.1','no_show_charge':'7.3','fare_dispute':'7.2'}.get(kind,'7')])
     repeat_history={'status':'unknown','window_days':30,'reason':'Timestamped no-show cancellations are required; lifetime dispute totals do not establish a rolling-window count.'}
     history_source=raw.get('rider_profile',{}).get('dispute_history',{})
@@ -228,7 +237,7 @@ def application(snapshot):
             'effective_date':snapshot['policy_documents'][DOCUMENT]['effective_date'],
             'conditions':conditions, 'material_condition_ids': material_ids or [c['condition_id'] for c in conditions],
             'mandatory_human_review':gates,
-            'confidence_minimum': requirement, 'precedent_refs':precedents,
+            'dispute_value_cents':value,'confidence_minimum': requirement, 'precedent_refs':precedents,
             'permitted_decision':None if gates else expected,'refundable_amount_cents':None if gates else amount,
             'route_tolerance_applies':tolerance,'traffic_provenance_recorded':traffic_provenance,
             'supplemental_actions':[] if gates else supplemental_actions,'evidence_only':evidence_only,

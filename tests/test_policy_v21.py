@@ -283,3 +283,25 @@ class PolicyV21Tests(unittest.TestCase):
         self.assertEqual(app['supplemental_actions'][0]['action'],'goodwill_credit')
         self.assertEqual(app['supplemental_actions'][0]['amount'],5)
         self.assertEqual(app['supplemental_actions'][0]['execution'],'recommendation_only')
+
+
+    def test_unexpected_no_show_fee_cannot_be_upheld_as_a_fixed_five_dollar_case(self):
+        def mutate(raw):
+            raw['cancellation_policy'].pop('no_show_threshold_min')
+            raw['trip_data']['cancellation_fee']=10
+        s=variant(self.no_show,mutate)
+        self.assertTrue(any(g['code']=='UNEXPECTED_NO_SHOW_FEE_REQUIRES_REVIEW' for g in application(s)['mandatory_human_review']))
+        self.assertIsNone(application(s)['permitted_decision'])
+
+    def test_large_debate_keeps_shape_and_local_coverage_without_large_enum_constraints(self):
+        from ryde_resolve.output_schema import judge_output_schema,vertex_response_schema
+        a=arguments(self.fare)
+        for sides in a.values():
+            for side in sides.values():side['claims']*=6
+        schema=vertex_response_schema(judge_output_schema(True,a))
+        items=schema['properties']['case_analysis']['properties']['argument_assessments']
+        self.assertNotIn('enum',items['items']['properties']['argument_ref'])
+        self.assertNotIn('maxItems',items)
+        self.assertIn('opposing_evidence_refs',items['items']['required'])
+        out=completed(self.fare,a);out['case_analysis']['sides']['rider']['argument_refs']=[]
+        self.assertTrue(any('UNADDRESSED_ARGUMENT' in e for e in check_judge(self.fare,out,a)[0]))
