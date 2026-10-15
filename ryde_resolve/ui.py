@@ -2,7 +2,7 @@
 import html
 import json
 from pathlib import Path
-from ryderesolve_evidence.core import pointer
+from ryderesolve_evidence.policies import source_value
 from .review_policy import review_plan
 
 
@@ -39,12 +39,22 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
                 value = f'{metric["seconds"]:g} 秒 / {metric["minutes"]:g} 分钟'
             elif 'difference_cents' in metric:
                 value = f'{metric["difference_cents"] / 100:.2f} SGD 差额（未裁定退款）'
+            elif 'excess_km' in metric:
+                value = f'报告道路距离 {metric["actual_km"]:g} km / 参考 {metric["recommended_km"]:g} km / 差额 {metric["excess_km"]:g} km'
+            elif 'amount_cents' in metric:
+                value = f'原记录金额 {metric["amount_cents"] / 100:.2f} SGD（未裁定退款）'
+            elif 'actual_sampled_length_m' in metric:
+                value = f'采样路线 {metric["actual_sampled_length_m"]:.1f} m / 参考 {metric.get("reference_sampled_length_m", 0):.1f} m'
             else:
-                value = f'采样路线 {metric.get("actual_sampled_length_m", 0):.1f} m / 参考 {metric.get("reference_sampled_length_m", 0):.1f} m'
+                value = json.dumps({k: v for k, v in metric.items() if k not in ('source_refs', 'evidence_refs', 'name')}, ensure_ascii=False)
             calculations.append(f'<li><b>{esc(metric["name"])}</b><span>{esc(value)}</span>{links(metric["evidence_refs"], "evidence")}</li>')
+        free_clock = result['calculations'].get('free_wait_clock')
+        if free_clock:
+            calculations.append(f'<li><b>政策免费等待</b><span>从预约时间起 {esc(free_clock["minutes"])} 分钟；结束：{esc(free_clock.get("ends_at", "预约时间缺失"))}</span>{links(free_clock["policy_refs"], "policy")}</li>')
         categories = {'informational': '仅供提示', 'judge_analysis': '需 Judge 分析',
                       'requires_clarification': '必须补充政策或数据'}
-        issues = ''.join(f'<li><b>{esc(categories[issue["category"]])} · {esc(issue["code"])}</b><p>{esc(issue["message"])}</p></li>'
+        mandatory_review = {'ROUTE_DISTANCE_REQUIRES_HUMAN_REVIEW', 'DISPUTE_VALUE_REQUIRES_HUMAN_REVIEW', 'SAFETY_INDICATOR_REQUIRES_HUMAN_REVIEW'}
+        issues = ''.join(f'<li><b>{esc("政策要求人工裁决" if issue["code"] in mandatory_review else categories[issue["category"]])} · {esc(issue["code"])}</b><p>{esc(issue["message"])}</p>{links(issue.get("policy_refs", []), "policy")}</li>'
                          for issue in review_plan(s)['items'])
         findings = ''.join(f'<li><p>{esc(f["finding"])}</p><span class="muted">{esc(f.get("finding_type", "未分类"))} · {esc(f.get("topic", "未分类"))}</span> {links(f["evidence_refs"], "evidence")} {links(f["policy_refs"], "policy")}</li>'
                            for f in ruling.get('findings', [])) or '<li>暂无可采纳的裁决依据。</li>'
@@ -54,8 +64,11 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
             for item in collection:
                 ref = item[id_key]
                 index = s['source_index'][kind][ref]
-                excerpts = [{'path': p, 'value': pointer(s['raw'], p)} for p in index['source_refs']]
-                cards.append(f'<details id="{prefix}-{kind}-{esc(ref)}"><summary><b>{esc(ref)}</b> {esc(item[text_key])}</summary><p class="muted">来源：{esc(item["source"])} · 类型：{esc(index.get("kind", index.get("policy_origin", "policy")))}</p>{pretty(excerpts)}</details>')
+                excerpts = [{'path': p, 'source_document_id': index.get('source_document_id'),
+                             'value': source_value(s['raw'], s.get('policy_documents', {}), index, p)}
+                            for p in index['source_refs']]
+                summary = item[text_key].splitlines()[0] if kind == 'policy' else item[text_key]
+                cards.append(f'<details id="{prefix}-{kind}-{esc(ref)}"><summary><b>{esc(ref)}</b> {esc(summary)}</summary><p class="muted">来源：{esc(item["source"])} · 类型：{esc(index.get("kind", index.get("policy_origin", "policy")))}</p>{pretty(excerpts)}</details>')
             return ''.join(cards)
         arguments = []
         for side, label in [('rider', '乘客 Advocate'), ('driver', '司机 Advocate')]:
@@ -65,7 +78,7 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
                 if not arg:
                     rounds.append(f'<h4>{title}</h4><p>未执行／输出被拒绝。</p>')
                     continue
-                rows = ''.join(f'<li id="{prefix}-argument-{round_name}-{side}-{field}-{idx}">{esc(c["claim"])} {links(c["evidence_refs"], "evidence")}</li>'
+                rows = ''.join(f'<li id="{prefix}-argument-{round_name}-{side}-{field}-{idx}">{esc(c["claim"])} {links(c["evidence_refs"], "evidence")} {links(c.get("policy_refs", []), "policy")}</li>'
                                for field in ('claims', 'counterpoints') for idx, c in enumerate(arg.get(field, [])))
                 missing = ''.join(f'<li>{esc(x)}</li>' for x in arg.get('missing_information', []))
                 rounds.append(f'<h4>{title}</h4><ul>{rows}</ul><ul class="muted">{missing}</ul>')
@@ -119,7 +132,7 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
 <div class="case-head"><div><p class="eyebrow">{esc(origin)}</p><h2>{esc(result['case_id'])}</h2></div><div class="pill">{esc(decision)}</div></div>
 <p class="muted">{esc(modes)}<br>快照 {esc(s['snapshot_id'])}<br>运行 {esc(result['run_id'])}</p>
 <section><h3>本次结果</h3><p>退款金额：{esc(ruling['refund_amount']) if ruling['refund_amount'] is not None else '未裁定'} SGD · 页面只展示建议，不执行收费或退款。</p><ul>{uncertainties}</ul><ul class="muted">{notes}</ul><h4>已记录的依据</h4><ul>{findings}</ul><details><summary>查看最终 JSON</summary>{pretty(ruling)}</details></section>
-<section><h3>计算结果与待澄清问题</h3><p class="muted">计时口径未擅自选定；距离／差额不等于责任／退款。</p><ul class="metrics">{''.join(calculations)}</ul><ul>{issues}</ul></section>
+<section><h3>计算结果与待澄清问题</h3><p class="muted">算术结果与已明确的规则分开列出；未明示的收费条件仍需澄清。距离／差额不等于责任／退款。</p><ul class="metrics">{''.join(calculations)}</ul><ul>{issues}</ul></section>
 <section><h3>Judge 如何看双方观点</h3>{analysis_html}</section>
 {handoff_html}
 {provenance_html}
@@ -133,7 +146,7 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
     page = '''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>RydeResolve · Integration Review</title>
 <style>
 :root{color-scheme:light;--ink:#182c3a;--muted:#5f7281;--teal:#146c68}*{box-sizing:border-box}body{margin:0;background:#f1f5f5;color:var(--ink);font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:1160px;margin:0 auto;padding:36px 24px}h1{font-size:32px;margin:4px 0}h2{font-size:27px;margin:0}h3{font-size:19px;margin:0 0 12px}h4{margin:16px 0 6px}.eyebrow{color:var(--teal);font-weight:700;letter-spacing:.03em}.muted{color:var(--muted);overflow-wrap:anywhere}.banner{background:#e0eeec;border-left:4px solid var(--teal);padding:16px 20px;margin:20px 0}nav{display:flex;gap:12px;margin:24px 0}button{font:inherit;padding:10px 18px;border:1px solid #b8ccc9;border-radius:8px;cursor:pointer;background:white;color:var(--ink)}button[aria-selected=true]{background:var(--teal);color:white}section{background:#fff;border:1px solid #dbe5e6;border-radius:12px;padding:24px;margin:18px 0}.case-head{display:flex;align-items:center;justify-content:space-between;gap:16px}.pill{background:#fff0cb;color:#755600;padding:8px 16px;border-radius:22px;font-weight:700}.columns{display:grid;grid-template-columns:1fr 1fr;gap:28px}.columns>div{min-width:0}.metrics{padding-left:22px}.metrics li{margin:12px 0}.metrics span{display:block;font-size:20px}.ref{display:inline-block;padding:1px 7px;background:#e4f2ef;color:#145c58;border-radius:4px;margin:3px;text-decoration:none}.ref:hover{text-decoration:underline}details{border-top:1px solid #e0e9e9;padding:12px 0;scroll-margin-top:18px}summary{cursor:pointer;overflow-wrap:anywhere}summary b{color:var(--teal)}details:target{background:#fff7dc;padding:12px}pre{background:#f4f7f8;padding:16px;border-radius:6px;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.6 ui-monospace,monospace;max-height:480px;overflow:auto}li{overflow-wrap:anywhere}.count{color:var(--muted);font-size:14px}[hidden]{display:none!important}@media(max-width:700px){main{padding:20px 12px}.columns{grid-template-columns:1fr}.case-head{align-items:flex-start;flex-direction:column}section{padding:16px}h1{font-size:26px}}
-</style></head><body><main><p class="eyebrow">RYDERESOLVE / TEAM INTEGRATION</p><h1>争议证据与裁决工作台</h1><div class="banner">Evidence 已接入队友 v0.2.0。运行模式见每个案件；离线结果不代表真实模型裁决。本页是一次运行的快照，切换案件不会发起模型请求。</div><nav role="tablist" aria-label="选择案件">'''+''.join(nav)+'''</nav>'''+''.join(panels)+'''</main><script>
+</style></head><body><main><p class="eyebrow">RYDERESOLVE / TEAM INTEGRATION</p><h1>争议证据与裁决工作台</h1><div class="banner">案件证据与政策可逐条核对来源。运行模式见每个案件；离线结果不代表真实模型裁决。本页是一次运行的快照，切换案件不会发起模型请求。</div><nav role="tablist" aria-label="选择案件">'''+''.join(nav)+'''</nav>'''+''.join(panels)+'''</main><script>
 document.querySelectorAll('[data-case]').forEach(button=>button.addEventListener('click',()=>{
 document.querySelectorAll('[data-case]').forEach(b=>b.setAttribute('aria-selected',String(b===button)));
 document.querySelectorAll('[role=tabpanel]').forEach(p=>p.hidden=p.id!==button.dataset.case);

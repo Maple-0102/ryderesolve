@@ -18,7 +18,7 @@ def export_dataset(directory):
         s = x['snapshot']; verify_snapshot(s)
         payload = build_judge_messages(s, x['arguments'], calculate_rules(s))
         text = json.dumps(payload, ensure_ascii=False, indent=2, allow_nan=False) + '\n'
-        (directory/name).write_text(text, encoding='utf-8')
+        (directory/name).write_bytes(text.encode('utf-8'))
         labels[name] = {'exercise_id': x['exercise_id'], 'expected': x['expected'],
                         'purpose': x['purpose'], 'split': x['split'], 'label_basis': x['label_basis']}
         manifest.append({'file': name, 'sha256': sha256(text.encode()).hexdigest(),

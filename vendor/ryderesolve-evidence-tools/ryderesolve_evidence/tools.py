@@ -5,8 +5,9 @@ import re
 
 from jsonschema import Draft202012Validator
 
-from .core import CaseRepository, InputError, assert_json_value, pointer
+from .core import CaseRepository, InputError, assert_json_value
 from .validation import validate_agent_outputs
+from .policies import source_value
 
 
 TOOL_SPECS = [
@@ -64,6 +65,7 @@ class EvidenceTools:
             "normalizer_version": bundle.audit["normalizer_version"],
             "evidence_pack": bundle.pack,
             "raw": bundle.raw,
+            "policy_documents": bundle.policy_documents,
             "audit": bundle.audit,
             "source_index": {"evidence": bundle.evidence_index, "policy": bundle.policy_index},
             "usage_notes": [
@@ -83,7 +85,7 @@ class EvidenceTools:
         key = "policy_id" if is_policy else "evidence_id"
         record = next(item for item in bundle.pack["policy" if is_policy else "facts"] if item[key] == ref_id)
         meta = index[ref_id]
-        return {"case_id": case_id, "source_sha256": bundle.audit["source_sha256"], "snapshot_id": bundle.audit["snapshot_id"], "normalizer_version": bundle.audit["normalizer_version"], **copy.deepcopy(record), **copy.deepcopy(meta), "excerpts": [{"source_ref": ref, "value": pointer(bundle.raw, ref)} for ref in meta["source_refs"]]}
+        return {"case_id": case_id, "source_sha256": bundle.audit["source_sha256"], "snapshot_id": bundle.audit["snapshot_id"], "normalizer_version": bundle.audit["normalizer_version"], **copy.deepcopy(record), **copy.deepcopy(meta), "excerpts": [{"source_ref": ref, "value": source_value(bundle.raw, bundle.policy_documents, meta, ref)} for ref in meta["source_refs"]]}
 
     def get_evidence(self, case_id, evidence_id, expected_source_sha256=None, expected_snapshot_id=None):
         return self._resolve(case_id, evidence_id, False, expected_source_sha256, expected_snapshot_id)

@@ -39,6 +39,18 @@ class HttpTests(unittest.TestCase):
         self.assertEqual(status,200)
         self.assertTrue(json.loads(payload)["excerpts"])
 
+    def test_official_policy_document_round_trip_and_stale_guard(self):
+        for case, section in (("DISP-001", "1.4"), ("DISP-002", "2.1"), ("DISP-003", "3.3")):
+            status, payload, _ = self.request(f"/cases/{case}/snapshot")
+            self.assertEqual(status, 200)
+            snapshot = json.loads(payload)
+            self.assertTrue(snapshot["policy_documents"])
+            url = f"/cases/{case}/policies/P-RYDE-2.1-S{section}"
+            status, payload, _ = self.request(url + "?snapshot_id=" + snapshot["snapshot_id"])
+            self.assertEqual(status, 200)
+            self.assertEqual(json.loads(payload)["source_document_id"], "RYDE-POLICY-V2.1")
+            self.assertEqual(self.request(url + "?snapshot_id=" + "0" * 64)[0], 400)
+
     def test_both_cases_audit_raw_and_contract_are_readable(self):
         for path in ("/health", "/cases", "/cases/SYN-ROUTE-001", "/cases/DISP-002/raw", "/cases/DISP-002/audit", "/cases/SYN-ROUTE-001/route-comparison", "/contracts/evidence-pack.schema.json", "/tool-specs"):
             with self.subTest(path=path):

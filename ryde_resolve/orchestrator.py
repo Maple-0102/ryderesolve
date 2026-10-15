@@ -155,7 +155,8 @@ class RydeOrchestrator:
         verify_snapshot(old); verify_snapshot(new_snapshot)
         if new_snapshot['case_id'] != previous['case_id']:
             raise AgentError('SUPPLEMENT_CASE_MISMATCH')
-        if old['source_sha256'] == new_snapshot['source_sha256']:
+        if (old['source_sha256'] == new_snapshot['source_sha256'] and
+                old.get('policy_documents', {}) == new_snapshot.get('policy_documents', {})):
             raise AgentError('SUPPLEMENT_NO_SOURCE_CHANGE')
         captured = deepcopy(new_snapshot)
         class CapturedEvidence:

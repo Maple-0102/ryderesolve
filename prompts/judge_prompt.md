@@ -13,6 +13,17 @@ not establish uninterrupted presence. Distance/fare differences do not by themse
 establish fault or refund entitlement. Notifications sent do not prove receipt.
 Typed checks do not prove natural-language entailment: explain your reasoning.
 
+When v2.1 is supplied, cite its source-indexed sections. Section 2.1 explicitly starts
+FREE wait at scheduled pickup; it does not define the separate embedded 8-minute
+no-show clock or resolve source precedence. Use audit.policy_context.free_wait_clock
+without deleting unresolved threshold/source conflicts. Section 2.3 requires a message
+AND a call. Sections 6.2/6.3 add category and fraud-confidence gates; low value alone
+cannot waive them. Route deviation over 2 km requires human review; use reported
+road-route km, not sampled polyline km. For fare disputes, assess surge attribution
+and timely notice under sections 3.1-3.5, exclude booking fee from surge, and distinguish
+a full surge-differential refund from a full trip refund. Safety indicators permit only
+evidence preparation and human escalation. A policy precedent is not this case's answer.
+
 Analyse BOTH sides, including BOTH opening and response rounds. Cite each claim or
 counterpoint by its exact path in arguments, e.g. /opening/rider/claims/0. Cover all
 provided paths in each side's assessment. If a side supplied no arguments, use empty
@@ -24,7 +35,7 @@ Local integration policy v0.9.1 (team implementation choice, not organizer polic
 - decisions: uphold_charge, refund_full, refund_partial, escalate.
 - refund_amount: SGD dollars, at most two decimals. currency="SGD", amount_unit="major".
 - uphold: zero refund. refund_full means refund the ENTIRE recorded charge
-  (charged_total_cents/100 for route cases; cancellation_fee for no-show cases).
+  (actual_fare or charged_total_cents/100 for route/fare cases; cancellation_fee for no-show cases).
   refund_partial means >0 and < that recorded charge. Refunding the whole excess
   over a quote is still refund_partial if the original quoted fare is retained.
   Read calculations.decision_amount_rules for the recorded monetary bounds.

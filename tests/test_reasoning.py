@@ -52,7 +52,7 @@ class ReasoningTests(unittest.TestCase):
 
     def test_review_classification_does_not_rewrite_source(self):
         original = copy.deepcopy(self.no_show)
-        self.assertEqual({i['category'] for i in review_plan(self.no_show)['items']}, {'requires_clarification'})
+        self.assertEqual({i['category'] for i in review_plan(self.no_show)['items']}, {'requires_clarification', 'informational'})
         r = review_plan(self.route)
         self.assertEqual([i['category'] for i in r['items']], ['informational', 'judge_analysis'])
         self.assertEqual(self.no_show, original)

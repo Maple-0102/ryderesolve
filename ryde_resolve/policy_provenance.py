@@ -14,8 +14,9 @@ LOCAL_RULES = [
 
 def policy_provenance(snapshot):
     audit = snapshot["audit"]
-    rows = [{"policy_id": ref, "origin": audit.get("policy_origin") or "unknown",
-             "source_refs": list(item["source_refs"])}
+    rows = [{"policy_id": ref, "origin": item.get("policy_origin") or audit.get("policy_origin") or "unknown",
+             "source_refs": list(item["source_refs"]),
+             **{k: item[k] for k in ('source_document_id', 'document_sha256', 'version', 'effective_date') if k in item}}
             for ref, item in snapshot["source_index"]["policy"].items()]
     result = {"version": VERSION, "dataset_policy": rows,
               "dataset_origin": audit.get("data_origin") or "unknown",

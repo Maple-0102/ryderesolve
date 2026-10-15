@@ -19,7 +19,7 @@ def main():
         subprocess.run([sys.executable, "-m", "pip", "wheel", str(root), "--no-deps", "--wheel-dir", str(wheels)], check=True)
         wheel, = wheels.glob("*.whl")
         with zipfile.ZipFile(wheel) as archive:
-            assert not any(path.startswith("evaluation/") for path in archive.namelist())
+            assert not any(path.startswith(("evaluation/", "sources/")) for path in archive.namelist())
             assert "ryderesolve_evidence/ui.js" in archive.namelist()
         environment = directory / "venv"
         venv.EnvBuilder(with_pip=True).create(environment)
@@ -31,14 +31,17 @@ from pathlib import Path
 import ryderesolve_evidence as package
 from ryderesolve_evidence import EvidenceTools
 tools = EvidenceTools()
-assert len(tools.list_cases()) == 2
+assert len(tools.list_cases()) == 4
 snapshot = tools.prepare_case("DISP-002")
 assert snapshot["audit"]["metrics"]["scheduled_pickup_to_cancellation"]["seconds"] == 360
 assert tools.prepare_case("SYN-ROUTE-001")["evidence_pack"]["dispute_type"] == "route_deviation"
+assert tools.prepare_case("DISP-001")["audit"]["metrics"]["reported_route_distance"]["excess_km"] == 4.3
+assert tools.prepare_case("DISP-003")["audit"]["metrics"]["fare_difference"]["difference_cents"] == 450
+assert tools.get_policy("DISP-002", "P-RYDE-2.1-S2.1")["excerpts"]
 root = Path(package.__file__).parent
 assert (root / "ui.html").is_file() and (root / "ui.js").is_file()
 assert len(list((root / "contracts").glob("*.json"))) == 3
-print("Isolated installed wheel passed; both cases, schemas and browser assets present")
+print("Isolated installed wheel passed; four cases, policy documents, schemas and browser assets present")
 '''
         subprocess.run([str(python), "-I", "-c", check], cwd=directory, check=True)
 

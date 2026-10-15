@@ -48,7 +48,7 @@ class IntegrationTests(unittest.TestCase):
         cls.s = EvidenceGateway().prepare('DISP-002')
 
     def test_both_real_evidence_cases_run_with_explicit_mock_modes(self):
-        for case, origin, count in [('DISP-002', 'organizer_sample', 38),
+        for case, origin, count in [('DISP-002', 'organizer_sample', 39),
                                     ('SYN-ROUTE-001', 'synthetic', 24)]:
             with self.subTest(case=case):
                 r = RydeOrchestrator().run(case)

@@ -30,7 +30,8 @@ class JudgeV08Tests(unittest.TestCase):
         for case in ('DISP-002', 'SYN-ROUTE-001'):
             s = EvidenceGateway().prepare(case); original = copy.deepcopy(s)
             result = policy_provenance(s)
-            self.assertEqual({r['origin'] for r in result['dataset_policy']}, {s['audit']['policy_origin']})
+            self.assertEqual({r['origin'] for r in result['dataset_policy']},
+                             {row.get('policy_origin', s['audit']['policy_origin']) for row in s['source_index']['policy'].values()})
             self.assertTrue(all(r['source_refs'] for r in result['dataset_policy']))
             result['local_safeguards'][0]['origin'] = 'invented_official'
             self.assertEqual(policy_provenance(s)['local_safeguards'][0]['origin'], 'team_implementation')

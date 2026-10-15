@@ -1,0 +1,175 @@
+{
+  "document_id": "RYDE-POLICY-V2.1",
+  "title": "Ryde Dispute Resolution Policy v2.1",
+  "version": "2.1",
+  "effective_date": "2026-01-01",
+  "source": {
+    "filename": "Document 2 — Ryde Dispute Resolution Policy v2.1 (Markdown).md",
+    "archive_path": "sources/official/2026-10-15/policy-v2.1.md",
+    "file_sha256": "827c4d2cab2d4db9e176521000b079632bbe80c20f69c3ffd0addecc8cbc8699"
+  },
+  "sections": {
+    "1.1": {
+      "title": "General Principle",
+      "text": "Drivers are permitted to reroute from the GPS-recommended path in response to real-time traffic conditions, road closures, or congestion. However, the rider must be informed of any deviation.",
+      "line_start": 12,
+      "line_end": 14
+    },
+    "1.2": {
+      "title": "Notification Requirement",
+      "text": "- The driver **MUST** inform the rider of a route deviation via **in-app chat** or **verbally** (with the trip call recording as evidence) **before or at the point of deviation**.\n- A brief reason (e.g., \"traffic jam ahead onNicoll Highway, taking alternate route\") is sufficient.",
+      "line_start": 16,
+      "line_end": 19
+    },
+    "1.3": {
+      "title": "Refund Eligibility Matrix",
+      "text": "| Scenario | Rider Informed? | Deviation > 1km? | Refund |\n|---|---|---|---|\n| Driver reroutes for traffic, rider informed and agrees | Yes | Yes | No refund |\n| Driver reroutes for traffic, rider **not** informed | No | Yes | Partial refund of excess distance fare |\n| Driver reroutes for traffic, rider not informed | No | No (≤ 1km) | No refund (within tolerance) |\n| Driver reroutes **without** traffic justification (no evidence of congestion) | N/A | Yes | **Full refund** of excess distance fare |\n| Driver reroutes without justification, deviation ≤ 1km | N/A | No | No refund (within tolerance) |",
+      "line_start": 21,
+      "line_end": 29
+    },
+    "1.4": {
+      "title": "Evidence Requirements",
+      "text": "- Traffic justification is verified via **historical traffic API data** for the route segment at the trip time.\n- Route deviation distance is calculated as: `actual_route_distance − recommended_route_distance`.\n- If the driver's in-app chat or call recording confirms rider acknowledgment, the deviation is considered agreed.",
+      "line_start": 31,
+      "line_end": 35
+    },
+    "2.1": {
+      "title": "Free Wait Time",
+      "text": "- The driver must wait at the pickup location for a **free wait time of 5 minutes** from the scheduled pickup time.\n- After 5 minutes, the driver may cancel the trip as a \"rider no-show.\"",
+      "line_start": 41,
+      "line_end": 44
+    },
+    "2.2": {
+      "title": "Cancellation Fee",
+      "text": "- A **no-show cancellation fee of $5.00** is charged to the rider when the driver cancels after the free wait period.\n- The cancellation fee is transferred to the driver as compensation for time and fuel.",
+      "line_start": 46,
+      "line_end": 49
+    },
+    "2.3": {
+      "title": "Driver Contact Obligation",
+      "text": "Before cancelling for no-show, the driver **MUST** attempt to contact the rider with:\n\n1. **At least 1 in-app chat message**, AND\n2. **At least 1 phone call** (via the in-app calling system).\n\nIf the driver fails to meet both contact obligations, the cancellation fee is **voided** and the rider is not charged.",
+      "line_start": 51,
+      "line_end": 58
+    },
+    "2.4": {
+      "title": "Driver No-Show",
+      "text": "- If the driver **fails to arrive at the pickup location** within a reasonable time (defined as scheduled pickup time + 5 minutes), the rider may cancel at no charge.\n- If the driver fails to arrive **and** fails to attempt contact, the rider is eligible for a **$5.00 goodwill credit**.",
+      "line_start": 60,
+      "line_end": 63
+    },
+    "2.5": {
+      "title": "Repeat No-Show Flagging",
+      "text": "- If a rider accumulates **3 or more no-show cancellations within a 30-day rolling window**, the rider's account is **flagged** for review.\n- Flagged accounts are subject to:\n  - Mandatory upfront payment for future bookings.\n  - Temporary suspension pending review by the Trust & Safety team.",
+      "line_start": 65,
+      "line_end": 70
+    },
+    "3.1": {
+      "title": "Upfront Quote Binding",
+      "text": "- The upfront quote presented to the rider at booking is **binding at the surge multiplier in effect at quote time** (typically 1.0x in normal conditions).\n- The quoted fare includes: base fare, distance fare, time fare, booking fee, and any applicable surge.",
+      "line_start": 76,
+      "line_end": 79
+    },
+    "3.2": {
+      "title": "Surge Change Notification",
+      "text": "- If the surge multiplier **increases** between the time of quote and the time of trip start, the rider **MUST be notified** via an **in-app notification** before or at the point of pickup.\n- The notification must clearly state:\n  - The new surge multiplier.\n  - The revised estimated fare.\n  - An option to cancel without penalty.",
+      "line_start": 81,
+      "line_end": 87
+    },
+    "3.3": {
+      "title": "Refund Eligibility",
+      "text": "| Scenario | Rider Notified? | Refund |\n|---|---|---|\n| Surge increases, rider notified, rider proceeds | Yes | No refund — higher fare applies |\n| Surge increases, rider **not** notified | No | **Full refund of the surge differential** (actual fare − quoted fare) |\n| Surge decreases between quote and trip start | N/A | Lower fare applies automatically (rider benefits) |\n| Surge unchanged | N/A | Quoted fare applies |",
+      "line_start": 89,
+      "line_end": 96
+    },
+    "3.4": {
+      "title": "Surge Differential Calculation",
+      "text": "```\nsurge_differential = actual_fare − upfront_quote\n```\n\nWhere the difference is attributable solely to a surge multiplier change (all other fare components unchanged), the full differential is refundable if the rider was not notified.",
+      "line_start": 98,
+      "line_end": 104
+    },
+    "3.5": {
+      "title": "Surge-Exempt Components",
+      "text": "The following fare components are **exempt** from surge pricing and remain fixed regardless of multiplier:\n\n- Booking fee\n\nAll other components (base fare, distance fare, time fare) are subject to the surge multiplier.",
+      "line_start": 106,
+      "line_end": 112
+    },
+    "4.1": {
+      "title": "Driver Claim Rights",
+      "text": "Drivers may file claims for cleaning or repair fees resulting from **rider-caused damage** to the vehicle, including but not limited to:\n\n- Spills, vomiting, or food/beverage stains.\n- Physical damage to interior (seats, doors, windows).\n- Damage to exterior caused by rider behavior during boarding/alighting.",
+      "line_start": 118,
+      "line_end": 124
+    },
+    "4.2": {
+      "title": "Evidence Requirements",
+      "text": "| Requirement | Details |\n|---|---|\n| Photo evidence | Must be submitted **within 24 hours** of trip completion |\n| Timestamps | Photos must be automatically timestamped by the in-app camera |\n| Verifiability | Photos must be verifiable — taken through the Ryde driver app's built-in camera, not external uploads |\n| Trip association | Damage must be linked to the specific trip via GPS telemetry and trip timestamp |",
+      "line_start": 126,
+      "line_end": 133
+    },
+    "4.3": {
+      "title": "Fee Structure",
+      "text": "| Damage Type | Maximum Fee | Conditions |\n|---|---|---|\n| Cleaning fee | Up to **$50.00** | Photo evidence of soiling/stain; no external quote required |\n| Repair fee | Cost of repair | Requires a **written quote from a certified workshop**; quote must be submitted within 7 days |",
+      "line_start": 135,
+      "line_end": 140
+    },
+    "4.4": {
+      "title": "Dispute Handling",
+      "text": "- If the rider disputes the damage claim, the dispute is routed to human review.\n- The driver's photo evidence and the rider's account are both reviewed.\n- If evidence is insufficient (no timestamp, external photo, or damage not linked to trip), the claim is **rejected**.",
+      "line_start": 142,
+      "line_end": 146
+    },
+    "5.1": {
+      "title": "Automatic Escalation",
+      "text": "Any dispute flagged as **safety-related** is **automatically escalated to human review**. Safety-related disputes include but are not limited to:\n\n- Reckless or dangerous driving.\n- Physical or verbal harassment.\n- Assault or threat of assault.\n- Inappropriate behavior or conduct.\n- Traffic accidents during the trip.\n- Rider or driver feeling unsafe during the trip.",
+      "line_start": 152,
+      "line_end": 161
+    },
+    "5.2": {
+      "title": "AI Agent Limitations",
+      "text": "- AI agents (Rider Advocate, Driver Advocate, Judge) **MAY** gather evidence, summarize accounts, and prepare case files for human reviewers.\n- AI agents **CANNOT** issue rulings, determine fault, or recommend resolutions on safety incidents.\n- AI agents **MUST** flag any dispute that contains safety-related keywords or indicators for immediate human escalation, regardless of the dispute type selected by the filer.",
+      "line_start": 163,
+      "line_end": 167
+    },
+    "5.3": {
+      "title": "Interim Measures",
+      "text": "Upon escalation, the system may apply interim measures pending human review:\n\n- Temporary suspension of the accused party's account.\n- Prevention of new trip acceptance (for drivers) or booking (for riders).\n- These measures are lifted if the human reviewer determines no safety violation occurred.",
+      "line_start": 169,
+      "line_end": 175
+    },
+    "6.1": {
+      "title": "Monetary Thresholds",
+      "text": "| Dispute Value | Ruling Path | Agent Confidence Requirement |\n|---|---|---|\n| Under $10 | AI agent ruling is **final** | Any confidence level |\n| $10 – $50 | AI agent ruling with **80%+ confidence** | If confidence < 80%, escalate to human review |\n| Above $50 | **Always human review** | N/A — AI agent prepares case file only |",
+      "line_start": 181,
+      "line_end": 187
+    },
+    "6.2": {
+      "title": "Category Thresholds",
+      "text": "| Dispute Category | Ruling Path |\n|---|---|\n| Safety incident | **Always human review** (see Section 5) |\n| Fare dispute < $10 | AI agent ruling is final |\n| Fare dispute $10 – $50 | AI agent ruling if confidence ≥ 80%, else escalate |\n| Fare dispute > $50 | Always human review |\n| Route deviation | AI agent ruling if confidence ≥ 80% and deviation ≤ 2km, else escalate |\n| Property damage (cleaning ≤ $50) | AI agent ruling if photo evidence is verifiable |\n| Property damage (repair > $50) | Always human review |\n| No-show / cancellation | AI agent ruling is final (fee is fixed at $5.00) |",
+      "line_start": 189,
+      "line_end": 200
+    },
+    "6.3": {
+      "title": "Confidence Calibration",
+      "text": "- Agent confidence is calculated based on: evidence completeness, policy clarity, precedent alignment, and party credibility scores.\n- If any party has a fraud flag ≥ 1, the confidence threshold is raised to 95% regardless of dispute value.",
+      "line_start": 202,
+      "line_end": 205
+    },
+    "7.1": {
+      "title": "Route Deviation Without Notification",
+      "text": "| Field | Value |\n|---|---|\n| **Case ID** | DISP-2026-0089 |\n| **Date** | 2026-02-12 |\n| **Dispute Type** | route_deviation |\n| **Facts** | Driver rerouted from Geylang to Orchard via Nicoll Highway due to traffic. Deviation was 1.8km beyond recommended route. Rider was not informed. GPS telemetry confirmed traffic congestion on original route. |\n| **Ruling** | Partial refund of excess distance fare. Rationale: Driver had valid traffic justification (confirmed via traffic API), but failed to notify rider per Section 1.2. Refund applies only to the excess distance fare, not the entire trip. |\n| **Refund Amount** | $3.20 |\n| **Confidence** | 91% |",
+      "line_start": 213,
+      "line_end": 223
+    },
+    "7.2": {
+      "title": "Surge Pricing Without Rider Notification",
+      "text": "| Field | Value |\n|---|---|\n| **Case ID** | DISP-2026-0142 |\n| **Date** | 2026-04-03 |\n| **Dispute Type** | fare_dispute |\n| **Facts** | Rider received upfront quote of $9.50 at 1.0x surge. Surge increased to 1.4x between quote and pickup. Rider was not notified. Actual fare was $12.70 — a difference of $3.20 entirely attributable to surge differential. |\n| **Ruling** | Full refund of surge differential. Rationale: Per Section 3.3, if surge increases between quote and trip start and rider is not notified, rider is eligible for full refund of the surge differential. The $3.20 difference was solely attributable to surge multiplier change. |\n| **Refund Amount** | $3.20 |\n| **Confidence** | 96% |",
+      "line_start": 225,
+      "line_end": 235
+    },
+    "7.3": {
+      "title": "No-Show Cancellation Without Contact Attempt",
+      "text": "| Field | Value |\n|---|---|\n| **Case ID** | DISP-2026-0211 |\n| **Date** | 2026-05-18 |\n| **Dispute Type** | cancellation_fee |\n| **Facts** | Driver arrived at pickup, waited 6 minutes, and cancelled as no-show. $5.00 fee charged to rider. Review of chat logs and call records showed the driver sent zero messages and made zero calls before cancelling. Rider arrived at the pickup point 1 minute after cancellation. |\n| **Ruling** | Cancellation fee voided. Rationale: Per Section 2.3, the driver must attempt at least 1 in-app message and 1 call before cancelling for no-show. The driver failed to meet both contact obligations. The $5.00 fee is reversed and refunded to the rider. |\n| **Refund Amount** | $5.00 |\n| **Confidence** | 98% |",
+      "line_start": 237,
+      "line_end": 247
+    }
+  }
+}

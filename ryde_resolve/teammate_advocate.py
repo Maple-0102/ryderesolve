@@ -1,4 +1,4 @@
-"""Snapshot-bound port for the teammate's unmodified Advocate package and our ADC client."""
+"""Snapshot-bound port for the team's Advocate package and ADC client."""
 from copy import deepcopy
 from .agents import AgentError
 from .vertex import VertexJudge

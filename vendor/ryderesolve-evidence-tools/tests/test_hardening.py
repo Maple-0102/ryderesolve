@@ -265,7 +265,7 @@ class SnapshotAndContractTests(unittest.TestCase):
         result = self.tools.validate_outputs("DISP-002", judge=self.judge)
         self.assertTrue(result["structurally_valid"])
         self.assertIn("UNRESOLVED_REVIEW_FLAGS", {i["code"] for i in result["warnings"]})
-        self.assertIn("WAIT_START_BEFORE_SCHEDULED_PICKUP", result["review_issue_codes"])
+        self.assertIn("NO_SHOW_THRESHOLD_CLOCK_UNSPECIFIED", result["review_issue_codes"])
 
     def test_history_only_support_is_flagged(self):
         self.judge["findings"][0]["evidence_refs"] = ["E-033"]

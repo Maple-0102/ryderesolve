@@ -1,11 +1,14 @@
 # RydeResolve
 
-Tencent Cloud 黑客松团队项目：Evidence + Advocate + Judge / Orchestration。
-当前 Judge 修复版本：2026-10-13 v0.9.1（基于 v0.9）。官方 DISP-002 已通过 Gemini 完整联调；SYN-ROUTE-001 是合成路线案例。
+Team project for the Tencent Cloud Hackathon: Evidence, Rider/Driver Advocates, and Judge orchestration.
 
-## 安装与离线运行
+The team repository is [Maple-0102/ryderesolve](https://github.com/Maple-0102/ryderesolve). Evidence 0.3 supports official cases DISP-001, DISP-002 and DISP-003 with Ryde Policy v2.1. SYN-ROUTE-001 remains an explicitly synthetic regression case.
 
-需要 Python 3.12+，在仓库根目录执行：
+Start with the [Evidence integration guide](docs/EVIDENCE-INTEGRATION.md) for the current data contract, policy sources and unresolved no-show rules.
+
+## Install and run offline
+
+Requires Python 3.12+. From the repository root:
 
 ```bash
 python3 -m venv .venv
@@ -13,39 +16,41 @@ python3 -m venv .venv
 .venv/bin/python -m ryde_resolve.run_demo
 ```
 
-Windows 用 `.venv\Scripts\python.exe` 替代 `.venv/bin/python`。
-默认使用真实 Evidence 模块、占位 Advocate 和离线 Judge，不产生模型调用费用。
-生成的 `outputs/ryde-evaluation.html` 是静态记录，打开或切换页面不会调用模型。
+On Windows, use `python` to create the environment and `.venv\Scripts\python.exe` for subsequent commands. Set `$env:PYTHONUTF8 = '1'` in PowerShell.
 
-## 团队分工与代码位置
+The default run uses the Evidence module with placeholder Advocates and an offline Judge. It makes no model calls. Open `outputs/ryde-evaluation.html` to inspect the run; switching cases in this static page does not call a model. Use `--case DISP-001`, `--case DISP-002` or `--case DISP-003` to run one case.
 
-| 部分 | 目录 |
+## Code ownership
+
+| Component | Location |
 | --- | --- |
 | Evidence / Data / tools | `vendor/ryderesolve-evidence-tools/` |
 | Advocate | `vendor/ryderesolve-advocate-system/` |
-| Judge / 编排 / 整合 UI | `ryde_resolve/`、`prompts/`、`schemas/` |
-| 测试和评估 | `tests/`、`evaluation/` |
+| Judge / orchestration / integrated UI | `ryde_resolve/`, `prompts/`, `schemas/` |
+| Tests and evaluation | `tests/`, `evaluation/` |
 
-队友提供的两个模块保留在 vendor 中。核心 Evidence / Advocate schema 未另造一套。
-Judge 接入说明见 [Advocate 联调说明](docs/ADVOCATE-INTEGRATION-2026-10-13.md) 和 [v0.8 集成约定](docs/INTEGRATION-v0.8.md)。
-协作流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+The two vendored modules retain their contracts. See the existing [Advocate integration notes](docs/ADVOCATE-INTEGRATION-2026-10-13.md), [Judge v0.8 contract](docs/INTEGRATION-v0.8.md) and [contribution guidelines](CONTRIBUTING.md) for the team's established workflow. Make changes on a branch and open a pull request against `main`.
 
-## 已验证的结果
+## Validation
 
-- 本地集成测试 136 项通过；Advocate 原包前次测试 15 项通过，此次源文件未修改。
-- 官方 DISP-002：4 次 Advocate + 1 次 Judge 真实调用，20 条论点，`validation_errors=[]`。
-- 最终 `escalate`：等待起算规则和提前到达是否计入等待仍缺明确政策。
-- 最近一次完整 Judge 开发集严格通过 8/9；金额标签修正后专项复测 1/1。不能拼成最新版 9/9。
-- 已导出 15 个合成/衍生测试输入：9 个开发题、6 个尚未实测的留出候选。仅来自两个种子家族，不是官方标准答案或现实准确率。
+```bash
+.venv/bin/python -m unittest discover -s tests -v
+.venv/bin/python -m unittest discover -s vendor/ryderesolve-evidence-tools/tests -v
+.venv/bin/python -m unittest discover -s vendor/ryderesolve-advocate-system/tests -v
+.venv/bin/python -m ryde_resolve.run_demo --output-dir outputs/offline-check
+node tests/test_ui_script.cjs outputs/offline-check/ryde-evaluation.html
+.venv/bin/python vendor/ryderesolve-evidence-tools/tests/wheel_smoke.py
+```
 
-[完整验证记录](docs/VALIDATION-2026-10-13.md) · [已完成的真实运行页面](outputs/team-live-2026-10-13/ryde-evaluation.html)
+These checks include local HTTP fixtures and isolated package installation, but do not call paid models. CI runs on Windows and Linux with Python 3.12 and 3.14; check the PR's current commit. POSIX permission tests are skipped on Windows and run on Linux. Keep `scorer-only-labels.json`, expected outcomes and original source archives outside model inputs.
 
-## 运行真实 Gemini 流程
+The [2026-10-13 evaluation record](docs/VALIDATION-2026-10-13.md) and [saved live run](outputs/team-live-2026-10-13/ryde-evaluation.html) predate Policy v2.1. Their results do not establish model quality on the current snapshots. The official-data update has been validated offline; live Advocate/Judge evaluation under the new rules remains pending.
 
-以下命令会调用 Google Cloud 并消耗对应项目额度。先配置自己的授权，禁止提交或转发其他成员的凭证。
-当前适配器要求 SDK 位于 `.local/google-cloud-sdk/bin/gcloud`，ADC 位于 `.local/gcloud/application_default_credentials.json`。其他电脑需单独安装 SDK 到该路径（或在本机建立对应链接），并用自己的账号配置 ADC；ADC 的 quota project 必须与配置的 project 一致，凭证文件权限需为 600。Windows 当前建议用 WSL 运行真实云端流程。相关配置和凭证只保留在本机 `.local/`，不能直接复制其他成员的 `.local/`。
+## Run the live Gemini pipeline
 
-在 `.local/vertex-config.json` 配置自己的 Google Cloud 项目：
+Live runs consume the caller's Google Cloud quota. Use your own authorization. The current adapter expects the SDK at `.local/google-cloud-sdk/bin/gcloud` and Application Default Credentials (ADC) at `.local/gcloud/application_default_credentials.json`. The ADC quota project must match the configured project, and the credential file requires mode `600`. Use Linux or WSL for this adapter; keep credentials and machine-specific settings under the ignored `.local/` directory.
+
+Example `.local/vertex-config.json`, matching the saved baseline configuration:
 
 ```json
 {
@@ -55,37 +60,16 @@ Judge 接入说明见 [Advocate 联调说明](docs/ADVOCATE-INTEGRATION-2026-10-
 }
 ```
 
-使用模型需要该账号/项目支持相应模型。仓库不包含登录凭证，也不会替成员创建付费资源。
+The model must be available to your account and project. To run one case:
 
 ```bash
 .venv/bin/python -m ryde_resolve.run_demo --case DISP-002 --judge vertex --advocate teammate-vertex --thinking-level LOW --output-dir outputs/team-live-local
 ```
 
-这是已实测的模型与调用配置；项目默认运行仍为离线模式。
-ADP 适配器已保留，但未部署或验证云端应用，不能称为腾讯 ADP 实际运行结果。
+The ADP adapter is present, but a deployed Tencent ADP application has not been verified.
 
-## 本地测试
+## Remaining integration work
 
-```bash
-.venv/bin/python -m unittest discover -s tests -v
-.venv/bin/python -m unittest discover -s vendor/ryderesolve-advocate-system/tests -v
-.venv/bin/python -m unittest discover -s vendor/ryderesolve-evidence-tools/tests -v
-```
-
-这些是本地测试，其中部分会启动本机 HTTP 模拟服务，不调用付费模型。
-评估数据中的 `scorer-only-labels.json` 只用于评分，不能发送给模型。
-
-## v0.9.1：Route 暴露问题修复
-
-Judge 使用 Gemini 结构约束补齐必填数组，并明确采样/全程、未核实/证伪、改道/收费的区别。
-对于已建议转人工且仅凭陈述标为支持的评级，程序可保守降为证据不足；原输出、原错误和修正逐条保留，重新验证整个结果。不会自动修复明确收费或退款建议。
-两道针对性真实 Judge 测试通过；最后一次完整 Route 流程最终校验通过，其中原模型5条支持评级经保守处理。不是原模型输出全部正确，也不是现实准确率。
-[修复与验证说明](docs/ROUTE-FIX-2026-10-13.md)。最新版尚未重跑全部9题和6个留出候选。
-
-## 下一步
-
-1. 两位队友确认各自代码版本、接入方式、证据和政策口径。
-2. 核对 Advocate 的计时推断和 GPS 表述。
-3. 跑通合成 Route 的完整真实流程。
-4. 冻结配置后做完整开发集回归及留出候选评估。
-5. 准备演示、提交材料和实际 CodeBuddy / WorkBuddy 使用证明。
+- Obtain authoritative clarification of the embedded eight-minute no-show threshold and its relationship to Policy v2.1 section 2.1.
+- Review the updated Advocate/Judge prompts and rerun all three official cases with current snapshots. DISP-001 exceeds the policy's 2 km route threshold and requires human adjudication.
+- Keep evaluations tied to their exact source and policy versions; do not combine older results into a new accuracy claim.

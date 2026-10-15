@@ -17,7 +17,8 @@
     "dispute_type": {
       "enum": [
         "no_show_charge",
-        "route_deviation"
+        "route_deviation",
+        "fare_dispute"
       ]
     },
     "facts": {

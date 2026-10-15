@@ -1,0 +1,415 @@
+{
+  "case_id": "DISP-001",
+  "source_sha256": "4c19d501eaa27e48059cfa59197cfe55f6e9f1ee1392a11dc8dd08c6f6b06090",
+  "snapshot_id": "1b202347c221f10f92a7bc372740c8e4d380a4214d9acfa9b049eafb2bdfc8dc",
+  "normalizer_version": "0.3.0",
+  "evidence": {
+    "E-001": {
+      "kind": "derived_observation",
+      "source_refs": [
+        "/gps_telemetry/0",
+        "/trip_data/pickup_location"
+      ]
+    },
+    "E-002": {
+      "kind": "party_statement",
+      "source_refs": [
+        "/dispute_ticket/description"
+      ]
+    },
+    "E-003": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/0"
+      ]
+    },
+    "E-004": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/1"
+      ]
+    },
+    "E-005": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/2"
+      ]
+    },
+    "E-006": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/3"
+      ]
+    },
+    "E-007": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/4"
+      ]
+    },
+    "E-008": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/5"
+      ]
+    },
+    "E-009": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/6"
+      ]
+    },
+    "E-010": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/7"
+      ]
+    },
+    "E-011": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/8"
+      ]
+    },
+    "E-012": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/9"
+      ]
+    },
+    "E-013": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/10"
+      ]
+    },
+    "E-014": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/11"
+      ]
+    },
+    "E-015": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/12"
+      ]
+    },
+    "E-016": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/13"
+      ]
+    },
+    "E-017": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/14"
+      ]
+    },
+    "E-018": {
+      "kind": "record",
+      "source_refs": [
+        "/gps_telemetry/15"
+      ]
+    },
+    "E-019": {
+      "kind": "communication_record",
+      "source_refs": [
+        "/chat_logs/0"
+      ]
+    },
+    "E-020": {
+      "kind": "communication_record",
+      "source_refs": [
+        "/chat_logs/1"
+      ]
+    },
+    "E-021": {
+      "kind": "communication_record",
+      "source_refs": [
+        "/chat_logs/2"
+      ]
+    },
+    "E-022": {
+      "kind": "communication_record",
+      "source_refs": [
+        "/chat_logs/3"
+      ]
+    },
+    "E-023": {
+      "kind": "communication_record",
+      "source_refs": [
+        "/chat_logs/4"
+      ]
+    },
+    "E-024": {
+      "kind": "communication_record",
+      "source_refs": [
+        "/chat_logs/5"
+      ]
+    },
+    "E-025": {
+      "kind": "historical_context",
+      "source_refs": [
+        "/rider_profile"
+      ]
+    },
+    "E-026": {
+      "kind": "historical_context",
+      "source_refs": [
+        "/driver_profile"
+      ]
+    },
+    "E-027": {
+      "kind": "record",
+      "source_refs": [
+        "/fare_breakdown"
+      ]
+    },
+    "E-028": {
+      "kind": "derived_metric",
+      "source_refs": [
+        "/gps_telemetry/0",
+        "/gps_telemetry/1",
+        "/gps_telemetry/2",
+        "/gps_telemetry/3",
+        "/gps_telemetry/4",
+        "/gps_telemetry/5",
+        "/gps_telemetry/6",
+        "/gps_telemetry/7",
+        "/gps_telemetry/8",
+        "/gps_telemetry/9",
+        "/gps_telemetry/10",
+        "/gps_telemetry/11",
+        "/gps_telemetry/12",
+        "/gps_telemetry/13",
+        "/gps_telemetry/14",
+        "/gps_telemetry/15",
+        "/optimal_route/waypoints",
+        "/trip_data/start_time",
+        "/trip_data/end_time"
+      ]
+    },
+    "E-029": {
+      "kind": "trip_context",
+      "source_refs": [
+        "/trip_data/trip_id",
+        "/trip_data/rider_id",
+        "/trip_data/driver_id",
+        "/trip_data/pickup_location",
+        "/trip_data/dropoff_location"
+      ]
+    },
+    "E-030": {
+      "kind": "record",
+      "source_refs": [
+        "/trip_data/start_time"
+      ]
+    },
+    "E-031": {
+      "kind": "record",
+      "source_refs": [
+        "/trip_data/end_time"
+      ]
+    },
+    "E-032": {
+      "kind": "record",
+      "source_refs": [
+        "/trip_data/estimated_duration_min"
+      ]
+    },
+    "E-033": {
+      "kind": "record",
+      "source_refs": [
+        "/trip_data/actual_duration_min"
+      ]
+    },
+    "E-034": {
+      "kind": "record",
+      "source_refs": [
+        "/trip_data/estimated_distance_km"
+      ]
+    },
+    "E-035": {
+      "kind": "record",
+      "source_refs": [
+        "/trip_data/actual_distance_km"
+      ]
+    },
+    "E-036": {
+      "kind": "record",
+      "source_refs": [
+        "/trip_data/excess_distance_km"
+      ]
+    },
+    "E-037": {
+      "kind": "record",
+      "source_refs": [
+        "/trip_data/estimated_fare"
+      ]
+    },
+    "E-038": {
+      "kind": "record",
+      "source_refs": [
+        "/trip_data/actual_fare"
+      ]
+    },
+    "E-039": {
+      "kind": "record",
+      "source_refs": [
+        "/trip_data/excess_fare"
+      ]
+    },
+    "E-040": {
+      "kind": "record",
+      "source_refs": [
+        "/optimal_route"
+      ]
+    },
+    "E-041": {
+      "kind": "traffic_record",
+      "source_refs": [
+        "/traffic_conditions/0"
+      ]
+    },
+    "E-042": {
+      "kind": "traffic_record",
+      "source_refs": [
+        "/traffic_conditions/1"
+      ]
+    },
+    "E-043": {
+      "kind": "traffic_record",
+      "source_refs": [
+        "/traffic_conditions/2"
+      ]
+    },
+    "E-044": {
+      "kind": "derived_metric",
+      "source_refs": [
+        "/trip_data/actual_distance_km",
+        "/optimal_route/estimated_distance_km"
+      ]
+    },
+    "E-045": {
+      "kind": "derived_metric",
+      "source_refs": [
+        "/trip_data/actual_fare",
+        "/trip_data/estimated_fare"
+      ]
+    }
+  },
+  "policy": {
+    "P-RYDE-2.1-S1.1": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/1.1"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S1.2": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/1.2"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S1.3": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/1.3"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S1.4": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/1.4"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S5.1": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/5.1"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S5.2": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/5.2"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S5.3": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/5.3"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S6.1": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/6.1"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S6.2": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/6.2"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S6.3": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/6.3"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S7.1": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/7.1"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    }
+  }
+}

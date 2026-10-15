@@ -1,0 +1,198 @@
+{
+  "case_id": "DISP-003",
+  "dispute_type": "fare_dispute",
+  "facts": [
+    {
+      "evidence_id": "E-001",
+      "fact": "1 GPS samples (2026-09-14T21:05:00+08:00) match the recorded pickup coordinates and report speed 0 km/h. Samples do not establish uninterrupted observation between timestamps.",
+      "source": "gps_telemetry"
+    },
+    {
+      "evidence_id": "E-002",
+      "fact": "rider's statement (not independently verified): Final fare of $16.50 was charged, but the upfront quote shown at booking was only $12.00. The rider was not informed of any fare change, surge pricing, or price adjustment before or during the trip. The rider requests a refund of the $4.50 difference.",
+      "source": "dispute_ticket.description"
+    },
+    {
+      "evidence_id": "E-003",
+      "fact": "GPS record at 2026-09-14T21:05:00+08:00: lat=1.3, lng=103.8556, speed_kmh=0, status=not supplied.",
+      "source": "gps_telemetry"
+    },
+    {
+      "evidence_id": "E-004",
+      "fact": "GPS record at 2026-09-14T21:07:00+08:00: lat=1.2972, lng=103.8561, speed_kmh=25, status=not supplied.",
+      "source": "gps_telemetry"
+    },
+    {
+      "evidence_id": "E-005",
+      "fact": "GPS record at 2026-09-14T21:09:00+08:00: lat=1.2935, lng=103.8568, speed_kmh=30, status=not supplied.",
+      "source": "gps_telemetry"
+    },
+    {
+      "evidence_id": "E-006",
+      "fact": "GPS record at 2026-09-14T21:11:00+08:00: lat=1.2901, lng=103.8582, speed_kmh=22, status=not supplied.",
+      "source": "gps_telemetry"
+    },
+    {
+      "evidence_id": "E-007",
+      "fact": "GPS record at 2026-09-14T21:13:00+08:00: lat=1.2868, lng=103.8595, speed_kmh=28, status=not supplied.",
+      "source": "gps_telemetry"
+    },
+    {
+      "evidence_id": "E-008",
+      "fact": "GPS record at 2026-09-14T21:16:00+08:00: lat=1.2845, lng=103.8604, speed_kmh=15, status=not supplied.",
+      "source": "gps_telemetry"
+    },
+    {
+      "evidence_id": "E-009",
+      "fact": "GPS record at 2026-09-14T21:18:00+08:00: lat=1.2834, lng=103.8607, speed_kmh=0, status=not supplied.",
+      "source": "gps_telemetry"
+    },
+    {
+      "evidence_id": "E-010",
+      "fact": "Communication log at 2026-09-14T21:02:15+08:00, sender=rider, type=message: Hi, I'm at the taxi stand outside Bugis Junction near the fountain.",
+      "source": "chat_logs"
+    },
+    {
+      "evidence_id": "E-011",
+      "fact": "Communication log at 2026-09-14T21:03:40+08:00, sender=driver, type=message: OK, I see you. Pulling up now, white Elantra.",
+      "source": "chat_logs"
+    },
+    {
+      "evidence_id": "E-012",
+      "fact": "Communication log at 2026-09-14T21:18:30+08:00, sender=rider, type=message: Thanks for the ride! Just noticed the fare is $16.50 — I thought it was $12?",
+      "source": "chat_logs"
+    },
+    {
+      "evidence_id": "E-013",
+      "fact": "Historical rider profile metadata: {\"account_age_days\": 45, \"avg_rating\": 4.5, \"dispute_history\": {\"rejected\": 0, \"total_disputes\": 0, \"upheld\": 0}, \"fraud_flags\": 0, \"rider_id\": \"R-9001\", \"total_trips\": 7}. Historical metadata alone does not establish responsibility for this dispute.",
+      "source": "rider_profile"
+    },
+    {
+      "evidence_id": "E-014",
+      "fact": "Historical driver profile metadata: {\"account_age_days\": 450, \"avg_rating\": 4.8, \"dispute_history\": {\"rejected\": 2, \"total_disputes\": 2, \"upheld_against\": 0}, \"driver_id\": \"D-3456\", \"fraud_flags\": 0, \"total_trips\": 1567}. Historical metadata alone does not establish responsibility for this dispute.",
+      "source": "driver_profile"
+    },
+    {
+      "evidence_id": "E-015",
+      "fact": "Provided fare_breakdown: {\"actual_fare\": {\"surge_amount\": 4.5, \"surge_multiplier\": 1.5, \"surgeable_subtotal\": 9.0, \"total\": 16.5}, \"comparison\": {\"booking_fee_surge_exempt\": true, \"root_cause\": \"surge_multiplier_increase\", \"surge_amount_difference\": 4.5, \"surge_multiplier_changed\": \"1.0x → 1.5x\", \"total_difference\": 4.5}, \"upfront_quote\": {\"surge_amount\": 0.0, \"surge_multiplier\": 1.0, \"surgeable_subtotal\": 9.0, \"total\": 12.0}}",
+      "source": "fare_breakdown"
+    },
+    {
+      "evidence_id": "E-016",
+      "fact": "Recorded trip context: {\"driver_id\": \"D-3456\", \"dropoff_location\": {\"lat\": 1.2834, \"lng\": 103.8607, \"name\": \"Marina Bay Sands\"}, \"pickup_location\": {\"lat\": 1.3, \"lng\": 103.8556, \"name\": \"Bugis Junction\"}, \"rider_id\": \"R-9001\", \"trip_id\": \"TRIP-2026-10023\"}",
+      "source": "trip_data"
+    },
+    {
+      "evidence_id": "E-017",
+      "fact": "Trip record start_time: 2026-09-14T21:05:00+08:00.",
+      "source": "trip_data"
+    },
+    {
+      "evidence_id": "E-018",
+      "fact": "Trip record end_time: 2026-09-14T21:18:00+08:00.",
+      "source": "trip_data"
+    },
+    {
+      "evidence_id": "E-019",
+      "fact": "Trip record estimated_duration_min: 13.",
+      "source": "trip_data"
+    },
+    {
+      "evidence_id": "E-020",
+      "fact": "Trip record actual_duration_min: 13.",
+      "source": "trip_data"
+    },
+    {
+      "evidence_id": "E-021",
+      "fact": "Trip record actual_fare: 16.5.",
+      "source": "trip_data"
+    },
+    {
+      "evidence_id": "E-022",
+      "fact": "Trip record upfront_quote: 12.0.",
+      "source": "trip_data"
+    },
+    {
+      "evidence_id": "E-023",
+      "fact": "Trip record fare_difference: 4.5.",
+      "source": "trip_data"
+    },
+    {
+      "evidence_id": "E-024",
+      "fact": "Surge/notification system record: {\"notification_method\": null, \"notification_timestamp\": null, \"quote_time_surge\": 1.0, \"reason\": \"surge_window_activated_between_quote_and_pickup\", \"rider_notified\": false, \"surge_activated_at\": \"2026-09-14T21:04:30+08:00\", \"trip_start_surge\": 1.5}",
+      "source": "surge_pricing_log"
+    },
+    {
+      "evidence_id": "E-025",
+      "fact": "Recorded fare difference is 450 cents (1650 charged minus 1200 quoted); this is not a refund award.",
+      "source": "derived.fare_difference"
+    },
+    {
+      "evidence_id": "E-026",
+      "fact": "Supplied fare breakdown difference is 450 cents; surge amount difference is 450 cents; consistent with surge-only change: True.",
+      "source": "derived.surge_comparison"
+    }
+  ],
+  "policy": [
+    {
+      "policy_id": "P-RYDE-2.1-S3.1",
+      "rule": "Section 3.1: Upfront Quote Binding\n- The upfront quote presented to the rider at booking is **binding at the surge multiplier in effect at quote time** (typically 1.0x in normal conditions).\n- The quoted fare includes: base fare, distance fare, time fare, booking fee, and any applicable surge.",
+      "source": "Ryde Dispute Resolution Policy v2.1 §3.1"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S3.2",
+      "rule": "Section 3.2: Surge Change Notification\n- If the surge multiplier **increases** between the time of quote and the time of trip start, the rider **MUST be notified** via an **in-app notification** before or at the point of pickup.\n- The notification must clearly state:\n  - The new surge multiplier.\n  - The revised estimated fare.\n  - An option to cancel without penalty.",
+      "source": "Ryde Dispute Resolution Policy v2.1 §3.2"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S3.3",
+      "rule": "Section 3.3: Refund Eligibility\n| Scenario | Rider Notified? | Refund |\n|---|---|---|\n| Surge increases, rider notified, rider proceeds | Yes | No refund — higher fare applies |\n| Surge increases, rider **not** notified | No | **Full refund of the surge differential** (actual fare − quoted fare) |\n| Surge decreases between quote and trip start | N/A | Lower fare applies automatically (rider benefits) |\n| Surge unchanged | N/A | Quoted fare applies |",
+      "source": "Ryde Dispute Resolution Policy v2.1 §3.3"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S3.4",
+      "rule": "Section 3.4: Surge Differential Calculation\n```\nsurge_differential = actual_fare − upfront_quote\n```\n\nWhere the difference is attributable solely to a surge multiplier change (all other fare components unchanged), the full differential is refundable if the rider was not notified.",
+      "source": "Ryde Dispute Resolution Policy v2.1 §3.4"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S3.5",
+      "rule": "Section 3.5: Surge-Exempt Components\nThe following fare components are **exempt** from surge pricing and remain fixed regardless of multiplier:\n\n- Booking fee\n\nAll other components (base fare, distance fare, time fare) are subject to the surge multiplier.",
+      "source": "Ryde Dispute Resolution Policy v2.1 §3.5"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S5.1",
+      "rule": "Section 5.1: Automatic Escalation\nAny dispute flagged as **safety-related** is **automatically escalated to human review**. Safety-related disputes include but are not limited to:\n\n- Reckless or dangerous driving.\n- Physical or verbal harassment.\n- Assault or threat of assault.\n- Inappropriate behavior or conduct.\n- Traffic accidents during the trip.\n- Rider or driver feeling unsafe during the trip.",
+      "source": "Ryde Dispute Resolution Policy v2.1 §5.1"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S5.2",
+      "rule": "Section 5.2: AI Agent Limitations\n- AI agents (Rider Advocate, Driver Advocate, Judge) **MAY** gather evidence, summarize accounts, and prepare case files for human reviewers.\n- AI agents **CANNOT** issue rulings, determine fault, or recommend resolutions on safety incidents.\n- AI agents **MUST** flag any dispute that contains safety-related keywords or indicators for immediate human escalation, regardless of the dispute type selected by the filer.",
+      "source": "Ryde Dispute Resolution Policy v2.1 §5.2"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S5.3",
+      "rule": "Section 5.3: Interim Measures\nUpon escalation, the system may apply interim measures pending human review:\n\n- Temporary suspension of the accused party's account.\n- Prevention of new trip acceptance (for drivers) or booking (for riders).\n- These measures are lifted if the human reviewer determines no safety violation occurred.",
+      "source": "Ryde Dispute Resolution Policy v2.1 §5.3"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S6.1",
+      "rule": "Section 6.1: Monetary Thresholds\n| Dispute Value | Ruling Path | Agent Confidence Requirement |\n|---|---|---|\n| Under $10 | AI agent ruling is **final** | Any confidence level |\n| $10 – $50 | AI agent ruling with **80%+ confidence** | If confidence < 80%, escalate to human review |\n| Above $50 | **Always human review** | N/A — AI agent prepares case file only |",
+      "source": "Ryde Dispute Resolution Policy v2.1 §6.1"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S6.2",
+      "rule": "Section 6.2: Category Thresholds\n| Dispute Category | Ruling Path |\n|---|---|\n| Safety incident | **Always human review** (see Section 5) |\n| Fare dispute < $10 | AI agent ruling is final |\n| Fare dispute $10 – $50 | AI agent ruling if confidence ≥ 80%, else escalate |\n| Fare dispute > $50 | Always human review |\n| Route deviation | AI agent ruling if confidence ≥ 80% and deviation ≤ 2km, else escalate |\n| Property damage (cleaning ≤ $50) | AI agent ruling if photo evidence is verifiable |\n| Property damage (repair > $50) | Always human review |\n| No-show / cancellation | AI agent ruling is final (fee is fixed at $5.00) |",
+      "source": "Ryde Dispute Resolution Policy v2.1 §6.2"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S6.3",
+      "rule": "Section 6.3: Confidence Calibration\n- Agent confidence is calculated based on: evidence completeness, policy clarity, precedent alignment, and party credibility scores.\n- If any party has a fraud flag ≥ 1, the confidence threshold is raised to 95% regardless of dispute value.",
+      "source": "Ryde Dispute Resolution Policy v2.1 §6.3"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S7.2",
+      "rule": "Section 7.2: Surge Pricing Without Rider Notification\n| Field | Value |\n|---|---|\n| **Case ID** | DISP-2026-0142 |\n| **Date** | 2026-04-03 |\n| **Dispute Type** | fare_dispute |\n| **Facts** | Rider received upfront quote of $9.50 at 1.0x surge. Surge increased to 1.4x between quote and pickup. Rider was not notified. Actual fare was $12.70 — a difference of $3.20 entirely attributable to surge differential. |\n| **Ruling** | Full refund of surge differential. Rationale: Per Section 3.3, if surge increases between quote and trip start and rider is not notified, rider is eligible for full refund of the surge differential. The $3.20 difference was solely attributable to surge multiplier change. |\n| **Refund Amount** | $3.20 |\n| **Confidence** | 96% |",
+      "source": "Ryde Dispute Resolution Policy v2.1 §7.2"
+    }
+  ]
+}

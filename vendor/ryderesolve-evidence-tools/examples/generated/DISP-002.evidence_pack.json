@@ -191,6 +191,11 @@
       "evidence_id": "E-038",
       "fact": "Recorded trip context: {\"driver_id\": \"D-2398\", \"dropoff_location\": {\"lat\": 1.2648, \"lng\": 103.8223, \"name\": \"VivoCity\"}, \"pickup_location\": {\"lat\": 1.2847, \"lng\": 103.8382, \"name\": \"Tiong Bahru Plaza\"}, \"rider_id\": \"R-7823\", \"trip_id\": \"TRIP-2026-09945\"}",
       "source": "trip_data"
+    },
+    {
+      "evidence_id": "E-039",
+      "fact": "Under supplied policy v2.1 section 2.1, free wait starts at scheduled pickup 2026-09-13T08:45:00+08:00 and ends at 2026-09-13T08:50:00+08:00. Recorded cancellation elapsed from scheduled pickup: 360.0 seconds. This does not resolve the embedded no-show threshold or establish fee entitlement.",
+      "source": "derived.free_wait_policy"
     }
   ],
   "policy": [
@@ -213,6 +218,66 @@
       "policy_id": "P-004",
       "rule": "no_show_threshold_min = 8",
       "source": "cancellation_policy"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S2.1",
+      "rule": "Section 2.1: Free Wait Time\n- The driver must wait at the pickup location for a **free wait time of 5 minutes** from the scheduled pickup time.\n- After 5 minutes, the driver may cancel the trip as a \"rider no-show.\"",
+      "source": "Ryde Dispute Resolution Policy v2.1 §2.1"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S2.2",
+      "rule": "Section 2.2: Cancellation Fee\n- A **no-show cancellation fee of $5.00** is charged to the rider when the driver cancels after the free wait period.\n- The cancellation fee is transferred to the driver as compensation for time and fuel.",
+      "source": "Ryde Dispute Resolution Policy v2.1 §2.2"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S2.3",
+      "rule": "Section 2.3: Driver Contact Obligation\nBefore cancelling for no-show, the driver **MUST** attempt to contact the rider with:\n\n1. **At least 1 in-app chat message**, AND\n2. **At least 1 phone call** (via the in-app calling system).\n\nIf the driver fails to meet both contact obligations, the cancellation fee is **voided** and the rider is not charged.",
+      "source": "Ryde Dispute Resolution Policy v2.1 §2.3"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S2.4",
+      "rule": "Section 2.4: Driver No-Show\n- If the driver **fails to arrive at the pickup location** within a reasonable time (defined as scheduled pickup time + 5 minutes), the rider may cancel at no charge.\n- If the driver fails to arrive **and** fails to attempt contact, the rider is eligible for a **$5.00 goodwill credit**.",
+      "source": "Ryde Dispute Resolution Policy v2.1 §2.4"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S2.5",
+      "rule": "Section 2.5: Repeat No-Show Flagging\n- If a rider accumulates **3 or more no-show cancellations within a 30-day rolling window**, the rider's account is **flagged** for review.\n- Flagged accounts are subject to:\n  - Mandatory upfront payment for future bookings.\n  - Temporary suspension pending review by the Trust & Safety team.",
+      "source": "Ryde Dispute Resolution Policy v2.1 §2.5"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S5.1",
+      "rule": "Section 5.1: Automatic Escalation\nAny dispute flagged as **safety-related** is **automatically escalated to human review**. Safety-related disputes include but are not limited to:\n\n- Reckless or dangerous driving.\n- Physical or verbal harassment.\n- Assault or threat of assault.\n- Inappropriate behavior or conduct.\n- Traffic accidents during the trip.\n- Rider or driver feeling unsafe during the trip.",
+      "source": "Ryde Dispute Resolution Policy v2.1 §5.1"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S5.2",
+      "rule": "Section 5.2: AI Agent Limitations\n- AI agents (Rider Advocate, Driver Advocate, Judge) **MAY** gather evidence, summarize accounts, and prepare case files for human reviewers.\n- AI agents **CANNOT** issue rulings, determine fault, or recommend resolutions on safety incidents.\n- AI agents **MUST** flag any dispute that contains safety-related keywords or indicators for immediate human escalation, regardless of the dispute type selected by the filer.",
+      "source": "Ryde Dispute Resolution Policy v2.1 §5.2"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S5.3",
+      "rule": "Section 5.3: Interim Measures\nUpon escalation, the system may apply interim measures pending human review:\n\n- Temporary suspension of the accused party's account.\n- Prevention of new trip acceptance (for drivers) or booking (for riders).\n- These measures are lifted if the human reviewer determines no safety violation occurred.",
+      "source": "Ryde Dispute Resolution Policy v2.1 §5.3"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S6.1",
+      "rule": "Section 6.1: Monetary Thresholds\n| Dispute Value | Ruling Path | Agent Confidence Requirement |\n|---|---|---|\n| Under $10 | AI agent ruling is **final** | Any confidence level |\n| $10 – $50 | AI agent ruling with **80%+ confidence** | If confidence < 80%, escalate to human review |\n| Above $50 | **Always human review** | N/A — AI agent prepares case file only |",
+      "source": "Ryde Dispute Resolution Policy v2.1 §6.1"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S6.2",
+      "rule": "Section 6.2: Category Thresholds\n| Dispute Category | Ruling Path |\n|---|---|\n| Safety incident | **Always human review** (see Section 5) |\n| Fare dispute < $10 | AI agent ruling is final |\n| Fare dispute $10 – $50 | AI agent ruling if confidence ≥ 80%, else escalate |\n| Fare dispute > $50 | Always human review |\n| Route deviation | AI agent ruling if confidence ≥ 80% and deviation ≤ 2km, else escalate |\n| Property damage (cleaning ≤ $50) | AI agent ruling if photo evidence is verifiable |\n| Property damage (repair > $50) | Always human review |\n| No-show / cancellation | AI agent ruling is final (fee is fixed at $5.00) |",
+      "source": "Ryde Dispute Resolution Policy v2.1 §6.2"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S6.3",
+      "rule": "Section 6.3: Confidence Calibration\n- Agent confidence is calculated based on: evidence completeness, policy clarity, precedent alignment, and party credibility scores.\n- If any party has a fraud flag ≥ 1, the confidence threshold is raised to 95% regardless of dispute value.",
+      "source": "Ryde Dispute Resolution Policy v2.1 §6.3"
+    },
+    {
+      "policy_id": "P-RYDE-2.1-S7.3",
+      "rule": "Section 7.3: No-Show Cancellation Without Contact Attempt\n| Field | Value |\n|---|---|\n| **Case ID** | DISP-2026-0211 |\n| **Date** | 2026-05-18 |\n| **Dispute Type** | cancellation_fee |\n| **Facts** | Driver arrived at pickup, waited 6 minutes, and cancelled as no-show. $5.00 fee charged to rider. Review of chat logs and call records showed the driver sent zero messages and made zero calls before cancelling. Rider arrived at the pickup point 1 minute after cancellation. |\n| **Ruling** | Cancellation fee voided. Rationale: Per Section 2.3, the driver must attempt at least 1 in-app message and 1 call before cancelling for no-show. The driver failed to meet both contact obligations. The $5.00 fee is reversed and refunded to the rider. |\n| **Refund Amount** | $5.00 |\n| **Confidence** | 98% |",
+      "source": "Ryde Dispute Resolution Policy v2.1 §7.3"
     }
   ]
 }
