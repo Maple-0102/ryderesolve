@@ -159,6 +159,7 @@ class PolicyV21Tests(unittest.TestCase):
         def mutate(raw):
             raw['cancellation_policy'].pop('no_show_threshold_min')
             raw['chat_logs']=[r for r in raw['chat_logs'] if r.get('type')!='call']
+            raw['app_events']=[r for r in raw['app_events'] if r.get('event_type')!='driver_called_rider']
             raw['rider_profile']['fraud_flags']=0
         s=variant(self.no_show,mutate)
         self.assertIsNone(application(s)['permitted_decision'])
@@ -305,3 +306,42 @@ class PolicyV21Tests(unittest.TestCase):
         self.assertIn('opposing_evidence_refs',items['items']['required'])
         out=completed(self.fare,a);out['case_analysis']['sides']['rider']['argument_refs']=[]
         self.assertTrue(any('UNADDRESSED_ARGUMENT' in e for e in check_judge(self.fare,out,a)[0]))
+
+    def test_app_call_event_is_contact_even_without_chat_call_row(self):
+        s=variant(self.no_show,lambda raw:raw.update(chat_logs=[r for r in raw['chat_logs'] if r.get('type')!='call']))
+        contact=next(c for c in application(s)['conditions'] if c['condition_id']=='driver_contact')
+        self.assertEqual(contact['status'],'met')
+        call_refs=[key for key,row in s['source_index']['evidence'].items()
+                   if '/app_events/6' in row['source_refs']]
+        self.assertTrue(set(call_refs) & set(contact['evidence_refs']))
+
+    def test_contact_at_cancellation_does_not_establish_prior_attempt(self):
+        def mutate(raw):
+            for row in raw['chat_logs']:
+                if row.get('type')=='call':row['timestamp']=raw['trip_data']['cancellation_time']
+            for row in raw['app_events']:
+                if row.get('event_type')=='driver_called_rider':row['timestamp']=raw['trip_data']['cancellation_time']
+            raw['chat_logs'].sort(key=lambda r:r['timestamp'])
+            raw['app_events'].sort(key=lambda r:r['timestamp'])
+        s=variant(self.no_show,mutate)
+        self.assertEqual(next(c for c in application(s)['conditions'] if c['condition_id']=='driver_contact')['status'],'unknown')
+
+    def test_duplicate_call_records_and_conflicting_complete_summaries(self):
+        def complete(raw):
+            raw['app_events'].append({'timestamp':'2026-09-13T08:51:10+08:00','event_type':'contact_attempt_summary','coverage_complete':True,
+                'window_end':raw['trip_data']['cancellation_time'],'message_count':4,'call_count':1})
+        s=variant(self.no_show,complete)
+        self.assertEqual(next(c for c in application(s)['conditions'] if c['condition_id']=='driver_contact')['status'],'met')
+        s=variant(s,lambda raw:raw['app_events'][-1].update(call_count=0))
+        self.assertEqual(next(c for c in application(s)['conditions'] if c['condition_id']=='driver_contact')['status'],'unknown')
+
+    def test_post_trip_agreement_does_not_establish_trip_consent(self):
+        s=self.route_with_records()
+        def mutate(raw):
+            for row in raw['chat_logs']:
+                if row.get('sender')=='rider' and 'alternate route' in row.get('message',''):
+                    row['timestamp']=(datetime.fromisoformat(raw['trip_data']['end_time'])+timedelta(minutes=1)).isoformat()
+            raw['chat_logs'].sort(key=lambda r:r['timestamp'])
+        s=variant(s,mutate)
+        self.assertEqual(next(c for c in application(s)['conditions'] if c['condition_id']=='rider_acknowledgment')['status'],'unknown')
+        self.assertIsNone(application(s)['permitted_decision'])

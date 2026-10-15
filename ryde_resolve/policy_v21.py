@@ -60,23 +60,33 @@ def application(snapshot):
         add('free_wait', status, 'Five free minutes start at scheduled pickup; exact-boundary cancellation requires clarification.',
             ['/trip_data/scheduled_time', '/trip_data/cancellation_time'], ['2.1'])
         records = [(i,r) for i,r in enumerate(raw.get('chat_logs', [])) if r.get('sender') == 'driver'
-                   and cancel and _time(r.get('timestamp')) and _time(r['timestamp']) <= cancel]
+                   and cancel and _time(r.get('timestamp')) and _time(r['timestamp']) < cancel]
         messages = [i for i,r in records if r.get('type') == 'message']
         calls = [i for i,r in records if r.get('type') == 'call']
+        call_events = [(i,r) for i,r in enumerate(raw.get('app_events', []))
+                       if r.get('event_type') == 'driver_called_rider' and cancel
+                       and _time(r.get('timestamp')) and _time(r['timestamp']) < cancel]
+        # A call may appear in both logs. Count its timestamp once while retaining
+        # both source references; same-second cancellation is not proof of 'before'.
+        call_times = {_time(raw['chat_logs'][i]['timestamp']) for i in calls}
+        call_times.update(_time(r['timestamp']) for _,r in call_events)
         summaries = [(i,r) for i,r in enumerate(raw.get('app_events',[]))
                      if r.get('event_type')=='contact_attempt_summary' and r.get('coverage_complete') is True
                      and _time(r.get('window_end'))==cancel]
-        contact_state = 'met' if messages and calls else 'unknown'
+        contact_state = 'met' if messages and call_times else 'unknown'
         if summaries:
             declared={(r['message_count'],r['call_count']) for _,r in summaries
-                      if type(r.get('message_count')) is int and type(r.get('call_count')) is int}
-            if len(declared)==1:
+                      if type(r.get('message_count')) is int and r['message_count']>=0
+                      and type(r.get('call_count')) is int and r['call_count']>=0}
+            contact_state='unknown'
+            if len(declared)==1 and all(type(r.get('message_count')) is int and r['message_count']>=0
+                                       and type(r.get('call_count')) is int and r['call_count']>=0 for _,r in summaries):
                 m,c=next(iter(declared))
-                if type(m) is int and type(c) is int and m==len(messages) and c==len(calls):
+                if m==len(messages) and c==len(call_times):
                     contact_state='met' if m>=1 and c>=1 else 'not_met'
         add('driver_contact', contact_state,
-            'At least one in-app message AND one call attempt before cancellation. Missing logs alone do not prove no attempt.',
-            [f'/chat_logs/{i}' for i in messages+calls]+[f'/app_events/{i}' for i,_ in summaries], ['2.3'])
+            'At least one in-app message AND one call attempt strictly before cancellation. Missing logs alone do not prove no attempt; conflicting complete summaries require review.',
+            [f'/chat_logs/{i}' for i in messages+calls]+[f'/app_events/{i}' for i,_ in call_events+summaries], ['2.3'])
         arrival = _time(trip.get('driver_arrival_time'))
         events = [i for i,r in enumerate(raw.get('app_events', [])) if r.get('event_type') == 'driver_arrived'
                   and _time(r.get('timestamp')) and cancel and _time(r['timestamp']) <= cancel]
@@ -171,6 +181,12 @@ def application(snapshot):
                 if ts and limit and ts <= limit:notice_paths.append(f'/chat_logs/{i}')
             if row.get('sender')=='rider' and route_text and re.search(r'\b(agree|yes|okay|ok)\b',text,re.I) and not re.search(r"\b(no|not|never|don't|didn't)\b",text,re.I):
                 ack_paths.append(f'/chat_logs/{i}')
+        notice_times=[_time(raw['chat_logs'][int(path.rsplit('/',1)[1])]['timestamp']) for path in notice_paths]
+        ack_paths=[path for path in ack_paths
+                   if end and notice_times
+                   and _time(raw['chat_logs'][int(path.rsplit('/',1)[1])].get('timestamp'))
+                   and _time(raw['chat_logs'][int(path.rsplit('/',1)[1])]['timestamp']) <= end
+                   and any(t <= _time(raw['chat_logs'][int(path.rsplit('/',1)[1])]['timestamp']) for t in notice_times)]
         negative_notice=[i for i,r in enumerate(raw.get('app_events',[]))
                          if r.get('event_type')=='route_notice_status' and r.get('coverage_complete') is True and r.get('rider_informed') is False]
         notice_status='unknown' if notice_paths and negative_notice else 'met' if notice_paths else 'not_met' if negative_notice else 'unknown'
