@@ -21,6 +21,8 @@ def check_judge(snapshot, output, arguments=None):
     errors = [f"{x['code']}: {x['message']}" for x in report['errors']]
     if errors:
         return errors, report['warnings']
+    from .policy_v21 import check_application
+    errors.extend(check_application(snapshot, output))
     decision = output['decision']
     if decision not in ALLOWED_DECISIONS:
         errors.append('UNKNOWN_DECISION')

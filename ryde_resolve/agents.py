@@ -76,6 +76,8 @@ def build_judge_messages(snapshot, arguments, calculations):
     prompt = (ROOT / 'prompts/judge_prompt.md').read_text(encoding='utf-8')
     payload = {k: snapshot[k] for k in ('case_id', 'snapshot_id', 'raw', 'evidence_pack', 'audit', 'source_index')}
     payload.update(arguments=arguments, calculations=calculations)
+    if snapshot.get('policy_documents'):
+        payload['policy_documents'] = snapshot['policy_documents']
     return [{'role': 'system', 'content': prompt},
             {'role': 'user', 'content': json.dumps(payload, ensure_ascii=False, allow_nan=False)}]
 

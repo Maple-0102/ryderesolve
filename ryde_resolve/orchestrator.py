@@ -61,6 +61,16 @@ class RydeOrchestrator:
             result['calculations'] = step('calculate_rules', 'Audited calculations',
                                           {'snapshot_id': snapshot['snapshot_id']},
                                           lambda: calculate_rules(snapshot))
+            policy = result['calculations'].get('policy_application')
+            if policy and policy['evidence_only']:
+                result['execution_policy'] = 'evidence_only'
+                result['providers_skipped'] = True
+                result['ruling'] = review_ruling(snapshot, ['SAFETY_EVIDENCE_ONLY: policy sections 5.1-5.2 require human adjudication.'])
+                step('safety_gate', 'Policy v2.1', {'snapshot_id':snapshot['snapshot_id']},
+                     lambda: {'action':'human_review','agents_called':False,'policy_refs': ['P-RYDE-2.1-S5.1','P-RYDE-2.1-S5.2']})
+                from .handoff import build_handoff
+                result['human_handoff'] = build_handoff(result)
+                return result
             for round_name in ('opening', 'response'):
                 for side in ('rider', 'driver'):
                     other = 'driver' if side == 'rider' else 'rider'

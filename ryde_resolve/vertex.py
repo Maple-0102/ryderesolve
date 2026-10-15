@@ -106,8 +106,9 @@ class VertexJudge:
     def __call__(self, snapshot, arguments, calculations):
         messages = build_judge_messages(snapshot, arguments, calculations)
         from .output_schema import judge_output_schema, vertex_response_schema
+        from .policy_v21 import bound
         result = self.generate(messages[0]['content'], messages[1]['content'],
-                               response_schema=vertex_response_schema(judge_output_schema()))
+                               response_schema=vertex_response_schema(judge_output_schema(policy_bound=bound(snapshot), arguments=arguments)))
         value = result.get('confidence')
         if type(value) not in (int, float) or not math.isfinite(value) or not 0 <= value <= 1:
             raise AgentError('VERTEX_CONFIDENCE_REQUIRED')

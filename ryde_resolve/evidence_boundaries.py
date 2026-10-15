@@ -6,8 +6,10 @@ Evidence-scope rules (team software guidance, not case evidence or charging poli
    interior speeds match, do not say "steady throughout", "always" or "continuous".
    Attribute measurements to recorded timestamps; do not invent interpolation.
 2. UNVERIFIED VERSUS DISPROVED: absent independent traffic verification does not mean
-   the traffic claim is false, the detour is unjustified, or a refund is owed. A party's
-   statement establishes that it was said. Unknown material facts remain unknown.
+   the traffic claim is false. Apply any explicit policy consequences for an established
+   absence of justification; a failed API retrieval is not that established absence. A party's
+   statement establishes that it was said. A recorded notification or contextual rider
+   acknowledgment can itself satisfy v2.1 communication requirements. Unknown material facts remain unknown.
 3. ROUTE VERSUS CHARGE: assess the reason for a route change separately from the basis
    for an extra charge. A justified detour does not authorize a fare increase; an
    unjustified extra charge does not require proving that the detour itself was wrong.

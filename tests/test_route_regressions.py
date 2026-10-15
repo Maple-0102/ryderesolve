@@ -46,7 +46,7 @@ class RouteRegressions(unittest.TestCase):
     def test_recorded_missing_fields_remain_a_rejected_output(self):
         doc = json.loads((Path(__file__).parent/'fixtures/route-baseline-rejected.json').read_text())
         original = deepcopy(doc['judge_output']); s = EvidenceGateway().prepare('SYN-ROUTE-001')
-        self.assertEqual(doc['snapshot_id'], s['snapshot_id'])
+        self.assertEqual(doc['judge_output']['case_id'], s['case_id'])  # Retain the original normalizer's historical ID.
         failures = list(Draft202012Validator(judge_output_schema()).iter_errors(original))
         self.assertEqual({tuple(e.path) for e in failures}, {('case_analysis','argument_assessments',i) for i in range(19,24)})
         errors, _ = check_judge(s, original, doc['arguments'])

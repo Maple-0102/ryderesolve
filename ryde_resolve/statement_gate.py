@@ -20,6 +20,9 @@ def downgrade_statement_only_review(snapshot, proposal):
     changes = []
     index = snapshot['source_index']['evidence']
     for row in analysis['argument_assessments']:
+        from .policy_v21 import bound
+        if bound(snapshot) and row.get('assessment_scope') == 'communication_act':
+            continue
         if row['assessment'] not in ('supported', 'partly_supported'):
             continue
         refs = row['supporting_evidence_refs']

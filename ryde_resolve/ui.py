@@ -30,7 +30,7 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
         if not s:
             panels.append(f'<article id="{prefix}" role="tabpanel" {"hidden" if i else ""}><h2>{esc(result["case_id"])}</h2><p>案例加载失败，已阻止裁决。</p>{pretty(ruling)}{handoff_html}</article>')
             continue
-        origin = '主办方样例 · 非真实运营数据证明' if s['audit']['data_origin'] == 'organizer_sample' else '团队合成案例 · 政策也是合成规则'
+        origin = '主办方样例 · 非真实运营数据证明' if s['audit']['data_origin'] == 'organizer_sample' else '团队合成数据 · 绑定提供的 Ryde v2.1 政策' if s.get('policy_documents') else '团队合成案例 · 政策也是合成规则'
         decision = {'escalate': '待人工复核', 'uphold_charge': '建议保留收费',
                     'refund_full': '建议全额退款', 'refund_partial': '建议部分退款'}.get(ruling['decision'], ruling['decision'])
         calculations = []
@@ -127,6 +127,18 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
                 '<details><summary>原始模型检查错误</summary>' + pretty(result.get('judge_raw_validation_errors', [])) + '</details>'
                 '<details><summary>逐条修正记录</summary>' + pretty(result['judge_adjustments']) + '</details>'
                 '<details><summary>原始 Judge 建议</summary>' + pretty(result.get('judge_proposal')) + '</details></section>')
+        policy_application_html = ''
+        applied=result['calculations'].get('policy_application')
+        if applied:
+            gates=''.join('<li><b>'+esc(g['code'])+'</b> '+esc(g['reason'])+' '+links(g.get('policy_refs',[]),'policy')+'</li>' for g in applied['mandatory_human_review'])
+            conditional=''.join('<li>'+esc(c['condition_id'])+' · '+esc(c['status'])+'<p>'+esc(c['reason'])+'</p>'+links(c['evidence_refs'],'evidence')+' '+links(c['policy_refs'],'policy')+'</li>' for c in applied['conditions'])
+            skip='<p>安全事件：本次仅整理证据，未调用 Advocate 或 Judge 提供者。</p>' if result.get('providers_skipped') else ''
+            policy_application_html=('<section><h3>本次绑定的政策与程序检查</h3><p>'+esc(applied['document_id'])+' · 生效 '+esc(applied['effective_date'])+'</p>'+skip+
+                '<h4>人工审核门槛</h4><ul>'+gates+'</ul><h4>逐项政策条件</h4><ul>'+conditional+'</ul>'+
+                '<details><summary>来源、信心因素与分项动作</summary>'+pretty(applied)+'</details></section>')
+        if analysis and analysis.get('precedent_analysis'):
+            precedent_rows=''.join('<li>'+links([p['policy_ref']],'policy')+'<p>相似点：'+esc(p['similarities'])+'</p><p>差异：'+esc(p['differences'])+'</p></li>' for p in analysis['precedent_analysis'])
+            analysis_html += '<h4>先例对照</h4><ul>'+precedent_rows+'</ul>'
         modes = f'Advocate: {result["modes"]["advocate"]} / Judge: {result["modes"]["judge"]}'
         panels.append(f'''<article id="{prefix}" role="tabpanel" aria-labelledby="tab-{i}" {"hidden" if i else ""}>
 <div class="case-head"><div><p class="eyebrow">{esc(origin)}</p><h2>{esc(result['case_id'])}</h2></div><div class="pill">{esc(decision)}</div></div>
@@ -136,6 +148,7 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
 <section><h3>Judge 如何看双方观点</h3>{analysis_html}</section>
 {handoff_html}
 {provenance_html}
+{policy_application_html}
 {supplement_html}
 {adjustment_html}
 <section><h3>双方陈述与回应</h3><p class="muted">offline_placeholder 只摘录已有陈述，不代表已完成真实 Agent 辩论。</p><div class="columns">{''.join(arguments)}</div></section>

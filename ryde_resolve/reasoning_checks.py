@@ -28,7 +28,7 @@ def evidence_categories(snapshot, refs):
             categories.add('contact_record' if any(isinstance(v, dict) and v.get('type') == 'call' for v in values) else 'statement')
         elif kind == 'derived_metric' or any(p.startswith(('/fare_breakdown', '/reference_route', '/gps_telemetry')) for p in paths):
             categories.add('measurement')
-        elif kind in ('record', 'event_record', 'trip_context'):
+        elif kind in ('record', 'event_record', 'trip_context', 'traffic_record'):
             categories.add('record')
         else:
             categories.add('context')
@@ -77,7 +77,11 @@ def check_finding_support(snapshot, output):
             elif kinds <= {'measurement', 'history', 'context'}:
                 errors.append('RESPONSIBILITY_FROM_ARITHMETIC: ' + label)
         if topic == 'route_justification' and ft in {'observation', 'inference'}:
-            if not verified_route_records(snapshot, finding['evidence_refs']):
+            from .policy_v21 import application
+            policy = application(snapshot)
+            expected = next((c for c in policy['conditions'] if c['condition_id']=='route_justification'),None) if policy else None
+            source_bound = expected and expected['status']=='met' and set(finding['evidence_refs']) & set(expected['evidence_refs'])
+            if not source_bound and not verified_route_records(snapshot, finding['evidence_refs']):
                 errors.append('ROUTE_CONTEXT_NOT_VERIFIED: ' + label)
     if final and not any(f.get('finding_type') == 'inference' and f.get('topic') == 'responsibility'
                          for f in output['findings']):
@@ -139,6 +143,17 @@ def check_case_analysis(snapshot, output, arguments=None):
         if not issue or response['status'] != 'resolved': continue
         if issue['category'] == 'requires_clarification':
             errors.append('CANNOT_SELF_RESOLVE_POLICY_OR_DATA: ' + issue['code'])
+            continue
+        from .policy_v21 import application,policy_refs
+        applied=application(snapshot)
+        if applied:
+            required_sections=['1.3','1.4'] if snapshot['evidence_pack']['dispute_type']=='route_deviation' else ['3.2','3.3']
+            needed=policy_refs(snapshot,required_sections)
+            if not set(needed)<=set(response['policy_refs']):
+                errors.append('POLICY_REVIEW_RESPONSE_BASIS_MISSING')
+            relevant=[c for c in applied['conditions'] if c['condition_id'] in applied['material_condition_ids']]
+            if (applied['permitted_decision'] is None or any(c['status']=='unknown' or not set(response['evidence_refs']) & set(c['evidence_refs']) for c in relevant)):
+                errors.append('POLICY_REVIEW_CANNOT_CLEAR_MATERIAL_GAP')
             continue
         rows = verified_route_records(snapshot, response['evidence_refs'])
         # Both context and refund rules must be considered; arbitrary P IDs are not enough.

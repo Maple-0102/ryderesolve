@@ -5,7 +5,7 @@ import json
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def judge_output_schema():
+def judge_output_schema(policy_bound=False, arguments=None):
     """Complete Judge shape without any case-specific expected decision or scoring labels."""
     string = {'type': 'string'}
     strings = {'type': 'array', 'items': string}
@@ -17,6 +17,21 @@ def judge_output_schema():
     }
     analysis = json.loads((ROOT / 'schemas/judge-analysis.schema.json').read_text())
     ledger = analysis['properties']['argument_assessments']['items']['properties']
+    if policy_bound:
+        analysis['required'].append('precedent_analysis')
+        analysis['properties']['argument_assessments']['items']['required'].append('assessment_scope')
+        ledger['assessment_scope']['description'] = 'communication_act assesses ONLY the literal recorded message, notice or acknowledgment, never location, traffic or all-time absence of consent.'
+    if arguments is not None:
+        from .reasoning_checks import argument_paths
+        all_paths=[]
+        for side in ('rider','driver'):
+            paths=sorted(argument_paths(arguments,side));all_paths.extend(paths)
+            listing=analysis['properties']['sides']['properties'][side]['properties']['argument_refs']
+            listing.update(minItems=len(paths),maxItems=len(paths),description='List EVERY actual path for this side in BOTH rounds, including repeated wording; do not deduplicate by claim text.')
+            if paths:listing['items']['enum']=paths
+        rows=analysis['properties']['argument_assessments']
+        rows.update(minItems=len(all_paths),maxItems=len(all_paths))
+        if all_paths:rows['items']['properties']['argument_ref']['enum']=sorted(all_paths)
     ledger['assessment']['description'] = (
         'Rate the ORIGINAL complete claim, not a corrected paraphrase. supported requires every substantive clause. '
         'A charge-based refund rule does not support a claim that refund requires proving the detour was unjustified.')
