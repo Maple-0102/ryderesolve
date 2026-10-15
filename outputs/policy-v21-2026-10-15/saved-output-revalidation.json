@@ -1,0 +1,58 @@
+{
+  "kind": "Offline revalidation of saved real-model outputs after stricter contact chronology and acknowledgment bounds; no model calls.",
+  "checks": [
+    {
+      "source_artifact": "judge-release.json",
+      "exercise_id": "V21-DISP-001",
+      "errors": [],
+      "warnings": [
+        {
+          "code": "NO_FINDINGS",
+          "path": "/judge/findings",
+          "message": "The decision has no findings to inspect"
+        },
+        {
+          "code": "SEMANTIC_CHECK_LIMITATION",
+          "message": "Typed checks cannot prove free-text entailment, evidence authenticity or LLM fairness."
+        }
+      ]
+    },
+    {
+      "source_artifact": "judge-release.json",
+      "exercise_id": "V21-DISP-002",
+      "errors": [],
+      "warnings": [
+        {
+          "code": "NO_FINDINGS",
+          "path": "/judge/findings",
+          "message": "The decision has no findings to inspect"
+        },
+        {
+          "code": "SEMANTIC_CHECK_LIMITATION",
+          "message": "Typed checks cannot prove free-text entailment, evidence authenticity or LLM fairness."
+        }
+      ]
+    },
+    {
+      "source_artifact": "judge-release.json",
+      "exercise_id": "V21-DISP-003",
+      "errors": [],
+      "warnings": [
+        {
+          "code": "SEMANTIC_CHECK_LIMITATION",
+          "message": "Typed checks cannot prove free-text entailment, evidence authenticity or LLM fairness."
+        }
+      ]
+    },
+    {
+      "source_artifact": "fare-replayed-advocates/DISP-003.run.json",
+      "errors": [],
+      "warnings": [
+        {
+          "code": "SEMANTIC_CHECK_LIMITATION",
+          "message": "Typed checks cannot prove free-text entailment, evidence authenticity or LLM fairness."
+        }
+      ]
+    }
+  ]
+}

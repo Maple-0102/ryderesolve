@@ -44,11 +44,19 @@ node tests/test_ui_script.cjs outputs/offline-check/ryde-evaluation.html
 
 These checks include local HTTP fixtures and isolated package installation, but do not call paid models. CI runs on Windows and Linux with Python 3.12 and 3.14; check the PR's current commit. POSIX permission tests are skipped on Windows and run on Linux. Keep `scorer-only-labels.json`, expected outcomes and original source archives outside model inputs.
 
-The [2026-10-13 evaluation record](docs/VALIDATION-2026-10-13.md) and [saved live run](outputs/team-live-2026-10-13/ryde-evaluation.html) predate Policy v2.1. Their results do not establish model quality on the current snapshots. The official-data update has been validated offline; live Advocate/Judge evaluation under the new rules remains pending.
+The [2026-10-13 evaluation record](docs/VALIDATION-2026-10-13.md) and [saved live run](outputs/team-live-2026-10-13/ryde-evaluation.html) predate Policy v2.1. Their results do not establish model quality on the current snapshots. Policy v2.1 binding is implemented in this integration branch. See the [2026-10-15 integration and validation record](docs/POLICY-V21-INTEGRATION-2026-10-15.md). Three same-version live Judge checks passed; the successful Fare integration reuses four previously generated real Advocate outputs with one new live Judge call. A fresh five-call pipeline rerun has not been claimed. The saved outputs also pass offline revalidation after the later contact/acknowledgment patch.
+
+The current policy-derived Judge development suite is available separately:
+
+```bash
+.venv/bin/python -m evaluation.run_judge_suite --suite official-v21 --judge vertex --thinking-level LOW --output outputs/judge-v21-local.json
+```
+
+This command makes three paid Judge calls with hand-authored Advocate arguments. These are development expectations derived from the policy, not an official answer key or a holdout.
 
 ## Run the live Gemini pipeline
 
-Live runs consume the caller's Google Cloud quota. Use your own authorization. The current adapter expects the SDK at `.local/google-cloud-sdk/bin/gcloud` and Application Default Credentials (ADC) at `.local/gcloud/application_default_credentials.json`. The ADC quota project must match the configured project, and the credential file requires mode `600`. Use Linux or WSL for this adapter; keep credentials and machine-specific settings under the ignored `.local/` directory.
+Live runs consume the caller's Google Cloud quota. Use your own authorization. The current adapter expects the SDK at `.local/google-cloud-sdk/bin/gcloud` and Application Default Credentials (ADC) at `.local/gcloud/application_default_credentials.json`. The ADC quota project must match the configured project, and the credential file requires mode `600`. Use macOS, Linux or Windows through WSL for this adapter; keep credentials and machine-specific settings under the ignored `.local/` directory.
 
 Example `.local/vertex-config.json`, matching the saved baseline configuration:
 
@@ -70,6 +78,6 @@ The ADP adapter is present, but a deployed Tencent ADP application has not been 
 
 ## Remaining integration work
 
-- Obtain authoritative clarification of the embedded eight-minute no-show threshold and its relationship to Policy v2.1 section 2.1.
-- Review the updated Advocate/Judge prompts and rerun all three official cases with current snapshots. DISP-001 exceeds the policy's 2 km route threshold and requires human adjudication.
+- Resolve the sample/threshold and no-show source discrepancies in the [detailed policy questions](docs/POLICY-QUESTIONS-2026-10-15.zh-CN.md). Current conservative handling is explicit and is not an organizer clarification.
+- Team-review the merged Evidence/Advocate/Judge interfaces and complete a fresh full live pipeline run when the policy decisions or upstream outputs change. DISP-001 exceeds the 2 km route threshold and requires human adjudication.
 - Keep evaluations tied to their exact source and policy versions; do not combine older results into a new accuracy claim.

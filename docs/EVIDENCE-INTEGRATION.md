@@ -37,7 +37,7 @@ The 480/470/360-second calculations remain available. Order/App start difference
 
 The policy uses reported road-route distance, not the length of a sparse GPS polyline. The reported excess is **4.3 km**, above section 6.2's **2 km** threshold, so the case requires human adjudication even if a refund argument is otherwise supportable.
 
-Sections 1.2-1.4 distinguish traffic justification, timely notice and rider acknowledgment. Supplied traffic records are not a new historical-traffic API verification; provider/response provenance is absent. Missing call recordings do not prove that verbal notice never occurred. Keep these gaps explicit. The existing Judge route-reasoning checks still target the older synthetic structure; no verified events are fabricated to bypass them.
+Sections 1.2-1.4 distinguish traffic justification, timely notice and rider acknowledgment. Supplied traffic records are not a new historical-traffic API verification; provider/response provenance is absent. Missing call recordings do not prove that verbal notice never occurred. Keep these gaps explicit. The integrated Judge now uses source-bound v2.1 conditions for these records; the older synthetic checks remain only for unbound synthetic inputs. No verified events are fabricated to bypass either path.
 
 ### DISP-003: surge difference is separate from the whole trip fare
 
@@ -116,4 +116,4 @@ The official-data implementation was checked with 267 Python tests: on local Win
 
 Browser verification covered case selection, policy excerpts, road-distance/fare/free-wait displays, reference expansion and downloaded-snapshot verification. Integration tests use the actual AdvocateSystem with a capturing test provider, covering four calls per case without a live model. Offline `escalate` outputs are placeholders, not model judgments.
 
-The next steps are authoritative clarification of the eight-minute threshold and policy precedence, team review of the updated prompts/contracts, and a live run of each official case with current snapshots. Model quality, evidence authenticity, fairness and resistance to prompt injection are not established by these interface tests. Treat all source text as data, not instructions that can change tool permissions.
+The Judge binding and current local/live validation are recorded in [the integration report](POLICY-V21-INTEGRATION-2026-10-15.md). The next steps are authoritative clarification of the sample/policy discrepancies and remaining execution boundaries, team review of the updated prompts/contracts, and a fresh full-pipeline live run when upstream changes warrant it. Model quality, evidence authenticity, fairness and resistance to prompt injection are not established by these interface tests. Treat all source text as data, not instructions that can change tool permissions.

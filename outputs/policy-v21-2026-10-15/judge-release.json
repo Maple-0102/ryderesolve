@@ -1,0 +1,1036 @@
+{
+  "generated_at": "2026-10-15T07:37:47.306744+00:00",
+  "mode": "google_vertex",
+  "model_quality_measured": true,
+  "metrics": {
+    "by_expected_decision": {
+      "uphold_charge": {
+        "matched": 0,
+        "total": 0
+      },
+      "refund_full": {
+        "matched": 0,
+        "total": 0
+      },
+      "refund_partial": {
+        "matched": 1,
+        "total": 1
+      },
+      "escalate": {
+        "matched": 2,
+        "total": 2
+      }
+    },
+    "confusion": {
+      "uphold_charge": {},
+      "refund_full": {},
+      "refund_partial": {
+        "refund_partial": 1
+      },
+      "escalate": {
+        "escalate": 2
+      }
+    },
+    "invalid_outputs": 0,
+    "false_escalations": 0,
+    "unsafe_decisive_recommendations": 0,
+    "refund_amount_mismatches": 0,
+    "error_counts": {},
+    "latency_ms": {
+      "median": 19515.39,
+      "p95_sample": 20047.57
+    },
+    "recorded_token_usage": {
+      "promptTokenCount": 85292,
+      "candidatesTokenCount": 9032,
+      "totalTokenCount": 94324
+    },
+    "calls_with_recorded_usage": 3,
+    "usage_complete": true,
+    "boundary": "Descriptive results on this small shared-seed suite only. Invalid outputs fail scoring; they are not correct escalations. Token sums are not billed costs."
+  },
+  "limitations": "Small synthetic exercise set; behaviour matching is not real-world accuracy or fairness. Offline scores test the harness only.",
+  "summary": {
+    "total": 3,
+    "all_checks_pass": 3,
+    "required_review": {
+      "matched": 2,
+      "total": 2
+    },
+    "resolvable_cases": {
+      "matched": 1,
+      "total": 1
+    },
+    "order_pairs": {}
+  },
+  "results": [
+    {
+      "exercise_id": "V21-DISP-001",
+      "purpose": "Reported 4.3 km exceeds the human-review threshold; do not copy the embedded example answer.",
+      "input_sha256": "c6b17186154ed6d6eaa42a0151743a70a504eed7142d3f4b963201f77c1db75c",
+      "snapshot_id": "1b202347c221f10f92a7bc372740c8e4d380a4214d9acfa9b049eafb2bdfc8dc",
+      "prompt_sha256": "325b32ca0ca027806c892a5805fa711ad408f2721af5ba8386a85dd6e52c6ab5",
+      "expected": {
+        "decision": "escalate",
+        "refund_amount": null
+      },
+      "model_decision": "escalate",
+      "effective_decision": "escalate",
+      "shared_contract_pass": true,
+      "all_checks_pass": true,
+      "behaviour_match": true,
+      "accepted_output": {
+        "case_id": "DISP-001",
+        "decision": "escalate",
+        "refund_amount": null,
+        "currency": "SGD",
+        "amount_unit": "major",
+        "findings": [],
+        "uncertainties": [
+          "Reported road-route deviation is 4.3 km, exceeding the 2.0 km threshold under Policy v2.1 Section 6.2 which mandates human review.",
+          "Trip call recording is absent, preventing definitive verification of whether oral route notification or agreement took place under Policy v2.1 Sections 1.2 and 1.4.",
+          "Sample traffic records lack independent historical traffic API provenance required by Policy v2.1 Section 1.4."
+        ],
+        "escalate_to_human": true,
+        "confidence": 0.85,
+        "case_analysis": {
+          "question": "Whether the driver's route deviation of 4.3 km and resulting fare increase of SGD 6.50 are justified and eligible for an autonomous AI ruling or require mandatory human review under Policy v2.1 Section 6.2.",
+          "sides": {
+            "rider": {
+              "argument_refs": [
+                "/opening/rider/claims/0",
+                "/response/rider/claims/0"
+              ],
+              "assessment": "partly_supported",
+              "reason": "The recorded road distance difference of 4.3 km and fare increase of SGD 6.50 are confirmed by trip records, but entitlement to an autonomous refund is blocked by the human-review threshold.",
+              "evidence_refs": [
+                "E-027",
+                "E-035",
+                "E-036",
+                "E-037",
+                "E-038",
+                "E-039",
+                "E-044",
+                "E-045"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S1.2",
+                "P-RYDE-2.1-S1.3",
+                "P-RYDE-2.1-S1.4",
+                "P-RYDE-2.1-S6.2"
+              ]
+            },
+            "driver": {
+              "argument_refs": [
+                "/opening/driver/claims/0",
+                "/response/driver/claims/0"
+              ],
+              "assessment": "partly_supported",
+              "reason": "Traffic incident records indicating a vehicle fire on PIE eastbound exist in the case data, but API provenance is unverified and cannot waive mandatory human review for a >2 km deviation.",
+              "evidence_refs": [
+                "E-041",
+                "E-042",
+                "E-043"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S1.2",
+                "P-RYDE-2.1-S1.3",
+                "P-RYDE-2.1-S1.4",
+                "P-RYDE-2.1-S6.2"
+              ]
+            }
+          },
+          "disputed_points": [
+            {
+              "issue": "Route deviation distance exceeding AI adjudication limit",
+              "reasoning": "The actual road distance was 24.8 km compared to 20.5 km optimal, yielding an excess of 4.3 km. Under Policy v2.1 Section 6.2, route deviations exceeding 2 km require human review.",
+              "evidence_refs": [
+                "E-034",
+                "E-035",
+                "E-036",
+                "E-040",
+                "E-044"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S6.2"
+              ]
+            },
+            {
+              "issue": "Adequacy of rider notification and acknowledgment",
+              "reasoning": "Chat logs show the rider questioned the route at 13:24 and the driver replied without explaining traffic. Whether verbal notice occurred prior to detour cannot be verified without call recordings.",
+              "evidence_refs": [
+                "E-023",
+                "E-024"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S1.2",
+                "P-RYDE-2.1-S1.4"
+              ]
+            }
+          ],
+          "review_responses": [
+            {
+              "issue_code": "ROUTE_DISTANCE_REQUIRES_HUMAN_REVIEW",
+              "status": "unresolved",
+              "explanation": "Policy v2.1 Section 6.2 explicitly stipulates that route deviation disputes where deviation exceeds 2 km must be escalated to human review.",
+              "evidence_refs": [
+                "E-035",
+                "E-040",
+                "E-044"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S6.2"
+              ]
+            },
+            {
+              "issue_code": "TRAFFIC_API_PROVENANCE_MISSING",
+              "status": "unresolved",
+              "explanation": "Historical traffic records are provided as static sample entries without verification from an external or authenticated traffic API per Section 1.4.",
+              "evidence_refs": [
+                "E-041",
+                "E-042",
+                "E-043"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S1.4"
+              ]
+            },
+            {
+              "issue_code": "VERBAL_ROUTE_NOTICE_RECORD_MISSING",
+              "status": "unresolved",
+              "explanation": "No call recordings are available to determine whether verbal notice and acknowledgment took place per Section 1.2 and 1.4.",
+              "evidence_refs": [
+                "E-023",
+                "E-024"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S1.2",
+                "P-RYDE-2.1-S1.4"
+              ]
+            },
+            {
+              "issue_code": "ROUTE_JUSTIFICATION_REQUIRES_REVIEW",
+              "status": "unresolved",
+              "explanation": "Whether the reroute justifies the excess distance fare cannot be definitively resolved by autonomous agent due to the hard escalation gate of 4.3 km deviation.",
+              "evidence_refs": [
+                "E-027",
+                "E-041",
+                "E-042",
+                "E-044"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S1.1",
+                "P-RYDE-2.1-S1.3",
+                "P-RYDE-2.1-S6.2"
+              ]
+            }
+          ],
+          "missing_information": [
+            "Trip audio / in-app call recordings to check for verbal route notification before the deviation point.",
+            "Authenticated traffic API telemetry logs verifying congestion and road closure timeline on the PIE corridor.",
+            "Human review determination regarding excess road distance of 4.3 km pursuant to Section 6.2."
+          ],
+          "argument_assessments": [
+            {
+              "argument_ref": "/opening/rider/claims/0",
+              "assessment": "partly_supported",
+              "reason": "Rider asserts that reported actual distance is 24.8 km and recommended is 20.5 km; excess distance of 4.3 km is mathematically supported, but excess-distance fare refund requires human review under Section 6.2.",
+              "supporting_evidence_refs": [
+                "E-034",
+                "E-035",
+                "E-036",
+                "E-044"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S1.3",
+                "P-RYDE-2.1-S6.2"
+              ],
+              "missing_information": [
+                "Human review resolution for route deviation > 2 km."
+              ],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/driver/claims/0",
+              "assessment": "partly_supported",
+              "reason": "Driver notes supplied PIE traffic records show vehicle fire and congestion during the trip; records exist in sample data but lack authenticated API provenance and do not bypass the Section 6.2 escalation threshold.",
+              "supporting_evidence_refs": [
+                "E-041",
+                "E-042"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S1.4",
+                "P-RYDE-2.1-S6.2"
+              ],
+              "missing_information": [
+                "Independent historical traffic API provenance."
+              ],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/rider/claims/0",
+              "assessment": "partly_supported",
+              "reason": "Rider repeats that reported actual distance is 24.8 km and recommended is 20.5 km; the reported excess distance is verified by trip telemetry, but autonomous refund is barred by Section 6.2.",
+              "supporting_evidence_refs": [
+                "E-034",
+                "E-035",
+                "E-036",
+                "E-044"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S1.3",
+                "P-RYDE-2.1-S6.2"
+              ],
+              "missing_information": [
+                "Human review resolution for route deviation > 2 km."
+              ],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/driver/claims/0",
+              "assessment": "partly_supported",
+              "reason": "Driver repeats that supplied PIE traffic records show vehicle fire and congestion; incident reports match the timeframe but API provenance is absent and deviation exceeds 2 km.",
+              "supporting_evidence_refs": [
+                "E-041",
+                "E-042"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S1.4",
+                "P-RYDE-2.1-S6.2"
+              ],
+              "missing_information": [
+                "Independent historical traffic API provenance."
+              ],
+              "assessment_scope": "incident_fact"
+            }
+          ],
+          "decision_conditions": [
+            {
+              "condition_id": "route_justification",
+              "status": "met",
+              "reason": "Supplied traffic records TC-001 and TC-002 document a vehicle fire and heavy congestion on PIE eastbound during the trip window.",
+              "evidence_refs": [
+                "E-041",
+                "E-042"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S1.1",
+                "P-RYDE-2.1-S1.4"
+              ]
+            },
+            {
+              "condition_id": "distance_tolerance",
+              "status": "not_met",
+              "reason": "The reported road deviation of 4.3 km exceeds the 1.0 km policy tolerance under Section 1.3.",
+              "evidence_refs": [
+                "E-035",
+                "E-040",
+                "E-044"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S1.3"
+              ]
+            },
+            {
+              "condition_id": "timely_route_notice",
+              "status": "unknown",
+              "reason": "Chat logs do not demonstrate advance notice or explanation of traffic before or at the deviation, and no trip call recordings exist.",
+              "evidence_refs": [
+                "E-023",
+                "E-024"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S1.2"
+              ]
+            },
+            {
+              "condition_id": "rider_acknowledgment",
+              "status": "unknown",
+              "reason": "Rider asked if they were going the right way; there is no documented agreement to a reroute in chat and verbal communications are unrecorded.",
+              "evidence_refs": [
+                "E-023",
+                "E-024"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S1.4"
+              ]
+            },
+            {
+              "condition_id": "extra_charge",
+              "status": "unknown",
+              "reason": "Entitlement to extra distance fare cannot be finalized while mandatory escalation applies under Section 6.2.",
+              "evidence_refs": [
+                "E-027",
+                "E-039",
+                "E-045"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S1.3",
+                "P-RYDE-2.1-S6.2"
+              ]
+            }
+          ],
+          "precedent_analysis": [
+            {
+              "policy_ref": "P-RYDE-2.1-S7.1",
+              "similarities": "Both disputes involve a route deviation with traffic congestion on the original route and lack of prior notification in in-app chat.",
+              "differences": "In precedent DISP-2026-0089 the deviation was 1.8 km (under the 2 km threshold allowing AI resolution), whereas the current case has a 4.3 km deviation which triggers mandatory human escalation under Section 6.2."
+            }
+          ]
+        },
+        "notes": [
+          "Autonomous resolution is barred by Policy v2.1 Section 6.2 because the reported route deviation of 4.3 km exceeds 2.0 km.",
+          "Case escalated to Human Review with case file and evidence prepared."
+        ]
+      },
+      "transport": {
+        "provider": "google_cloud",
+        "requested_model": "gemini-3.8-flash",
+        "reported_model": "gemini-3.8-flash",
+        "location": "global",
+        "thinking_level": "LOW",
+        "max_output_tokens": 16384,
+        "usage": {
+          "promptTokenCount": 31553,
+          "candidatesTokenCount": 3435,
+          "totalTokenCount": 34988
+        },
+        "response_schema_sha256": "53fed36af5041c895a9aa8833649ed3eda59aefb6099f553696ef0c2bb1439dd",
+        "duration_ms": 20009.96,
+        "finish_reason": "STOP"
+      },
+      "errors": [],
+      "warnings": [
+        {
+          "code": "NO_FINDINGS",
+          "path": "/judge/findings",
+          "message": "The decision has no findings to inspect"
+        },
+        {
+          "code": "SEMANTIC_CHECK_LIMITATION",
+          "message": "Typed checks cannot prove free-text entailment, evidence authenticity or LLM fairness."
+        }
+      ],
+      "duration_ms": 20047.57,
+      "order_pair": null,
+      "split": "policy_v21_development",
+      "data_origin": "organizer_sample",
+      "policy_origin": "organizer_sample",
+      "policy_provenance_sha256": "d61fd366084793d14a6859b697979155bf347ccb2f5a7fb9c1e3d07b47862db0",
+      "rejected_output": null
+    },
+    {
+      "exercise_id": "V21-DISP-002",
+      "purpose": "Five-minute scheduled free wait is defined; embedded eight-minute clock/source precedence remain unresolved.",
+      "input_sha256": "b19a2f5572b570781d3a4c455cfe63abf1b550b205cc2c872cda779fb8e9dbcd",
+      "snapshot_id": "70f7cb30bed0e3d0fa81d6aeeae7f10bc77cbc43ee58d832df999a66ac56eeb3",
+      "prompt_sha256": "325b32ca0ca027806c892a5805fa711ad408f2721af5ba8386a85dd6e52c6ab5",
+      "expected": {
+        "decision": "escalate",
+        "refund_amount": null
+      },
+      "model_decision": "escalate",
+      "effective_decision": "escalate",
+      "shared_contract_pass": true,
+      "all_checks_pass": true,
+      "behaviour_match": true,
+      "accepted_output": {
+        "case_id": "DISP-002",
+        "decision": "escalate",
+        "refund_amount": null,
+        "currency": "SGD",
+        "amount_unit": "major",
+        "findings": [],
+        "uncertainties": [
+          "Unresolved conflict between standalone Policy v2.1 Section 2.1 (permitting cancellation after 5 free wait minutes from scheduled pickup) and embedded cancellation policy specifying an 8-minute no-show threshold without a defined clock start.",
+          "Unresolved start baseline for the embedded 8-minute no-show threshold relative to scheduled pickup time versus driver arrival time."
+        ],
+        "escalate_to_human": true,
+        "confidence": 0.8,
+        "case_analysis": {
+          "question": "Whether the driver was entitled to apply a $5.00 no-show cancellation fee at 08:51:00 given the conflict between Policy v2.1 Section 2.1 (5 minutes free wait from scheduled pickup) and the embedded policy 8-minute no-show threshold.",
+          "sides": {
+            "rider": {
+              "argument_refs": [
+                "/opening/rider/claims/0",
+                "/response/rider/claims/0"
+              ],
+              "assessment": "unresolved",
+              "reason": "The rider notes cancellation occurred 6 minutes after scheduled pickup and requests reconciliation of standalone and embedded rules, which cannot be resolved autonomously.",
+              "evidence_refs": [
+                "E-003",
+                "E-006",
+                "E-037",
+                "E-039"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S2.1",
+                "P-RYDE-2.1-S2.2",
+                "P-RYDE-2.1-S2.3",
+                "P-RYDE-2.1-S6.3"
+              ]
+            },
+            "driver": {
+              "argument_refs": [
+                "/opening/driver/claims/0",
+                "/response/driver/claims/0"
+              ],
+              "assessment": "partly_supported",
+              "reason": "The driver's claim that app records show arrival, messages, and an unanswered call attempt before cancellation is supported by telemetry and chat records, but does not resolve the policy conflict regarding cancellation entitlement.",
+              "evidence_refs": [
+                "E-017",
+                "E-018",
+                "E-019",
+                "E-020",
+                "E-021",
+                "E-026",
+                "E-029"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S2.1",
+                "P-RYDE-2.1-S2.2",
+                "P-RYDE-2.1-S2.3",
+                "P-RYDE-2.1-S6.3"
+              ]
+            }
+          },
+          "disputed_points": [
+            {
+              "issue": "Applicability of cancellation fee under conflicting waiting threshold rules",
+              "reasoning": "Under Policy v2.1 Section 2.1, free wait is 5 minutes from scheduled pickup (08:45:00 to 08:50:00), making the 08:51:00 cancellation compliant. However, embedded cancellation policy defines an 8-minute no-show threshold without an established clock basis, creating an irreconcilable policy precedence conflict.",
+              "evidence_refs": [
+                "E-003",
+                "E-006",
+                "E-035",
+                "E-037",
+                "E-039"
+              ],
+              "policy_refs": [
+                "P-003",
+                "P-004",
+                "P-RYDE-2.1-S2.1",
+                "P-RYDE-2.1-S2.2"
+              ]
+            }
+          ],
+          "review_responses": [
+            {
+              "issue_code": "NO_SHOW_THRESHOLD_CLOCK_UNSPECIFIED",
+              "status": "unresolved",
+              "explanation": "The embedded no-show threshold of 8 minutes specifies no start event or governing clock, leaving it ambiguous whether it runs from arrival (08:43:00) or scheduled pickup (08:45:00).",
+              "evidence_refs": [
+                "E-003",
+                "E-004",
+                "E-005",
+                "E-006"
+              ],
+              "policy_refs": [
+                "P-004",
+                "P-RYDE-2.1-S2.1"
+              ]
+            },
+            {
+              "issue_code": "POLICY_SOURCE_CONFLICT",
+              "status": "unresolved",
+              "explanation": "Precedence between embedded case policy (8-minute threshold) and standalone Policy v2.1 Sections 2.1-2.2 (cancel after 5 free minutes from scheduled pickup) is undefined and requires human policy determination.",
+              "evidence_refs": [
+                "E-003",
+                "E-006",
+                "E-037",
+                "E-039"
+              ],
+              "policy_refs": [
+                "P-004",
+                "P-RYDE-2.1-S2.1",
+                "P-RYDE-2.1-S2.2"
+              ]
+            }
+          ],
+          "missing_information": [
+            "Authoritative platform guidance determining precedence between Policy v2.1 Section 2.1 and embedded trip cancellation parameters.",
+            "Definition of the clock start for the 8-minute no-show threshold."
+          ],
+          "argument_assessments": [
+            {
+              "argument_ref": "/opening/rider/claims/0",
+              "assessment": "not_factual_claim",
+              "reason": "\"The recorded cancellation was six minutes after scheduled pickup. Please reconcile the standalone free-wait rule with the embedded threshold.\" contains an arithmetic observation and a procedural request for policy reconciliation rather than a verifiable incident claim.",
+              "supporting_evidence_refs": [],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S2.1",
+                "P-RYDE-2.1-S2.2"
+              ],
+              "missing_information": [
+                "Rider factual assertions regarding pickup events or arrival time."
+              ],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/driver/claims/0",
+              "assessment": "supported",
+              "reason": "\"App records include arrival, messages and an unanswered call attempt before cancellation.\" accurately reports the logged events in the chat logs and app telemetry.",
+              "supporting_evidence_refs": [
+                "E-017",
+                "E-018",
+                "E-019",
+                "E-020",
+                "E-021",
+                "E-026",
+                "E-029"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S2.3"
+              ],
+              "missing_information": [],
+              "assessment_scope": "communication_act"
+            },
+            {
+              "argument_ref": "/response/rider/claims/0",
+              "assessment": "not_factual_claim",
+              "reason": "\"The recorded cancellation was six minutes after scheduled pickup. Please reconcile the standalone free-wait rule with the embedded threshold.\" repeats the opening procedural request without new factual evidence.",
+              "supporting_evidence_refs": [],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S2.1",
+                "P-RYDE-2.1-S2.2"
+              ],
+              "missing_information": [
+                "Rider factual assertions regarding pickup events or arrival time."
+              ],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/driver/claims/0",
+              "assessment": "supported",
+              "reason": "\"App records include arrival, messages and an unanswered call attempt before cancellation.\" is substantiated by recorded system and communication logs.",
+              "supporting_evidence_refs": [
+                "E-017",
+                "E-018",
+                "E-019",
+                "E-020",
+                "E-021",
+                "E-026",
+                "E-029"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S2.3"
+              ],
+              "missing_information": [],
+              "assessment_scope": "communication_act"
+            }
+          ],
+          "decision_conditions": [
+            {
+              "condition_id": "no_show_charge",
+              "status": "unknown",
+              "reason": "Entitlement to the no-show cancellation fee depends on resolving the governing wait clock and policy precedence between Section 2.1 and the 8-minute embedded rule.",
+              "evidence_refs": [
+                "E-003",
+                "E-006",
+                "E-035",
+                "E-037",
+                "E-039"
+              ],
+              "policy_refs": [
+                "P-001",
+                "P-004",
+                "P-RYDE-2.1-S2.1",
+                "P-RYDE-2.1-S2.2"
+              ]
+            },
+            {
+              "condition_id": "free_wait",
+              "status": "met",
+              "reason": "Driver waited 6 minutes past scheduled pickup time (08:45:00 to 08:51:00), exceeding the 5-minute free wait requirement under Section 2.1.",
+              "evidence_refs": [
+                "E-003",
+                "E-006",
+                "E-037",
+                "E-039"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S2.1"
+              ]
+            },
+            {
+              "condition_id": "driver_contact",
+              "status": "met",
+              "reason": "Driver sent multiple in-app chat messages and initiated an unanswered call of 22 seconds prior to cancelling, fulfilling Section 2.3 contact obligations.",
+              "evidence_refs": [
+                "E-017",
+                "E-018",
+                "E-019",
+                "E-020",
+                "E-021",
+                "E-029"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S2.3"
+              ]
+            },
+            {
+              "condition_id": "driver_arrival",
+              "status": "met",
+              "reason": "Telemetry and app event confirm driver arrived at pickup coordinates at 08:43:00, prior to the scheduled pickup time of 08:45:00.",
+              "evidence_refs": [
+                "E-001",
+                "E-004",
+                "E-013",
+                "E-026"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S2.1",
+                "P-RYDE-2.1-S2.4"
+              ]
+            }
+          ],
+          "precedent_analysis": [
+            {
+              "policy_ref": "P-RYDE-2.1-S7.3",
+              "similarities": "Both involve a driver cancellation for rider no-show and a disputed $5.00 cancellation fee.",
+              "differences": "In DISP-2026-0211 the driver failed all contact obligations, whereas here the driver sent multiple messages and completed a call attempt per Section 2.3, leaving the open dispute focused on threshold clock conflicts."
+            }
+          ]
+        },
+        "notes": [
+          "Rider fraud flag raises confidence threshold to 95% under Section 6.3, precluding autonomous resolution in the presence of unresolved policy conflicts."
+        ]
+      },
+      "transport": {
+        "provider": "google_cloud",
+        "requested_model": "gemini-3.8-flash",
+        "reported_model": "gemini-3.8-flash",
+        "location": "global",
+        "thinking_level": "LOW",
+        "max_output_tokens": 16384,
+        "usage": {
+          "promptTokenCount": 29563,
+          "candidatesTokenCount": 2992,
+          "totalTokenCount": 32555
+        },
+        "response_schema_sha256": "53fed36af5041c895a9aa8833649ed3eda59aefb6099f553696ef0c2bb1439dd",
+        "duration_ms": 19493.21,
+        "finish_reason": "STOP"
+      },
+      "errors": [],
+      "warnings": [
+        {
+          "code": "NO_FINDINGS",
+          "path": "/judge/findings",
+          "message": "The decision has no findings to inspect"
+        },
+        {
+          "code": "SEMANTIC_CHECK_LIMITATION",
+          "message": "Typed checks cannot prove free-text entailment, evidence authenticity or LLM fairness."
+        }
+      ],
+      "duration_ms": 19515.39,
+      "order_pair": null,
+      "split": "policy_v21_development",
+      "data_origin": "organizer_sample",
+      "policy_origin": "organizer_sample",
+      "policy_provenance_sha256": "c128b15ddf3b8b0a81e45b0269e644398d7a6eb127bbbf2b8cda1f68528e2f3c",
+      "rejected_output": null
+    },
+    {
+      "exercise_id": "V21-DISP-003",
+      "purpose": "Apply the documented unnotified surge-only difference and retain the original fare.",
+      "input_sha256": "6bf5bb6646b948a694557df16c5e9a20532d213a932b75c8ad6a7e7acf8d1fac",
+      "snapshot_id": "9c5198fe0896addcd3b5f8262d53374ae97787df31b216bbd9d2299c0bb4c022",
+      "prompt_sha256": "325b32ca0ca027806c892a5805fa711ad408f2721af5ba8386a85dd6e52c6ab5",
+      "expected": {
+        "decision": "refund_partial",
+        "refund_amount": 4.5
+      },
+      "model_decision": "refund_partial",
+      "effective_decision": "refund_partial",
+      "shared_contract_pass": true,
+      "all_checks_pass": true,
+      "behaviour_match": true,
+      "accepted_output": {
+        "case_id": "DISP-003",
+        "decision": "refund_partial",
+        "refund_amount": 4.5,
+        "currency": "SGD",
+        "amount_unit": "major",
+        "findings": [
+          {
+            "finding": "The recorded $4.50 fare difference is solely attributable to a surge multiplier increase from 1.0x to 1.5x on an unchanged $9.00 surgeable subtotal, which was applied without rider notification as documented by the system surge log; under Sections 3.1, 3.2, 3.3, and 3.4, the rider is entitled to a full refund of the surge differential ($4.50) while retaining the original quoted base fare ($12.00).",
+            "evidence_refs": [
+              "E-015",
+              "E-017",
+              "E-021",
+              "E-022",
+              "E-023",
+              "E-024",
+              "E-025",
+              "E-026"
+            ],
+            "policy_refs": [
+              "P-RYDE-2.1-S3.1",
+              "P-RYDE-2.1-S3.2",
+              "P-RYDE-2.1-S3.3",
+              "P-RYDE-2.1-S3.4",
+              "P-RYDE-2.1-S3.5"
+            ],
+            "finding_type": "inference",
+            "topic": "responsibility",
+            "condition_refs": [
+              "fare_charge",
+              "surge_components",
+              "surge_timing",
+              "surge_notice"
+            ]
+          }
+        ],
+        "uncertainties": [],
+        "escalate_to_human": false,
+        "confidence": 0.98,
+        "case_analysis": {
+          "question": "Whether the rider is entitled to a refund of the $4.50 fare difference resulting from an unnotified surge multiplier increase from 1.0x to 1.5x between quote and pickup.",
+          "sides": {
+            "rider": {
+              "argument_refs": [
+                "/opening/rider/claims/0",
+                "/response/rider/claims/0"
+              ],
+              "assessment": "accepted",
+              "reason": "The rider's assertion that the upfront quote was SGD 12.00, the final fare was SGD 16.50, and the surge pricing log explicitly recorded rider_notified=false is completely supported by system records.",
+              "evidence_refs": [
+                "E-021",
+                "E-022",
+                "E-023",
+                "E-024",
+                "E-025"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4"
+              ]
+            },
+            "driver": {
+              "argument_refs": [
+                "/opening/driver/claims/0",
+                "/response/driver/claims/0"
+              ],
+              "assessment": "accepted",
+              "reason": "The driver side accurately observes that the fare breakdown reflects a multiplier change from 1.0x to 1.5x on an identical SGD 9.00 surgeable subtotal.",
+              "evidence_refs": [
+                "E-015",
+                "E-026"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.4",
+                "P-RYDE-2.1-S3.5"
+              ]
+            }
+          },
+          "disputed_points": [
+            {
+              "issue": "Entitlement to a refund for the surge difference when no notification was given prior to trip start.",
+              "reasoning": "Under Policy v2.1 Section 3.2, any surge multiplier increase between quote and trip start requires mandatory in-app notification before or at pickup. Section 3.3 stipulates that if a surge increases and the rider is not notified, the rider is entitled to a full refund of the surge differential. Here, the entire $4.50 difference is surge-related and the surge log confirms rider_notified=false.",
+              "evidence_refs": [
+                "E-015",
+                "E-021",
+                "E-022",
+                "E-024",
+                "E-026"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4"
+              ]
+            }
+          ],
+          "review_responses": [],
+          "missing_information": [],
+          "argument_assessments": [
+            {
+              "argument_ref": "/opening/rider/claims/0",
+              "assessment": "supported",
+              "reason": "The rider states that the quote was SGD 12, the charge was SGD 16.50, and the surge log records rider_notified=false, which is corroborated directly by trip records and surge pricing logs.",
+              "supporting_evidence_refs": [
+                "E-021",
+                "E-022",
+                "E-023",
+                "E-024",
+                "E-025"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/driver/claims/0",
+              "assessment": "supported",
+              "reason": "The driver states that the component breakdown records a multiplier increase from 1.0 to 1.5 and the same SGD 9 surgeable subtotal, which is confirmed by the fare breakdown and surge calculation records.",
+              "supporting_evidence_refs": [
+                "E-015",
+                "E-026"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.4",
+                "P-RYDE-2.1-S3.5"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/rider/claims/0",
+              "assessment": "supported",
+              "reason": "The rider reiterates that the quote was SGD 12, the charge was SGD 16.50, and rider_notified=false, which remains fully supported by the system evidence.",
+              "supporting_evidence_refs": [
+                "E-021",
+                "E-022",
+                "E-023",
+                "E-024",
+                "E-025"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/driver/claims/0",
+              "assessment": "supported",
+              "reason": "The driver reiterates that the breakdown reflects a multiplier shift from 1.0 to 1.5 on the same SGD 9 surgeable subtotal, verified by the fare breakdown record.",
+              "supporting_evidence_refs": [
+                "E-015",
+                "E-026"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.4",
+                "P-RYDE-2.1-S3.5"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            }
+          ],
+          "decision_conditions": [
+            {
+              "condition_id": "fare_charge",
+              "status": "not_met",
+              "reason": "The charged fare of $16.50 violates the upfront quote binding rule because the surge increase was unnotified, disallowing the additional $4.50 charge.",
+              "evidence_refs": [
+                "E-021",
+                "E-022",
+                "E-024",
+                "E-025"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.3"
+              ]
+            },
+            {
+              "condition_id": "surge_components",
+              "status": "met",
+              "reason": "The $4.50 difference is entirely attributable to the surge multiplier increasing on the unchanged $9.00 surgeable subtotal, with the booking fee remaining surge-exempt.",
+              "evidence_refs": [
+                "E-015",
+                "E-026"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.4",
+                "P-RYDE-2.1-S3.5"
+              ]
+            },
+            {
+              "condition_id": "surge_timing",
+              "status": "met",
+              "reason": "The surge window activated at 21:04:30, after the initial quote and prior to trip pickup/start at 21:05:00.",
+              "evidence_refs": [
+                "E-017",
+                "E-024"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3"
+              ]
+            },
+            {
+              "condition_id": "surge_notice",
+              "status": "not_met",
+              "reason": "System logs explicitly confirm that the rider was not notified of the surge multiplier increase (rider_notified=false, notification_method=null).",
+              "evidence_refs": [
+                "E-024"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3"
+              ]
+            }
+          ],
+          "precedent_analysis": [
+            {
+              "policy_ref": "P-RYDE-2.1-S7.2",
+              "similarities": "In DISP-2026-0142, an upfront quote was issued at 1.0x surge, surge increased prior to pickup, the rider was not notified, and the entire difference was attributable solely to the surge differential, resulting in a full refund of the surge differential.",
+              "differences": "The dispute amount in DISP-2026-0142 was $3.20 from a 1.4x surge on a $9.50 quote, whereas here the difference is $4.50 from a 1.5x surge on a $12.00 quote."
+            }
+          ]
+        },
+        "notes": [
+          "Refunding the $4.50 surge differential retains the $12.00 quoted fare, correctly categorized under local implementation rules as refund_partial of the $16.50 total recorded charge."
+        ]
+      },
+      "transport": {
+        "provider": "google_cloud",
+        "requested_model": "gemini-3.8-flash",
+        "reported_model": "gemini-3.8-flash",
+        "location": "global",
+        "thinking_level": "LOW",
+        "max_output_tokens": 16384,
+        "usage": {
+          "promptTokenCount": 24176,
+          "candidatesTokenCount": 2605,
+          "totalTokenCount": 26781
+        },
+        "response_schema_sha256": "53fed36af5041c895a9aa8833649ed3eda59aefb6099f553696ef0c2bb1439dd",
+        "duration_ms": 15616.04,
+        "finish_reason": "STOP"
+      },
+      "errors": [],
+      "warnings": [
+        {
+          "code": "SEMANTIC_CHECK_LIMITATION",
+          "message": "Typed checks cannot prove free-text entailment, evidence authenticity or LLM fairness."
+        }
+      ],
+      "duration_ms": 15631.67,
+      "order_pair": null,
+      "split": "policy_v21_development",
+      "data_origin": "organizer_sample",
+      "policy_origin": "organizer_sample",
+      "policy_provenance_sha256": "1d80219344461e616a8cfdee2852896961d2f6b887fe5ec0ad1024b2fc457af8",
+      "rejected_output": null
+    }
+  ],
+  "status": "complete",
+  "suite": "official-v21",
+  "thinking_level": "LOW",
+  "analysis_schema_sha256": "692d0018d7d8616d3a161c10068f9ec8f30b4a7e9dba4e8faf600dc65808bf61",
+  "model": "gemini-3.8-flash",
+  "prompt_sha256": "325b32ca0ca027806c892a5805fa711ad408f2721af5ba8386a85dd6e52c6ab5"
+}

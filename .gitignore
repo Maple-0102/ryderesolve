@@ -41,3 +41,18 @@ outputs/route-fix-reviewed-2026-10-13/*
 !outputs/route-fix-reviewed-2026-10-13/judge-targeted.json
 !outputs/route-fix-reviewed-2026-10-13/judge-targeted.md
 !outputs/route-fix-reviewed-2026-10-13/live-final/
+
+# Reviewed Policy v2.1 integration artifacts
+!outputs/policy-v21-2026-10-15/
+outputs/policy-v21-2026-10-15/*
+!outputs/policy-v21-2026-10-15/judge-release.json
+!outputs/policy-v21-2026-10-15/judge-release.md
+!outputs/policy-v21-2026-10-15/validation-summary.json
+!outputs/policy-v21-2026-10-15/saved-output-revalidation.json
+!outputs/policy-v21-2026-10-15/fare-live/
+outputs/policy-v21-2026-10-15/fare-live/*
+!outputs/policy-v21-2026-10-15/fare-live/DISP-003.run.json
+!outputs/policy-v21-2026-10-15/fare-replayed-advocates/
+outputs/policy-v21-2026-10-15/fare-replayed-advocates/*
+!outputs/policy-v21-2026-10-15/fare-replayed-advocates/DISP-003.run.json
+!outputs/policy-v21-2026-10-15/fare-replayed-advocates/ryde-evaluation.html

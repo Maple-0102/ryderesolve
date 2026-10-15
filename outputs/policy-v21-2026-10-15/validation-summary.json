@@ -1,0 +1,183 @@
+{
+  "date": "2026-10-15",
+  "model": "gemini-3.8-flash",
+  "thinking_level": "LOW",
+  "attempts": 16,
+  "calls_with_recorded_usage": 15,
+  "recorded_usage": {
+    "promptTokenCount": 336260,
+    "candidatesTokenCount": 36340,
+    "totalTokenCount": 372600
+  },
+  "boundary": "Recorded provider token fields only; not billed cost or current trial balance. One HTTP 400 returned no usage; no zero-cost claim. Replay counted as one new Judge call, not four new Advocate calls.",
+  "code_versions": {
+    "long_debate_fix_and_release": "a4068dc",
+    "later_contact_and_acknowledgment_fix": "cb53669",
+    "post_coverage_fix_three_case_suite": "c5e774f",
+    "initial_attempts": "development state before the coverage fix; errors retained per call"
+  },
+  "call_records": [
+    {
+      "source_artifact": "judge-official.json",
+      "call": "V21-DISP-001",
+      "usage": {
+        "promptTokenCount": 31285,
+        "candidatesTokenCount": 3227,
+        "totalTokenCount": 34512
+      },
+      "errors": []
+    },
+    {
+      "source_artifact": "judge-official.json",
+      "call": "V21-DISP-002",
+      "usage": {
+        "promptTokenCount": 29295,
+        "candidatesTokenCount": 3124,
+        "totalTokenCount": 32419
+      },
+      "errors": []
+    },
+    {
+      "source_artifact": "judge-official.json",
+      "call": "V21-DISP-003",
+      "usage": {
+        "promptTokenCount": 23908,
+        "candidatesTokenCount": 2354,
+        "totalTokenCount": 26262
+      },
+      "errors": [
+        "UNADDRESSED_ARGUMENT: rider",
+        "UNADDRESSED_ARGUMENT: driver",
+        "UNRESOLVED_DATA_OR_POLICY_REVIEW"
+      ]
+    },
+    {
+      "source_artifact": "judge-fare-coverage-fix.json",
+      "call": "V21-DISP-003",
+      "usage": {
+        "promptTokenCount": 24110,
+        "candidatesTokenCount": 2557,
+        "totalTokenCount": 26667
+      },
+      "errors": []
+    },
+    {
+      "source_artifact": "judge-official-final.json",
+      "call": "V21-DISP-001",
+      "usage": {
+        "promptTokenCount": 31584,
+        "candidatesTokenCount": 3129,
+        "totalTokenCount": 34713
+      },
+      "errors": []
+    },
+    {
+      "source_artifact": "judge-official-final.json",
+      "call": "V21-DISP-002",
+      "usage": {
+        "promptTokenCount": 29594,
+        "candidatesTokenCount": 2873,
+        "totalTokenCount": 32467
+      },
+      "errors": []
+    },
+    {
+      "source_artifact": "judge-official-final.json",
+      "call": "V21-DISP-003",
+      "usage": {
+        "promptTokenCount": 24207,
+        "candidatesTokenCount": 1916,
+        "totalTokenCount": 26123
+      },
+      "errors": []
+    },
+    {
+      "source_artifact": "judge-release.json",
+      "call": "V21-DISP-001",
+      "usage": {
+        "promptTokenCount": 31553,
+        "candidatesTokenCount": 3435,
+        "totalTokenCount": 34988
+      },
+      "errors": []
+    },
+    {
+      "source_artifact": "judge-release.json",
+      "call": "V21-DISP-002",
+      "usage": {
+        "promptTokenCount": 29563,
+        "candidatesTokenCount": 2992,
+        "totalTokenCount": 32555
+      },
+      "errors": []
+    },
+    {
+      "source_artifact": "judge-release.json",
+      "call": "V21-DISP-003",
+      "usage": {
+        "promptTokenCount": 24176,
+        "candidatesTokenCount": 2605,
+        "totalTokenCount": 26781
+      },
+      "errors": []
+    },
+    {
+      "source_artifact": "fare-live/DISP-003.run.json",
+      "call": "opening rider Advocate",
+      "usage": {
+        "promptTokenCount": 7273,
+        "candidatesTokenCount": 889,
+        "totalTokenCount": 8162
+      },
+      "errors": []
+    },
+    {
+      "source_artifact": "fare-live/DISP-003.run.json",
+      "call": "opening driver Advocate",
+      "usage": {
+        "promptTokenCount": 7268,
+        "candidatesTokenCount": 608,
+        "totalTokenCount": 7876
+      },
+      "errors": []
+    },
+    {
+      "source_artifact": "fare-live/DISP-003.run.json",
+      "call": "response rider Advocate",
+      "usage": {
+        "promptTokenCount": 7920,
+        "candidatesTokenCount": 738,
+        "totalTokenCount": 8658
+      },
+      "errors": []
+    },
+    {
+      "source_artifact": "fare-live/DISP-003.run.json",
+      "call": "response driver Advocate",
+      "usage": {
+        "promptTokenCount": 8138,
+        "candidatesTokenCount": 730,
+        "totalTokenCount": 8868
+      },
+      "errors": []
+    },
+    {
+      "source_artifact": "fare-live/DISP-003.run.json",
+      "call": "Judge",
+      "usage": null,
+      "errors": [
+        "VERTEX_HTTP_400"
+      ]
+    },
+    {
+      "source_artifact": "fare-replayed-advocates/DISP-003.run.json",
+      "call": "Judge with replayed Advocates",
+      "usage": {
+        "promptTokenCount": 26386,
+        "candidatesTokenCount": 5163,
+        "totalTokenCount": 31549
+      },
+      "errors": []
+    }
+  ]
+}
