@@ -30,4 +30,6 @@ The [media QA report](media-qa.json) records full decoding, dimensions, chapters
 
 Production sources and reproduction instructions are in [tools/demo_video](../../tools/demo_video/README.md). Intermediates and machine-specific state remain local.
 
-**Review copy only.** This repository is private. The video has not been publicly hosted or submitted to the competition. Owner review is required before choosing a judge-accessible hosting location. The MP4 already displays subtitles; avoid adding a duplicate caption layer.
+**Competition review material.** The repository owner has authorized public GitHub access to the source and these materials. Making the repository accessible is separate from submitting the competition form; no form submission has been made by this publication step. The MP4 already displays subtitles; avoid adding a duplicate caption layer.
+
+The QA JSON records the pre-publication review state and media hash. The public-access authorization above is later; the MP4 and its recorded evaluation results are unchanged.
