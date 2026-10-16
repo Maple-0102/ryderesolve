@@ -1,0 +1,96 @@
+{
+  "date": "2026-10-16",
+  "timezone": "Asia/Singapore",
+  "implementation_digest": "835986708ce065fa03c6c673884026d61826ad40b90b9315bbf9ce74c53bb05f",
+  "local_validation": {
+    "root_unittest": {
+      "passed": 201,
+      "failed": 0
+    },
+    "evidence_unittest": {
+      "passed": 121,
+      "failed": 0
+    },
+    "advocate_unittest": {
+      "passed": 15,
+      "failed": 0
+    },
+    "offline_cases": 4,
+    "offline_cli_resume": true,
+    "ui_script_unit_checks": true,
+    "browser_visual_test": false
+  },
+  "scripted_fault_comparison": {
+    "full_restart_calls": 10,
+    "durable_resume_calls": 6,
+    "real_model_calls": 0,
+    "model_accuracy_measured": false
+  },
+  "policy_v21_development_checks": {
+    "cases": 20,
+    "deterministic_expectation_matches": 20,
+    "live_model_runs_on_this_pack": 0,
+    "official_answer_key": false,
+    "independent_holdout": false,
+    "training_performed": false
+  },
+  "reviewer_development_probes": {
+    "initial": {
+      "provider_calls": 2,
+      "contract_valid": 0,
+      "semantic_expectations_observed": 2,
+      "note": "Both outcomes had invalid source quotes/pointers. Original results retained."
+    },
+    "after_quote_catalogue": {
+      "provider_calls": 2,
+      "contract_valid": 2,
+      "expectation_matches": 2
+    },
+    "boundary": "One Fare seed and one seeded inference fault, used to refine prompts; not independent accuracy."
+  },
+  "fare_live_attempt": {
+    "provider_calls": 5,
+    "four_fresh_issue_guided_advocates": true,
+    "judge_candidate_amount": 4.5,
+    "errors": [
+      "FINDING_CONDITION_BASIS_MISMATCH",
+      "UNRESOLVED_DATA_OR_POLICY_REVIEW"
+    ],
+    "reviewer_called": false,
+    "original_retained": true
+  },
+  "fare_replayed_validation": {
+    "new_provider_calls": 2,
+    "new_advocate_calls": 0,
+    "new_judge_calls": 1,
+    "new_reviewer_calls": 1,
+    "decision": "refund_partial",
+    "refund_amount": 4.5,
+    "currency": "SGD",
+    "raw_validation_errors": [],
+    "final_validation_errors": [],
+    "reviewer_outcome": "pass",
+    "boundary": "Four exact real issue-guided Advocate outputs replayed from retained failed attempt. Not a fresh six-call full pipeline."
+  },
+  "live_usage": {
+    "successful_provider_responses": 11,
+    "recorded_total_tokens": 239998,
+    "failed_local_adc_preflight_attempts": 2,
+    "boundary": "Token counts are transport records, not billed cost or remaining trial credit. No new cloud resource was provisioned."
+  },
+  "feature_defaults": {
+    "checkpoints_cli": true,
+    "inference_reviewer": false,
+    "issue_guidance": false
+  },
+  "unresolved_official_policy_questions_unchanged": true,
+  "vendor_module_behavior_modified": false,
+  "public_schema_modified": false,
+  "limitations": [
+    "Same-model reviewer is not independent ground truth.",
+    "Time/token admission is checked between calls, not cancellation of an in-flight request.",
+    "An unpersisted provider response may be called again on explicit resume.",
+    "Current live outputs were revalidated offline after the final reuse-event rendering fix.",
+    "No remote CI or broad model-accuracy claim."
+  ]
+}

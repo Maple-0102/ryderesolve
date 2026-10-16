@@ -1,4 +1,5 @@
 # Credentials and machine-specific configuration
+.local
 .local/
 .env
 .env.*
@@ -9,6 +10,7 @@ application_default_credentials.json
 *.key
 
 # Runtime and build files
+.venv
 .venv/
 venv/
 __pycache__/
@@ -31,3 +33,45 @@ outputs/*
 !outputs/judge-development-comparison-2026-10-13.json
 !outputs/judge-evaluation-*-2026-10-13.json
 !outputs/judge-evaluation-*-2026-10-13.md
+
+# Reviewed Route repair results
+!outputs/route-fix-reviewed-2026-10-13/
+outputs/route-fix-reviewed-2026-10-13/*
+!outputs/route-fix-reviewed-2026-10-13/fix-summary.json
+!outputs/route-fix-reviewed-2026-10-13/judge-targeted.json
+!outputs/route-fix-reviewed-2026-10-13/judge-targeted.md
+!outputs/route-fix-reviewed-2026-10-13/live-final/
+
+# Reviewed Policy v2.1 integration artifacts
+!outputs/policy-v21-2026-10-15/
+outputs/policy-v21-2026-10-15/*
+!outputs/policy-v21-2026-10-15/judge-release.json
+!outputs/policy-v21-2026-10-15/judge-release.md
+!outputs/policy-v21-2026-10-15/validation-summary.json
+!outputs/policy-v21-2026-10-15/saved-output-revalidation.json
+!outputs/policy-v21-2026-10-15/fare-live/
+outputs/policy-v21-2026-10-15/fare-live/*
+!outputs/policy-v21-2026-10-15/fare-live/DISP-003.run.json
+!outputs/policy-v21-2026-10-15/fare-replayed-advocates/
+outputs/policy-v21-2026-10-15/fare-replayed-advocates/*
+!outputs/policy-v21-2026-10-15/fare-replayed-advocates/DISP-003.run.json
+!outputs/policy-v21-2026-10-15/fare-replayed-advocates/ryde-evaluation.html
+
+# Full durable runtime states are private local artifacts
+**/checkpoints/
+
+# Reviewed orchestration validation (private checkpoints stay ignored)
+!outputs/orchestration-2026-10-16/
+outputs/orchestration-2026-10-16/*
+!outputs/orchestration-2026-10-16/validation-summary.json
+!outputs/orchestration-2026-10-16/functional-checks.json
+!outputs/orchestration-2026-10-16/current-source-revalidation.json
+!outputs/orchestration-2026-10-16/reviewer-probes-initial.json
+!outputs/orchestration-2026-10-16/reviewer-probes.json
+!outputs/orchestration-2026-10-16/fare-live/
+outputs/orchestration-2026-10-16/fare-live/*
+!outputs/orchestration-2026-10-16/fare-live/DISP-003.run.json
+!outputs/orchestration-2026-10-16/fare-replayed-advocates/
+outputs/orchestration-2026-10-16/fare-replayed-advocates/*
+!outputs/orchestration-2026-10-16/fare-replayed-advocates/DISP-003.run.json
+!outputs/orchestration-2026-10-16/fare-replayed-advocates/ryde-evaluation.html

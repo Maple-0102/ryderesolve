@@ -30,9 +30,24 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
         if not s:
             panels.append(f'<article id="{prefix}" role="tabpanel" {"hidden" if i else ""}><h2>{esc(result["case_id"])}</h2><p>案例加载失败，已阻止裁决。</p>{pretty(ruling)}{handoff_html}</article>')
             continue
-        origin = '主办方样例 · 非真实运营数据证明' if s['audit']['data_origin'] == 'organizer_sample' else '团队合成案例 · 政策也是合成规则'
+        origin = '主办方样例 · 非真实运营数据证明' if s['audit']['data_origin'] == 'organizer_sample' else '团队合成数据 · 绑定提供的 Ryde v2.1 政策' if s.get('policy_documents') else '团队合成案例 · 政策也是合成规则'
         decision = {'escalate': '待人工复核', 'uphold_charge': '建议保留收费',
                     'refund_full': '建议全额退款', 'refund_partial': '建议部分退款'}.get(ruling['decision'], ruling['decision'])
+        execution_html = ''
+        if result.get('execution_status'):
+            status_labels={'completed':'流程已完成','failed':'流程失败：尚无可采纳裁决','interrupted':'流程中断，可检查恢复','running':'运行中'}
+            reason_labels={'policy_gate':'政策要求人工裁决','policy_clarification':'等待政策澄清',
+                'missing_evidence':'等待补充证据','output_invalid':'模型输出未通过检查',
+                'transport_error':'模型调用失败，可检查恢复','execution_limit_or_resume_error':'预算耗尽或恢复条件不符',
+                'inference_review':'推导复核提出问题，等待人工检查','human_review_requested':'等待人工复核'}
+            if result['execution_status']=='failed':decision='流程失败／待恢复'
+            execution_html='<section><h3>执行状态与恢复</h3><p>'+esc(status_labels.get(result['execution_status'],result['execution_status']))+'</p><p>'+esc('；'.join(reason_labels.get(x,x) for x in result.get('review_reason_types',[])))+'</p>'
+            execution_html+='<p>业务状态：'+esc(result.get('business_decision_status'))+'；首次输出通过：'+esc(result.get('first_pass_valid'))+'</p>'
+            execution_html+='<details><summary>调用、复用与预算</summary>'+pretty(result.get('execution_usage',{}))+'</details>'
+            if result.get('repair_history'):execution_html+='<details><summary>限次修复记录（保留原始失败）</summary>'+pretty(result['repair_history'])+'</details>'
+            if result.get('inference_review'):execution_html+='<details><summary>推导复核结果（额外检查，不代表事实认证）</summary>'+pretty(result['inference_review'])+'</details>'
+            if result.get('issue_ledger'):execution_html+='<details><summary>第二轮争议点与引用进展</summary>'+pretty({'ledger':result['issue_ledger'],'progress':result.get('issue_progress',{})})+'</details>'
+            execution_html+='</section>'
         calculations = []
         for metric in result['calculations'].get('calculations', []):
             if 'seconds' in metric:
@@ -108,7 +123,7 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
                          if result['modes']['judge'] == 'offline_review' else
                          '以下为通过结构和引用检查的分析；这些检查不能证明自然语言推理正确。')
             analysis_html = f'<p class="muted">{mode_note}</p><h4>核心问题</h4><p>{esc(analysis["question"])}</p><div class="columns">{"".join(side_cards)}</div><h4>逐条论点评估</h4><ul>{"".join(ledger_rows)}</ul><h4>裁决关键条件</h4><ul>{conditions_html}</ul><h4>争议点分析</h4><ul>{points}</ul><h4>复核问题逐项处理</h4><ul>{responses}</ul><h4>仍需补充的信息</h4><ul>{missing}</ul>'
-        logs = ''.join(f'<details><summary>{e["sequence"]}. {esc(e["step"])} · {esc(e["agent"])} · {esc(e["status"])} · {e["duration_ms"]} ms</summary><p>{esc(e["started_at"])}</p>{pretty({k:v for k,v in e.items() if k in ("input", "output", "error")})}</details>' for e in result['communication_log'])
+        logs = ''.join(f'<details><summary>{e["sequence"]}. {esc(e["step"])} · {esc(e["agent"])} · {esc(e["status"])} · {esc(str(e["duration_ms"])+" ms" if e.get("duration_ms") is not None else "耗时未知")}</summary><p>{esc(e["started_at"])}</p>{pretty({k:v for k,v in e.items() if k in ("input", "output", "error")})}</details>' for e in result['communication_log'])
         uncertainties = ''.join(f'<li>{esc(x)}</li>' for x in ruling.get('uncertainties', []))
         notes = ''.join(f'<li>{esc(n)}</li>' for n in ruling.get('notes', []))
         provenance = result['calculations'].get('policy_provenance')
@@ -120,16 +135,38 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
         supplement_html = ''
         if lineage:
             supplement_html = f'<section><h3>补材料后重新分析</h3><p>来源说明：{esc(lineage["source_note"])}</p><p>原结果：{esc(lineage["old_decision"])} → 新结果：{esc(lineage["new_decision"])}</p><p class="muted">双方论点按新快照重跑；来源说明未经过独立认证。</p>{pretty(lineage)}</section>'
+        adjustment_html = ''
+        if result.get('judge_adjustments'):
+            adjustment_html = ('<section><h3>程序保守修正</h3>'
+                '<p>模型对部分论点的支持评级只有当事人陈述作为依据。程序将其降为证据不足，保留原输出并重新检查全部规则；收费或退款建议未因此生成。</p>'
+                '<details><summary>原始模型检查错误</summary>' + pretty(result.get('judge_raw_validation_errors', [])) + '</details>'
+                '<details><summary>逐条修正记录</summary>' + pretty(result['judge_adjustments']) + '</details>'
+                '<details><summary>原始 Judge 建议</summary>' + pretty(result.get('judge_proposal')) + '</details></section>')
+        policy_application_html = ''
+        applied=result['calculations'].get('policy_application')
+        if applied:
+            gates=''.join('<li><b>'+esc(g['code'])+'</b> '+esc(g['reason'])+' '+links(g.get('policy_refs',[]),'policy')+'</li>' for g in applied['mandatory_human_review'])
+            conditional=''.join('<li>'+esc(c['condition_id'])+' · '+esc(c['status'])+'<p>'+esc(c['reason'])+'</p>'+links(c['evidence_refs'],'evidence')+' '+links(c['policy_refs'],'policy')+'</li>' for c in applied['conditions'])
+            skip='<p>安全事件：本次仅整理证据，未调用 Advocate 或 Judge 提供者。</p>' if result.get('providers_skipped') else ''
+            policy_application_html=('<section><h3>本次绑定的政策与程序检查</h3><p>'+esc(applied['document_id'])+' · 生效 '+esc(applied['effective_date'])+'</p>'+skip+
+                '<h4>人工审核门槛</h4><ul>'+gates+'</ul><h4>逐项政策条件</h4><ul>'+conditional+'</ul>'+
+                '<details><summary>来源、信心因素与分项动作</summary>'+pretty(applied)+'</details></section>')
+        if analysis and analysis.get('precedent_analysis'):
+            precedent_rows=''.join('<li>'+links([p['policy_ref']],'policy')+'<p>相似点：'+esc(p['similarities'])+'</p><p>差异：'+esc(p['differences'])+'</p></li>' for p in analysis['precedent_analysis'])
+            analysis_html += '<h4>先例对照</h4><ul>'+precedent_rows+'</ul>'
         modes = f'Advocate: {result["modes"]["advocate"]} / Judge: {result["modes"]["judge"]}'
         panels.append(f'''<article id="{prefix}" role="tabpanel" aria-labelledby="tab-{i}" {"hidden" if i else ""}>
 <div class="case-head"><div><p class="eyebrow">{esc(origin)}</p><h2>{esc(result['case_id'])}</h2></div><div class="pill">{esc(decision)}</div></div>
 <p class="muted">{esc(modes)}<br>快照 {esc(s['snapshot_id'])}<br>运行 {esc(result['run_id'])}</p>
+{execution_html}
 <section><h3>本次结果</h3><p>退款金额：{esc(ruling['refund_amount']) if ruling['refund_amount'] is not None else '未裁定'} SGD · 页面只展示建议，不执行收费或退款。</p><ul>{uncertainties}</ul><ul class="muted">{notes}</ul><h4>已记录的依据</h4><ul>{findings}</ul><details><summary>查看最终 JSON</summary>{pretty(ruling)}</details></section>
 <section><h3>计算结果与待澄清问题</h3><p class="muted">算术结果与已明确的规则分开列出；未明示的收费条件仍需澄清。距离／差额不等于责任／退款。</p><ul class="metrics">{''.join(calculations)}</ul><ul>{issues}</ul></section>
 <section><h3>Judge 如何看双方观点</h3>{analysis_html}</section>
 {handoff_html}
 {provenance_html}
+{policy_application_html}
 {supplement_html}
+{adjustment_html}
 <section><h3>双方陈述与回应</h3><p class="muted">offline_placeholder 只摘录已有陈述，不代表已完成真实 Agent 辩论。</p><div class="columns">{''.join(arguments)}</div></section>
 <section><h3>证据与原文 <span class="count">{len(s['evidence_pack']['facts'])}</span></h3><p class="muted">点击编号或展开条目查看本次快照的原始记录。</p>{source_cards('evidence',s['evidence_pack']['facts'])}</section>
 <section><h3>政策与原文</h3>{source_cards('policy',s['evidence_pack']['policy'])}</section>

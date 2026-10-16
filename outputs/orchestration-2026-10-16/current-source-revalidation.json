@@ -1,0 +1,9 @@
+{
+  "offline_cli_resume_passed": true,
+  "resumed_steps": 7,
+  "current_snapshot_matches": true,
+  "live_advocate_contracts_passed": true,
+  "live_judge_contract_passed": true,
+  "live_reviewer_contract_passed": true,
+  "new_model_calls": 0
+}

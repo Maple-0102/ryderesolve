@@ -3,6 +3,10 @@ from .review_policy import review_plan
 
 
 def condition_specs(snapshot):
+    from .policy_v21 import application
+    policy = application(snapshot)
+    if policy:
+        return [{'condition_id': c['condition_id'], 'question': c['reason']} for c in policy['conditions']]
     if snapshot['evidence_pack']['dispute_type'] == 'fare_dispute':
         return [{'condition_id': 'fare_charge', 'question': 'Do the quote, surge components, timely notification and applicable fare policy support the disputed fare difference?'}]
     if snapshot['evidence_pack']['dispute_type'] == 'route_deviation':
@@ -16,6 +20,9 @@ def condition_specs(snapshot):
 def check_deliberation(snapshot, output, arguments):
     """Called only after case_analysis schema validation, with validated Advocate outputs."""
     from .reasoning_checks import argument_paths, evidence_categories, verified_route_records
+    from .policy_v21 import application, bound, communication_refs
+    policy = application(snapshot)
+    known_conditions = {c['condition_id']:c for c in policy['conditions']} if policy else {}
     a = output['case_analysis']; errors = []
     final = output['decision'] != 'escalate'
     expected = set().union(*(argument_paths(arguments, side) for side in ('rider', 'driver')))
@@ -32,7 +39,8 @@ def check_deliberation(snapshot, output, arguments):
         if support & opposition: errors.append('ARGUMENT_CONFLICTING_REFERENCE_ROLE: ' + label)
         required = support if status in ('supported', 'partly_supported') else opposition if status == 'contradicted' else None
         if required is not None:
-            if not (evidence_categories(snapshot, required) - {'history', 'statement', 'context'}):
+            is_communication = bound(snapshot) and item.get('assessment_scope') == 'communication_act' and communication_refs(snapshot, list(required))
+            if not is_communication and not (evidence_categories(snapshot, required) - {'history', 'statement', 'context'}):
                 errors.append('ARGUMENT_ASSESSMENT_WITHOUT_RECORD_SUPPORT: ' + label)
         if status == 'insufficient_evidence' and not item['missing_information']:
             errors.append('ARGUMENT_MISSING_GAP_EXPLANATION: ' + label)
@@ -63,8 +71,19 @@ def check_deliberation(snapshot, output, arguments):
         if set(c['policy_refs']) - set(policies): errors.append('CONDITION_UNKNOWN_POLICY')
         if c['status'] != 'unknown' and (not c['evidence_refs'] or not c['policy_refs']):
             errors.append('CONDITION_BASIS_MISSING: ' + c['condition_id'])
-        if final and c['status'] == 'unknown': errors.append('UNRESOLVED_DECISION_CONDITION: ' + c['condition_id'])
+        material = not policy or c['condition_id'] in policy['material_condition_ids']
+        if final and material and c['status'] == 'unknown': errors.append('UNRESOLVED_DECISION_CONDITION: ' + c['condition_id'])
         if c['status'] == 'unknown': continue
+        if policy:
+            basis = known_conditions.get(c['condition_id'])
+            if c['condition_id']=='no_show_charge' and basis and basis['status']=='unknown' and c['status']!='unknown':
+                errors.append('CONDITION_CANNOT_CLEAR_POLICY_AMBIGUITY')
+            if basis is None or c['status'] != basis['status']:
+                errors.append('POLICY_CONDITION_RECORD_CONFLICT: ' + c['condition_id'])
+            elif (not set(c['evidence_refs']) & set(basis['evidence_refs']) or
+                  not set(c['policy_refs']) & set(basis['policy_refs'])):
+                errors.append('POLICY_CONDITION_BASIS_MISSING: ' + c['condition_id'])
+            continue
         if c['condition_id'] in ('route_justification', 'extra_charge'):
             rows = verified_route_records(snapshot, c['evidence_refs'])
             key = 'justification_verified' if c['condition_id'] == 'route_justification' else 'extra_charge_verified'
@@ -86,7 +105,7 @@ def check_deliberation(snapshot, output, arguments):
             decisive = 'extra_charge' if 'extra_charge' in conditions else 'fare_charge' if 'fare_charge' in conditions else 'no_show_charge'
             if conditions[decisive]['status'] != ('met' if uphold else 'not_met'):
                 errors.append('DECISION_CONDITION_CONFLICT')
-            if uphold and any(c['status'] != 'met' for c in conditions.values()):
+            if not policy and uphold and any(c['status'] != 'met' for c in conditions.values()):
                 errors.append('DECISION_CONDITION_CONFLICT')
         for finding in output['findings']:
             if finding.get('topic') != 'responsibility' or finding.get('finding_type') != 'inference': continue

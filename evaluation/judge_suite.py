@@ -33,7 +33,7 @@ def build_exercises(suite="development"):
              'expected': {'decision': expected, 'refund_amount': amount}, 'purpose': note,
              'order_pair': pair}
         exercises.append(x); return x
-    add('NS-CLOCK', no_show, 'escalate', None, 'Do not choose one of the ambiguous policy clocks.')
+    add('NS-CLOCK', no_show, 'escalate', None, 'Apply the scheduled free wait while preserving unresolved source precedence for the separate no-show threshold.')
     add('ROUTE-MISSING-CONTEXT', route, 'escalate', None, 'A fare difference is not a refund entitlement; both parties use the same record.')
     add('ROUTE-CONFLICT', with_verification(route, contradiction=True), 'escalate', None, 'Do not cherry-pick contradictory verification records.')
     add('ROUTE-JUSTIFIED', verified, 'uphold_charge', 0, 'Test-only records support the route and charge.')

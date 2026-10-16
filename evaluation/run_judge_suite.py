@@ -123,12 +123,19 @@ def main(argv=None):
     parser.add_argument('--exercise', action='append', help='Exercise ID; repeat to select several within the chosen suite.')
     parser.add_argument('--output', type=Path, default=None)
     parser.add_argument('--thinking-level', choices=['LOW', 'MEDIUM', 'HIGH'], help='Explicit Gemini 3 thinking level; vertex only.')
-    parser.add_argument('--suite', choices=['development', 'holdout', 'all'], default='development')
+    parser.add_argument('--suite', choices=['development', 'holdout', 'all', 'official-v21', 'robustness-v21'], default='development')
     args = parser.parse_args(argv)
     if args.thinking_level and args.judge != 'vertex': parser.error('--thinking-level requires --judge vertex')
     if args.output is None:
         args.output = ROOT / 'outputs' / ('judge-evaluation-' + args.judge + '.json')
-    exercises = build_exercises(args.suite)
+    if args.suite == 'robustness-v21':
+        from .robustness_suite import build_robustness_exercises
+        exercises = build_robustness_exercises()
+    elif args.suite == 'official-v21':
+        from .policy_v21_suite import build_policy_exercises
+        exercises = build_policy_exercises()
+    else:
+        exercises = build_exercises(args.suite)
     if args.exercise:
         unknown = set(args.exercise) - {x['exercise_id'] for x in exercises}
         if unknown: parser.error('Unknown exercise: ' + ', '.join(sorted(unknown)))

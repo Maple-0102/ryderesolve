@@ -2,6 +2,7 @@
 from copy import deepcopy
 from .agents import AgentError
 from .vertex import VertexJudge
+from .evidence_boundaries import EVIDENCE_BOUNDARIES
 
 
 class TeammateAdvocate:
@@ -19,7 +20,13 @@ class TeammateAdvocate:
     def _generate(self, system, user):
         self._invoked = True
         # Advocate emits arguments, not a Judge ruling; use the shared low-level JSON transport.
-        return self.model.generate(system, user, max_output_tokens=8192)
+        if getattr(self, '_policy_application', None) or getattr(self,'_round_guidance',None):
+            import json
+            context = json.loads(user)
+            if getattr(self,'_policy_application',None):context['policy_application'] = deepcopy(self._policy_application)
+            if getattr(self,'_round_guidance',None):context['round_guidance']=deepcopy(self._round_guidance)
+            user = json.dumps(context,ensure_ascii=False,allow_nan=False)
+        return self.model.generate(system + '\n\n' + EVIDENCE_BOUNDARIES, user, max_output_tokens=8192)
 
     def __call__(self, snapshot, side, round_name, opponent=None):
         self.last_metadata = {}; self._invoked = False
@@ -31,6 +38,8 @@ class TeammateAdvocate:
             if not isinstance(opponent, dict): raise AgentError('ADVOCATE_OPPONENT_REQUIRED')
             if opponent.get('snapshot_id') != snapshot['snapshot_id']:
                 raise AgentError('ADVOCATE_OPPONENT_SNAPSHOT_MISMATCH')
+        from .policy_v21 import application
+        self._policy_application = application(snapshot)
         from ryderesolve_advocate.validation import ContractError
         try:
             output = self.system.run_advocate(deepcopy(snapshot['evidence_pack']), deepcopy(snapshot['audit']),
@@ -38,9 +47,16 @@ class TeammateAdvocate:
         except ContractError:
             raise AgentError('ADVOCATE_TEAM_CONTRACT_REJECTED') from None
         finally:
+            self._policy_application = None
             if self._invoked: self.last_metadata = deepcopy(getattr(self.model, 'last_metadata', {}))
         if output.get('snapshot_id', snapshot['snapshot_id']) != snapshot['snapshot_id']:
             raise AgentError('ADVOCATE_MODEL_SNAPSHOT_MISMATCH')
         output['snapshot_id'] = snapshot['snapshot_id']
         output['round'] = round_name
         return output
+
+    def run_guided(self,snapshot,side,round_name,opponent,guidance):
+        if round_name!='response':raise AgentError('GUIDANCE_REQUIRES_RESPONSE_ROUND')
+        self._round_guidance=deepcopy(guidance)
+        try:return self(snapshot,side,round_name,opponent)
+        finally:self._round_guidance=None

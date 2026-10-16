@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-13",
+  "fix_only_calls": 16,
+  "recorded_usage": {
+    "promptTokenCount": 159772,
+    "candidatesTokenCount": 37127,
+    "totalTokenCount": 196899
+  },
+  "latest_targeted_checks": {
+    "sampled_speed_not_fully_supported": true,
+    "detour_charge_prerequisite_not_fully_supported": true
+  },
+  "latest_full_pipeline": {
+    "raw_errors": [
+      "ARGUMENT_ASSESSMENT_WITHOUT_RECORD_SUPPORT: /opening/driver/claims/1",
+      "ARGUMENT_ASSESSMENT_WITHOUT_RECORD_SUPPORT: /opening/driver/counterpoints/0",
+      "ARGUMENT_ASSESSMENT_WITHOUT_RECORD_SUPPORT: /response/rider/counterpoints/1",
+      "ARGUMENT_ASSESSMENT_WITHOUT_RECORD_SUPPORT: /response/driver/claims/0",
+      "ARGUMENT_ASSESSMENT_WITHOUT_RECORD_SUPPORT: /response/driver/counterpoints/0"
+    ],
+    "conservative_adjustments": 5,
+    "final_errors": [],
+    "decision": "escalate",
+    "refund_amount": null
+  },
+  "boundary": "Fix iteration usage only; excludes original baseline run and older evaluations. Tokens are not billed charges. Raw model failures remain recorded and are not relabelled as raw model passes."
+}

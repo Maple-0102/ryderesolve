@@ -288,6 +288,13 @@
               "pattern": "\\S"
             },
             "uniqueItems": true
+          },
+          "assessment_scope": {
+            "type": "string",
+            "enum": [
+              "incident_fact",
+              "communication_act"
+            ]
           }
         },
         "required": [
@@ -353,6 +360,31 @@
         "additionalProperties": false
       },
       "minItems": 1
+    },
+    "precedent_analysis": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "policy_ref": {
+            "type": "string"
+          },
+          "similarities": {
+            "type": "string",
+            "minLength": 1
+          },
+          "differences": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "policy_ref",
+          "similarities",
+          "differences"
+        ],
+        "additionalProperties": false
+      }
     }
   },
   "required": [
