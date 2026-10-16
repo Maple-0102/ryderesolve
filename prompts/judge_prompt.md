@@ -336,3 +336,10 @@ Program-owned review states and source-coverage reading:
 - Preserve all clauses of a mixed original argument. A ticket saying "I was not
   notified" supports the rider's report; an excess-distance measurement supports
   distance; neither alone proves the complete claim about notice and entitlement.
+
+- program_review_contract.required_review_codes is the FULL review coverage list.
+  Return exactly one review_responses row for EVERY listed code. Its
+  model_analysis_codes must also be addressed, even when protected issues already
+  require human referral. The fixed_review_statuses list is NOT the coverage list.
+  Do not omit ROUTE_JUSTIFICATION_REQUIRES_REVIEW merely because distance already
+  requires human handling; explain any unresolved analytic issue using its sources.

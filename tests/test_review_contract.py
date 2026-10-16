@@ -85,6 +85,13 @@ class ReviewContractTests(unittest.TestCase):
             schema=judge_output_schema(policy_bound=True,arguments=args,snapshot=s)
             generated=vertex_response_schema(schema)
             self.assertEqual(generated['properties']['decision']['enum'],['escalate'] if contract['required_decision'] else ['uphold_charge','refund_full','refund_partial','escalate'])
+            reviews=generated['properties']['case_analysis']['properties']['review_responses']
+            self.assertEqual(reviews['minItems'],len(contract['required_review_codes'])) if contract['required_review_codes'] else None
+            if contract['required_review_codes']:
+                self.assertEqual(reviews['maxItems'],len(contract['required_review_codes']))
+                self.assertEqual(reviews['items']['properties']['issue_code']['enum'],contract['required_review_codes'])
+            if i==0:
+                self.assertIn('ROUTE_JUSTIFICATION_REQUIRES_REVIEW',contract['model_analysis_codes'])
             if i==1:
                 self.assertEqual(generated['properties']['case_analysis']['properties']['review_responses']['items']['properties']['status']['enum'],['unresolved'])
         s,args,raw=self.saved(2)

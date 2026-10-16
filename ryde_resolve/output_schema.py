@@ -59,6 +59,12 @@ def judge_output_schema(policy_bound=False, arguments=None, snapshot=None):
         from .review_contract import program_review_contract
         contract=program_review_contract(snapshot)
         fixed=contract['fixed_review_statuses']
+        required_codes=contract['required_review_codes']
+        if required_codes:
+            reviews=analysis['properties']['review_responses']
+            reviews.update(minItems=len(required_codes),maxItems=len(required_codes),
+                description='Exactly one response for EVERY required issue code, including both program-protected and model-analysis issues: '+', '.join(required_codes)+'. Fixed status rows do not replace responses to model-analysis issues.')
+            reviews['items']['properties']['issue_code']['enum']=list(required_codes)
         if fixed:
             status=analysis['properties']['review_responses']['items']['properties']['status']
             status['description']='Program-owned unresolved status for these issue codes: '+', '.join(row['issue_code'] for row in fixed)+'. Referring to a human is not resolving the issue.'

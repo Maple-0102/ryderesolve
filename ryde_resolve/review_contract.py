@@ -8,11 +8,14 @@ VERSION='1'
 def program_review_contract(snapshot):
     from .policy_v21 import bound
     if not bound(snapshot):
-        return {'version':VERSION,'fixed_review_statuses':[],'required_decision':None,
+        return {'version':VERSION,'fixed_review_statuses':[],'required_review_codes':[],'model_analysis_codes':[],'required_decision':None,
                 'boundary':'No program-owned v2.1 review fields for this snapshot.'}
+    items=[item for item in review_plan(snapshot)['items'] if item['category']!='informational']
     fixed=[{'issue_code':item['code'],'status':'unresolved'}
-           for item in review_plan(snapshot)['items'] if item['category']=='requires_clarification']
+           for item in items if item['category']=='requires_clarification']
     return {'version':VERSION,'fixed_review_statuses':fixed,
+            'required_review_codes':[item['code'] for item in items],
+            'model_analysis_codes':[item['code'] for item in items if item['category']=='judge_analysis'],
             'required_decision':'escalate' if fixed else None,
             'boundary':'Statuses are owned by the captured program review plan. Identifying or arranging human referral does not resolve the underlying issue. Preserve these unresolved statuses; explain the issue using actual sources. No policy, missing evidence or human outcome is created.'}
 
