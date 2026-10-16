@@ -33,9 +33,9 @@ def run_regressions(source,output,judge_factory):
     if target.exists():raise ValueError('Choose a new output directory; retain previous attempts.')
     original=json.loads(source.read_text());report={'kind':'same-transcript Judge development regressions',
         'runtime_implementation':implementation_digest(),'source_report_sha256':digest(original),'results':[],
-        'boundary':'Three related development cases. Four Advocate outputs replayed per case; only Judge calls are fresh. No retries, repairs, extra reviewer, training or held-out accuracy claim. Original failed records remain unchanged.'}
+        'boundary':'Retained development cases. Four Advocate outputs replayed per case; only Judge calls are fresh. No retries, repairs, extra reviewer, training or held-out accuracy claim. Original failed records remain unchanged.'}
     for row in original['results']:
-        old=row['variants']['debate_judge']['run'];snapshot=old['snapshot']
+        old=row['run'] if 'run' in row else row['variants']['debate_judge']['run'];snapshot=old['snapshot']
         run=RydeOrchestrator(CapturedEvidence(snapshot),CapturedAdvocates(snapshot,old['arguments']),judge_factory(),
             checkpoint_store=CheckpointStore(output/'checkpoints'),limits=RunLimits(max_calls=1,transient_retries=0,judge_repairs=0)).run(snapshot['case_id'])
         expected=row['expected'];actual=run['ruling']
@@ -54,7 +54,7 @@ def run_regressions(source,output,judge_factory):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--live',action='store_true');p.add_argument('--source',type=Path,default=DEFAULT_SOURCE);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
-    if not a.live:p.error('Explicit --live required; three Judge calls, replayed Advocates, no retries or repairs.')
+    if not a.live:p.error('Explicit --live required; one Judge call per retained case, replayed Advocates, no retries or repairs.')
     config=replace(VertexConfig.from_env(),thinking_level='LOW');r=run_regressions(a.source,a.output,lambda:VertexJudge(config))
     return 0 if all(x['valid_expected_result'] for x in r['results']) else 1
 

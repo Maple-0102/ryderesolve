@@ -1,0 +1,57 @@
+{
+  "kind": "static recording package",
+  "opening_provider_calls": 0,
+  "entries": [
+    {
+      "exercise_id": "R21-ROUTE-ORIGINAL",
+      "title": "官方 Route：超出 AI 权限",
+      "origin": "organizer_sample",
+      "replayed": false,
+      "source_sha256": "d51113c43b1a22da715d786c1a987974df7f533d4f54738f5b6c9092911a638d",
+      "runtime_implementation": "2f4f99bc7ffb9ccbde850b07a1690663a3d61b595d34b5a1c9db36f1493ebc0c",
+      "validation_errors": [
+        "ARGUMENT_ASSESSMENT_WITHOUT_RECORD_SUPPORT: /opening/driver/counterpoints/1",
+        "ARGUMENT_ASSESSMENT_WITHOUT_RECORD_SUPPORT: /response/rider/claims/0",
+        "ARGUMENT_ASSESSMENT_WITHOUT_RECORD_SUPPORT: /response/rider/counterpoints/2",
+        "ARGUMENT_ASSESSMENT_WITHOUT_RECORD_SUPPORT: /response/driver/counterpoints/0",
+        "CANNOT_SELF_RESOLVE_POLICY_OR_DATA: ROUTE_DISTANCE_REQUIRES_HUMAN_REVIEW"
+      ],
+      "first_pass_valid": false,
+      "adjustments": 0,
+      "decision": "escalate",
+      "refund_amount": null,
+      "html": "r21-route-original.html",
+      "run_json": "r21-route-original.run.json"
+    },
+    {
+      "exercise_id": "R21-NOSHOW-ORIGINAL",
+      "title": "官方 No-show：政策待澄清",
+      "origin": "organizer_sample",
+      "replayed": false,
+      "source_sha256": "d51113c43b1a22da715d786c1a987974df7f533d4f54738f5b6c9092911a638d",
+      "runtime_implementation": "2f4f99bc7ffb9ccbde850b07a1690663a3d61b595d34b5a1c9db36f1493ebc0c",
+      "validation_errors": [],
+      "first_pass_valid": false,
+      "adjustments": 1,
+      "decision": "escalate",
+      "refund_amount": null,
+      "html": "r21-noshow-original.html",
+      "run_json": "r21-noshow-original.run.json"
+    },
+    {
+      "exercise_id": "R21-FARE-ORIGINAL",
+      "title": "官方 Fare：未通知加价",
+      "origin": "organizer_sample",
+      "replayed": false,
+      "source_sha256": "d51113c43b1a22da715d786c1a987974df7f533d4f54738f5b6c9092911a638d",
+      "runtime_implementation": "2f4f99bc7ffb9ccbde850b07a1690663a3d61b595d34b5a1c9db36f1493ebc0c",
+      "validation_errors": [],
+      "first_pass_valid": false,
+      "adjustments": 3,
+      "decision": "refund_partial",
+      "refund_amount": 4.5,
+      "html": "r21-fare-original.html",
+      "run_json": "r21-fare-original.run.json"
+    }
+  ]
+}
