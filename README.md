@@ -26,6 +26,10 @@ Open [the static recording index](outputs/latest-flow-2026-10-16/recording/index
 
 The final fresh check used 15 calls for the three official cases: Fare and No-show passed after audited conservative corrections; Route was safely blocked for invalid source/policy-resolution claims. This is 2/3 final formal acceptance, 0/3 raw first-pass acceptance, not a model accuracy score. Earlier successful traces and offline revalidation remain historical evidence.
 
+## Judge follow-up (2026-10-16)
+
+The [protected review states and source-scope follow-up](docs/POLICY-LOCK-SOURCE-SCOPE-2026-10-16.md) adds program-owned unresolved states, complete issue coverage and a captured-material inventory. A fresh five-call official Route pipeline now passes final checks after two audited source-rating downgrades (raw first-pass still fails). Three retained official outputs also pass offline replay; Fare and No-show have not been freshly rerun end to end on this patch. The recording version above stays preserved.
+
 ## Code ownership
 
 | Component | Location |

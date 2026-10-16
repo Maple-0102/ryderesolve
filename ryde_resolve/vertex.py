@@ -137,7 +137,7 @@ class VertexJudge:
         from .output_schema import judge_output_schema, vertex_response_schema
         from .policy_v21 import bound
         result = self.generate(messages[0]['content'], messages[1]['content'],
-                               response_schema=vertex_response_schema(judge_output_schema(policy_bound=bound(snapshot), arguments=arguments)))
+                               response_schema=vertex_response_schema(judge_output_schema(policy_bound=bound(snapshot), arguments=arguments, snapshot=snapshot)))
         value = result.get('confidence')
         if type(value) not in (int, float) or not math.isfinite(value) or not 0 <= value <= 1:
             raise AgentError('VERTEX_CONFIDENCE_REQUIRED')
@@ -152,7 +152,7 @@ class VertexJudge:
         from .output_schema import judge_output_schema, vertex_response_schema
         from .policy_v21 import bound
         return self.generate(messages[0]['content'], json.dumps(context,ensure_ascii=False,allow_nan=False),
-            response_schema=vertex_response_schema(judge_output_schema(policy_bound=bound(snapshot),arguments=arguments)))
+            response_schema=vertex_response_schema(judge_output_schema(policy_bound=bound(snapshot),arguments=arguments,snapshot=snapshot)))
 
     def generate(self, system, user, max_output_tokens=16384, *, response_schema=None):
         self.last_metadata = {}

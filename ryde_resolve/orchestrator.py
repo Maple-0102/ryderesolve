@@ -78,6 +78,8 @@ class RydeOrchestrator:
             session.bind(snapshot,runners,{'issue_guidance':self.issue_guidance,'reviewer_enabled':self.reviewer is not None,'parallel_advocates':self.parallel_advocates})
             result['calculations']=step('calculate_rules','Audited calculations',{'snapshot_id':snapshot['snapshot_id']},
                                         lambda:calculate_rules(snapshot))
+            from .review_contract import program_review_contract
+            result['program_review_contract']=program_review_contract(snapshot)
             policy=result['calculations'].get('policy_application')
             if policy and policy['evidence_only']:
                 result['execution_policy']='evidence_only';result['providers_skipped']=True
@@ -144,17 +146,21 @@ class RydeOrchestrator:
             adopted=proposal
             if errors and proposal is not None:
                 from .statement_gate import downgrade_statement_only_review
-                candidate,adjustments=downgrade_statement_only_review(snapshot,proposal)
-                if not adjustments:
+                from .review_contract import lock_review_statuses
+                candidate,adjustments=lock_review_statuses(snapshot,proposal)
+                candidate,source_adjustments=downgrade_statement_only_review(snapshot,candidate)
+                adjustments.extend(source_adjustments)
+                if not source_adjustments:
                     from .statement_gate import reconcile_independent_fare_analysis
-                    candidate,adjustments=reconcile_independent_fare_analysis(snapshot,proposal,result['arguments'])
+                    candidate,fare_adjustments=reconcile_independent_fare_analysis(snapshot,candidate,result['arguments'])
+                    adjustments.extend(fare_adjustments)
                 if adjustments:
                     candidate_errors,candidate_warnings=check_judge(snapshot,candidate,result['arguments'])
                     if not candidate_errors:
                         adopted=candidate;errors=candidate_errors;warnings=candidate_warnings
                         result['judge_adjustments']=adjustments
-                        warnings=list(warnings)+[{'code':'STATEMENT_ONLY_REVIEW_DOWNGRADE' if a['rule']=='statement_only_review_downgrade' else 'INDEPENDENT_FARE_LEDGER_CORRECTION',
-                            'path':a.get('argument_ref','/case_analysis/sides/'+a.get('side','')),
+                        warnings=list(warnings)+[{'code':{'statement_only_review_downgrade':'STATEMENT_ONLY_REVIEW_DOWNGRADE','program_review_status_lock':'PROGRAM_REVIEW_STATUS_LOCK'}.get(a['rule'],'INDEPENDENT_FARE_LEDGER_CORRECTION'),
+                            'path':a.get('argument_ref','/case_analysis/review_responses/'+a['issue_code'] if a.get('issue_code') else '/case_analysis/sides/'+a.get('side','')),
                             'message':'Conservative source/summary correction; inspect the retained original proposal and adjustment audit.'} for a in adjustments]
             if errors and repairable(errors) and self.limits.judge_repairs and callable(getattr(self.judge,'repair',None)):
                 original_errors=list(errors)
