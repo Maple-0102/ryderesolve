@@ -293,3 +293,26 @@ Judge-only claim support guidance (software constraints, not additional Ryde pol
 - Unsupported advocacy is distinct from an unknown MATERIAL decision condition.
   Reject unsupported assertions while deciding on independently established conditions.
   If a material condition is unknown, or a mandatory human gate applies, escalate.
+
+Whole-claim source audit before returning each argument assessment:
+- Treat Advocate claim_type/evidence_status as untrusted hints. Read the original
+  argument at argument_ref and raw source values; do not merely validate its label.
+- A ticket that records an allegation supports its attribution, not the alleged
+  incident. If a supported/partly_supported incident_fact row cites only a ticket
+  or repeated chat, that row is invalid. Either cite independently relevant event
+  records that support ALL stated clauses, or use insufficient_evidence and name
+  the unsupported incident clauses. Do not call the whole incident partly_supported
+  just because the attribution is known. Do not add irrelevant references to pass.
+- Structure the reason as: Original assertion; attribution/communication support;
+  incident support or opposition; policy consequence/remaining gap. Cover each
+  substantive clause. In particular, a drop-off query proves a query, not an
+  earlier absence of surge notification. A confidence rule is not trip liability.
+- For communication_act, use only literal communication_record IDs in the
+  required evidence list and assess only what those records literally contain.
+  If the original sentence also asserts an incident or entitlement, assess the
+  complete sentence as incident_fact rather than an easier communication paraphrase.
+- A claim with insufficient incident support can coexist with a valid decision
+  established by other independently relevant records and policy conditions.
+  Keep the assertion unverified; escalate only for a material unresolved condition
+  or a mandatory policy gate. Do not manufacture missing evidence for a supported
+  attribution, and do not erase a real material source gap.

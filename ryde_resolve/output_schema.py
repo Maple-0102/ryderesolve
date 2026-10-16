@@ -39,7 +39,7 @@ def judge_output_schema(policy_bound=False, arguments=None):
         'Rate the ORIGINAL complete claim, not a corrected paraphrase. supported requires every substantive clause. '
         'A charge-based refund rule does not support a claim that refund requires proving the detour was unjustified.')
     ledger['reason']['description'] = (
-        'Start by quoting the central assertion of the original claim at argument_ref, then assess that assertion. '
+        'Cover the original WHOLE claim at argument_ref, using: Original assertion; attribution/communication support; incident support/opposition; policy consequence/remaining gap. '
         'Explicitly name any unproved full-trip inference or mismatch between route justification and extra-charge entitlement. '
         'Do not substitute the policy wording for the claim and call the original supported.')
     properties = {

@@ -87,6 +87,16 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
                 summary = item[text_key].splitlines()[0] if kind == 'policy' else item[text_key]
                 cards.append(f'<details id="{prefix}-{kind}-{esc(ref)}"><summary><b>{esc(ref)}</b> {esc(summary)}</summary><p class="muted">来源：{esc(item["source"])} · 类型：{esc(index.get("kind", index.get("policy_origin", "policy")))}</p>{pretty(excerpts)}</details>')
             return ''.join(cards)
+        from .diagnostics import explain_checks
+        explanation_rows=[]
+        for row in explain_checks(result):
+            argument_link=links([row['argument_ref'].strip('/').replace('/','-')],'argument') if row['argument_ref'] else ''
+            claim_html='<p>原论点：'+esc(row['claim'])+'</p>' if row['claim'] else ''
+            phase={'final':'当前阻止发布的问题','initial':'已保留的原始候选问题','policy':'正常人工处理原因'}[row['phase']]
+            explanation_rows.append('<li><b>'+esc(phase)+'：'+esc(row['message'])+'</b>'+claim_html+argument_link+
+                                    '<p>下一步：'+esc(row['next_action'])+'</p><p class="muted">'+esc(row['code'])+'</p></li>')
+        if explanation_rows:
+            execution_html+='<section><h3>检查原因与下一步</h3><ul>'+''.join(explanation_rows)+'</ul></section>'
         arguments = []
         for side, label in [('rider', '乘客 Advocate'), ('driver', '司机 Advocate')]:
             rounds = []
@@ -140,7 +150,7 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
         adjustment_html = ''
         if result.get('judge_adjustments'):
             adjustment_html = ('<section><h3>程序保守修正</h3>'
-                '<p>模型对部分论点的支持评级只有当事人陈述作为依据。程序将其降为证据不足，保留原输出并重新检查全部规则；收费或退款建议未因此生成。</p>'
+                '<p>程序保留原输出，对不满足来源要求的论点降低支持评级，或按逐条评价修正汇总标签，然后重新检查全部规则。Fare 仅在政策条件及主依据独立成立时允许此修正；裁决与金额不变，未执行任何收费或退款。</p>'
                 '<details><summary>原始模型检查错误</summary>' + pretty(result.get('judge_raw_validation_errors', [])) + '</details>'
                 '<details><summary>逐条修正记录</summary>' + pretty(result['judge_adjustments']) + '</details>'
                 '<details><summary>原始 Judge 建议</summary>' + pretty(result.get('judge_proposal')) + '</details></section>')

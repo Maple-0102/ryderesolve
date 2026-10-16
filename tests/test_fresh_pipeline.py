@@ -15,6 +15,7 @@ class FreshPipelineTests(unittest.TestCase):
     def test_five_inputs_keep_expected_labels_and_fixture_arguments_out_of_agents(self):
         rows=selected_exercises()
         self.assertEqual(tuple(r['exercise_id'] for r in rows),SELECTED)
+        self.assertEqual(tuple(r['exercise_id'] for r in selected_exercises(official_only=True)),SELECTED[:3])
         self.assertEqual([r['snapshot']['audit']['data_origin'] for r in rows],['organizer_sample']*3+['synthetic']*2)
         class RecordingClient(FakeClient):
             def generate(self,*args,**kwargs):
@@ -37,6 +38,29 @@ class FreshPipelineTests(unittest.TestCase):
                     self.assertNotIn('exercise_id',context)
                     self.assertNotIn('arguments',context)
                     self.assertNotIn('Assess the recorded case facts',json.dumps(context))
+            from evaluation.run_statement_regressions import run_regressions
+            rejudge=run_regressions(Path(directory,'fresh-pipeline.json'),Path(directory,'rejudge'),OfflineJudge)
+            self.assertEqual(len(rejudge['results']),5)
+            self.assertEqual(rejudge['summary']['provider_calls'],0)
+            self.assertEqual([r['exercise_id'] for r in rejudge['results']],list(SELECTED))
+            from evaluation.revalidate_saved_pipeline import revalidate
+            replay=revalidate(Path(directory,'rejudge/judge-regressions.json'),Path(directory,'offline-replay'))
+            self.assertEqual(len(replay['results']),5)
+            self.assertEqual(replay['summary']['provider_calls'],0)
+            self.assertIn('离线复验报告',Path(directory,'offline-replay/ryde-evaluation.html').read_text())
+            from evaluation.build_demo_package import build
+            package=build([Path(directory,'fresh-pipeline.json')],Path(directory,'recording'))
+            self.assertEqual(package['opening_provider_calls'],0)
+            self.assertEqual(len(package['entries']),5)
+            self.assertFalse(any(r['replayed'] for r in package['entries']))
+            page=Path(directory,'recording/r21-fare-original.html').read_text()
+            self.assertIn('真实模型调用的保存记录',page)
+            self.assertNotIn('<script src=',page)
+            with self.assertRaisesRegex(ValueError,'new output'):
+                build([Path(directory,'fresh-pipeline.json')],Path(directory,'recording'))
+            replay_package=build([Path(directory,'offline-replay/revalidation.json')],Path(directory,'recording-replay'))
+            self.assertTrue(all(r['replayed'] for r in replay_package['entries']))
+            self.assertIn('离线复验',Path(directory,'recording-replay/r21-fare-original.html').read_text())
             saved=Path(directory,'fresh-pipeline.json').read_bytes()
             with self.assertRaisesRegex(ValueError,'new output'):run_fresh(directory,advocate,OfflineJudge)
             self.assertEqual(Path(directory,'fresh-pipeline.json').read_bytes(),saved)

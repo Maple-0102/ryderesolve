@@ -1,0 +1,142 @@
+--- a/prompts/judge_prompt.md
++++ b/prompts/judge_prompt.md
+@@ -293,3 +293,26 @@
+ - Unsupported advocacy is distinct from an unknown MATERIAL decision condition.
+   Reject unsupported assertions while deciding on independently established conditions.
+   If a material condition is unknown, or a mandatory human gate applies, escalate.
++
++Whole-claim source audit before returning each argument assessment:
++- Treat Advocate claim_type/evidence_status as untrusted hints. Read the original
++  argument at argument_ref and raw source values; do not merely validate its label.
++- A ticket that records an allegation supports its attribution, not the alleged
++  incident. If a supported/partly_supported incident_fact row cites only a ticket
++  or repeated chat, that row is invalid. Either cite independently relevant event
++  records that support ALL stated clauses, or use insufficient_evidence and name
++  the unsupported incident clauses. Do not call the whole incident partly_supported
++  just because the attribution is known. Do not add irrelevant references to pass.
++- Structure the reason as: Original assertion; attribution/communication support;
++  incident support or opposition; policy consequence/remaining gap. Cover each
++  substantive clause. In particular, a drop-off query proves a query, not an
++  earlier absence of surge notification. A confidence rule is not trip liability.
++- For communication_act, use only literal communication_record IDs in the
++  required evidence list and assess only what those records literally contain.
++  If the original sentence also asserts an incident or entitlement, assess the
++  complete sentence as incident_fact rather than an easier communication paraphrase.
++- A claim with insufficient incident support can coexist with a valid decision
++  established by other independently relevant records and policy conditions.
++  Keep the assertion unverified; escalate only for a material unresolved condition
++  or a mandatory policy gate. Do not manufacture missing evidence for a supported
++  attribution, and do not erase a real material source gap.
+--- a/ryde_resolve/claim_support.py
++++ b/ryde_resolve/claim_support.py
+@@ -20,6 +20,10 @@
+                     refs=row.get('evidence_refs',[])
+                     rows.append({'argument_ref':f'/{rnd}/{side}/{field}/{i}',
+                         'original_text':row.get(text_key,''),
++                        'advocate_provenance_labels':{'claim_type':row.get('claim_type'),
++                            'evidence_status':row.get('evidence_status'),
++                            'boundary':'Untrusted Advocate labels, not an adjudicated scope or a truth score.'},
++                        'incident_support_absent_from_own_citations':not any(r in groups['candidate_incident_records'] for r in refs),
+                         'cited_communication_records':[r for r in refs if r in groups['communication_records']],
+                         'cited_party_statements':[r for r in refs if r in groups['attributed_party_statements']],
+                         'cited_candidate_incident_records':[r for r in refs if r in groups['candidate_incident_records']],
+@@ -32,5 +36,8 @@
+             'For a mixed assertion, do not rate the whole claim supported merely because its opening attribution or one clause is recorded. Explain each unsupported clause. Use incident_fact and insufficient_evidence where the alleged event lacks support; do not label it contradicted solely because a log is absent.',
+             'A system record contradicting an alleged incident may support contradicted with that record in opposing_evidence_refs. Never reuse a reference in both opposing and supporting roles.',
+             'A literal quote/query can be assessed as communication_act using matching communication IDs only. Do not replace the original claim with an easier paraphrase.',
++            'For a reported allegation, separate the fact of attribution from the truth of every alleged event. Never mark the incident supported or partly_supported solely because the ticket accurately records the allegation. Find matching primary incident records elsewhere in the snapshot; if they are absent or inconclusive, use insufficient_evidence and specify the event-support gap. Preserve attributed wording in the reason.',
++            'Profile/fraud history can be relevant to a policy confidence threshold without proving trip responsibility. A mixed claim about a confidence threshold AND an unresolved trip condition needs the actual sources for both clauses; do not cite a profile alone as incident support or invent an unrelated primary reference.',
++            'For communication_act, the support rating refers only to the literal words/actions in the cited communication_record. If the original claim adds lack of notice, presence, liability, or policy entitlement beyond those words, use incident_fact for the full assertion and explain the additional clauses. A repeated statement or drop-off fare query cannot establish earlier non-notification.',
+             'Unsubstantiated party assertions do not alone force human review when all material decision conditions are independently established. Material unknown conditions and mandatory human gates still require escalation.'
+         ]}
+--- /dev/null
++++ b/ryde_resolve/diagnostics.py
+@@ -0,0 +1,45 @@
++"""Plain-language explanations only; no ruling changes or inferred evidence truth."""
++import re
++
++MESSAGES={
++    'ARGUMENT_ASSESSMENT_WITHOUT_RECORD_SUPPORT':('论点的引用类型不满足所选判断范围。记录了某人的说法，不等于证实了所述事件。','核对原论点的每个事实部分及原始记录，补齐相关依据或保留证据不足。'),
++    'ARGUMENT_UNKNOWN_EVIDENCE':('论点引用了当前快照中不存在的证据编号。','使用当前快照的证据编号重新检查输出。'),
++    'ARGUMENT_CONFLICTING_REFERENCE_ROLE':('同一证据被同时列为同一论点的支持和反证。','核对原始记录，分别说明支持与反驳的部分。'),
++    'UNRESOLVED_DATA_OR_POLICY_REVIEW':('仍有影响裁决的证据、政策或输出检查问题，当前建议不能发布。','查看其他具体检查原因及待澄清事项。'),
++    'RUN_CALL_BUDGET_EXHAUSTED':('本次允许的模型调用次数已用完。','保留现有输出，核对预算和恢复条件后再决定是否继续。'),
++    'CHECKPOINT_INPUT_OR_VERSION_MISMATCH':('材料、提示词、接口或模型版本已变化，旧结果不能直接续用。','使用当前版本重新运行，保留旧记录。'),
++}
++
++
++def explain_checks(result):
++    errors=result.get('validation_errors',[])
++    phase='final' if errors else 'initial'
++    errors=errors or result.get('judge_raw_validation_errors',[])
++    output=[];seen=set()
++    for error in errors:
++        code=str(error).split(':',1)[0]
++        match=re.search(r'/(opening|response)/(rider|driver)/(claims|counterpoints)/(\d+)(?:$|\s)',str(error))
++        ref=match.group(0).strip() if match else None
++        if (code,ref) in seen:continue
++        seen.add((code,ref));claim=None
++        if match:
++            rnd,side,field,index=match.groups()
++            rows=result.get('arguments',{}).get(rnd,{}).get(side,{}).get(field,[])
++            if int(index)<len(rows):claim=rows[int(index)].get('claim')
++        message,action=MESSAGES.get(code,('输出检查未通过，需要查看保留的原始错误。','按具体错误检查材料、输出或运行配置。'))
++        if any(marker in code for marker in ('HTTP_','TIMEOUT','CONNECTION','ADC_')):
++            message='模型调用、授权或连接失败，本次未形成可采纳结果。'
++            action='检查具体错误和授权状态，确认恢复条件及预算。'
++        output.append({'code':code,'phase':phase,'message':message,'next_action':action,
++                       'argument_ref':ref,'claim':claim})
++    if not result.get('validation_errors'):
++        reason_messages={
++            'policy_gate':('政策规定此案需要人工处理。','按人工交接单复核；这是正常政策出口。'),
++            'policy_clarification':('政策与样例规则的关系尚未明确。','先确认适用规则，再决定是否能够自动处理。'),
++            'missing_evidence':('影响裁决的材料仍有缺口。','按交接单补材料或由人工复核。')}
++        for reason in result.get('review_reason_types',[]):
++            if reason in reason_messages:
++                message,action=reason_messages[reason]
++                output.append({'code':reason,'phase':'policy','message':message,'next_action':action,
++                               'argument_ref':None,'claim':None})
++    return output
+--- a/ryde_resolve/execution.py
++++ b/ryde_resolve/execution.py
+@@ -21,7 +21,9 @@
+     paths = [*ROOT.joinpath('ryde_resolve').glob('*.py'), *ROOT.joinpath('prompts').glob('*.md'),
+              *ROOT.joinpath('schemas').glob('*.json')]
+     for module in ('ryderesolve-advocate-system/ryderesolve_advocate','ryderesolve-evidence-tools/ryderesolve_evidence'):
+-        paths.extend(ROOT.joinpath('vendor',module).rglob('*.py'))
++        paths.extend(p for p in ROOT.joinpath('vendor',module).rglob('*')
++                     if p.is_file() and p.suffix in ('.py', '.txt', '.json', '.md')
++                     and '__pycache__' not in p.parts)
+     return digest({str(p.relative_to(ROOT)): sha256(p.read_bytes()).hexdigest() for p in sorted(paths)})
+ 
+ 
+--- a/ryde_resolve/output_schema.py
++++ b/ryde_resolve/output_schema.py
+@@ -39,7 +39,7 @@
+         'Rate the ORIGINAL complete claim, not a corrected paraphrase. supported requires every substantive clause. '
+         'A charge-based refund rule does not support a claim that refund requires proving the detour was unjustified.')
+     ledger['reason']['description'] = (
+-        'Start by quoting the central assertion of the original claim at argument_ref, then assess that assertion. '
++        'Cover the original WHOLE claim at argument_ref, using: Original assertion; attribution/communication support; incident support/opposition; policy consequence/remaining gap. '
+         'Explicitly name any unproved full-trip inference or mismatch between route justification and extra-charge entitlement. '
+         'Do not substitute the policy wording for the claim and call the original supported.')
+     properties = {
+--- a/ryde_resolve/ui.py
++++ b/ryde_resolve/ui.py
+@@ -87,6 +87,16 @@
+                 summary = item[text_key].splitlines()[0] if kind == 'policy' else item[text_key]
+                 cards.append(f'<details id="{prefix}-{kind}-{esc(ref)}"><summary><b>{esc(ref)}</b> {esc(summary)}</summary><p class="muted">来源：{esc(item["source"])} · 类型：{esc(index.get("kind", index.get("policy_origin", "policy")))}</p>{pretty(excerpts)}</details>')
+             return ''.join(cards)
++        from .diagnostics import explain_checks
++        explanation_rows=[]
++        for row in explain_checks(result):
++            argument_link=links([row['argument_ref'].strip('/').replace('/','-')],'argument') if row['argument_ref'] else ''
++            claim_html='<p>原论点：'+esc(row['claim'])+'</p>' if row['claim'] else ''
++            phase={'final':'当前阻止发布的问题','initial':'已保留的原始候选问题','policy':'正常人工处理原因'}[row['phase']]
++            explanation_rows.append('<li><b>'+esc(phase)+'：'+esc(row['message'])+'</b>'+claim_html+argument_link+
++                                    '<p>下一步：'+esc(row['next_action'])+'</p><p class="muted">'+esc(row['code'])+'</p></li>')
++        if explanation_rows:
++            execution_html+='<section><h3>检查原因与下一步</h3><ul>'+''.join(explanation_rows)+'</ul></section>'
+         arguments = []
+         for side, label in [('rider', '乘客 Advocate'), ('driver', '司机 Advocate')]:
+             rounds = []

@@ -18,9 +18,9 @@ SELECTED=('R21-ROUTE-ORIGINAL','R21-NOSHOW-ORIGINAL','R21-FARE-ORIGINAL',
           'R21-FARE-NOTIFIED','R21-FARE-NOTICE-MISSING')
 
 
-def selected_exercises():
+def selected_exercises(*, official_only=False):
     rows={r['exercise_id']:r for r in build_robustness_exercises()}
-    return [rows[k] for k in SELECTED]
+    return [rows[k] for k in (SELECTED[:3] if official_only else SELECTED)]
 
 
 def run_fresh(output, advocate_factory, judge_factory, *, exercises=None):
@@ -31,7 +31,7 @@ def run_fresh(output, advocate_factory, judge_factory, *, exercises=None):
     runtime=[*ROOT.joinpath('ryde_resolve').glob('*.py'),*ROOT.joinpath('prompts').glob('*.md'),*ROOT.joinpath('schemas').glob('*.json')]
     for package in ('ryderesolve-advocate-system','ryderesolve-evidence-tools'):
         runtime.extend(p for p in (ROOT/'vendor'/package).rglob('*') if p.suffix in ('.py','.txt','.json') and '__pycache__' not in p.parts)
-    report={'kind':'fresh five-case full-pipeline development evaluation',
+    report={'kind':'fresh full-pipeline development evaluation',
         'runtime_implementation':implementation_digest(),
         'runtime_files':{str(p.relative_to(ROOT)):sha256(p.read_bytes()).hexdigest() for p in sorted(runtime)},
         'settings':{'max_calls_per_case':5,'max_recorded_tokens_per_case':180000,'thinking_level':'LOW for live CLI',
@@ -71,6 +71,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--live',action='store_true')
     parser.add_argument('--output',required=True,type=Path)
+    parser.add_argument('--official-only',action='store_true',help='Run only the three organizer samples (at most 15 model calls).')
     args=parser.parse_args()
     if not args.live:parser.error('Explicit --live required; at most 25 fresh model calls, no retries or repairs.')
     config=replace(VertexConfig.from_env(),thinking_level='LOW')
@@ -79,9 +80,10 @@ def main():
             print(json.dumps({'event':'provider_call_started'}),flush=True)
             try:return super().generate(*args,**kwargs)
             finally:print(json.dumps({'event':'provider_call_finished','usage':self.last_metadata.get('usage',{})}),flush=True)
-    report=run_fresh(args.output,lambda:TeammateAdvocate(ProgressClient(config)),lambda:ProgressClient(config))
+    rows=selected_exercises(official_only=args.official_only)
+    report=run_fresh(args.output,lambda:TeammateAdvocate(ProgressClient(config)),lambda:ProgressClient(config),exercises=rows)
     print(json.dumps({'event':'evaluation_finished','summary':report['summary']},ensure_ascii=False),flush=True)
-    return 0 if len(report['results'])==len(SELECTED) and all(r['valid_expected_result'] for r in report['results']) else 1
+    return 0 if len(report['results'])==len(rows) and all(r['valid_expected_result'] for r in report['results']) else 1
 
 
 if __name__=='__main__':raise SystemExit(main())
