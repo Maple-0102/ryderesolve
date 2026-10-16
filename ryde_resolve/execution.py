@@ -113,7 +113,7 @@ def retryable(code):
     return bool(re.fullmatch(r'(VERTEX|ADP|MODEL)_HTTP_(429|502|503|504)',code))
 
 
-REPAIRABLE = {'FINDING_CONDITION_BASIS_MISMATCH','ARGUMENT_ASSESSMENT_COVERAGE','SIDE_ARGUMENT_COVERAGE','DUPLICATE_ARGUMENT_ASSESSMENT',
+REPAIRABLE = {'ARGUMENT_CONFLICTING_REFERENCE_ROLE','FINDING_CONDITION_BASIS_MISMATCH','ARGUMENT_ASSESSMENT_COVERAGE','SIDE_ARGUMENT_COVERAGE','DUPLICATE_ARGUMENT_ASSESSMENT',
               'UNADDRESSED_ARGUMENT','ANALYSIS_SIDE_MISSING_ARGUMENT','CASE_ANALYSIS_REQUIRED','VERTEX_INVALID_RESPONSE','VERTEX_INVALID_JSON_OBJECT'}
 
 
@@ -216,3 +216,81 @@ class ExecutionSession:
             delay=min(2**attempt,4)
             if self.seconds()+delay>=self.limits.max_seconds:raise AgentError('RUN_TIME_BUDGET_EXHAUSTED')
             self.wait(delay)
+
+    def invoke_batch(self, tasks):
+        """Two independent provider calls; only the calling thread mutates the ledger.
+
+        Reserve all pending calls before dispatch. Drain both branches on failure,
+        retaining a successful branch for resume. Retries use the same total budget.
+        """
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+        from datetime import datetime, timezone
+        if not 1<=len(tasks)<=2:raise AgentError('PARALLEL_BATCH_SIZE_INVALID')
+        runners=[t['runner'] for t in tasks]
+        if len({id(r) for r in runners})!=len(runners):raise AgentError('PARALLEL_RUNNER_MUST_BE_ISOLATED')
+        models=[getattr(r,'model',None) for r in runners if getattr(r,'model',None) is not None]
+        if len({id(m) for m in models})!=len(models):raise AgentError('PARALLEL_MODEL_MUST_BE_ISOLATED')
+        outputs={};pending=[]
+        for task in tasks:
+            task=dict(task)
+            task['fingerprint']=digest({'inputs':task['inputs'],'runner':runner_identity(task['runner'])})
+            prior=self.entries.get(task['key'])
+            if prior and prior['fingerprint']==task['fingerprint']:
+                event=task['event_factory']();event.update(status='reused',output=deepcopy(prior['output']),
+                    transport=deepcopy(prior.get('transport',{})),reused_from_checkpoint=True,usage_charged_this_attempt=False,
+                    duration_ms=0.0,finished_at=event['started_at'])
+                self.reused+=1;outputs[task['key']]=deepcopy(prior['output'])
+            else:pending.append(task)
+        self.save()
+        def call(task):
+            runner=task['runner'];start=self.clock()
+            try:
+                output=task['fn']()
+                from ryderesolve_evidence.core import assert_json_value
+                assert_json_value(output)
+                return output,None
+            except BaseException as exc:return None,exc
+            finally:
+                # Task-local fields only; persistent state belongs to parent.
+                task['transport']=deepcopy(getattr(runner,'last_metadata',{}))
+                task['duration_ms']=round((self.clock()-start)*1000,2)
+                task['finished_at']=datetime.now(timezone.utc).isoformat()
+        for attempt in range(self.limits.transient_retries+1):
+            paid_tasks=[t for t in pending if provider_call(t['runner'])]
+            if paid_tasks:
+                self.admit()
+                if self.usage['provider_calls']+len(paid_tasks)>self.limits.max_calls:raise AgentError('RUN_CALL_BUDGET_EXHAUSTED')
+            for task in pending:
+                event=task['event_factory']();task['event']=event;event.update(attempt=attempt+1,parallel_batch=True)
+                if hasattr(task['runner'],'last_metadata'):task['runner'].last_metadata={}
+                if provider_call(task['runner']):
+                    self.usage['provider_calls']+=1;self.usage['unknown_usage_calls']+=1
+            self.save();failed=[]
+            with ThreadPoolExecutor(max_workers=2,thread_name_prefix='ryde-advocate') as pool:
+                futures={pool.submit(call,t):t for t in pending}
+                for future in as_completed(futures):
+                    task=futures[future];output,exc=future.result();event=task['event'];transport=task['transport']
+                    event.update(duration_ms=task['duration_ms'],finished_at=task['finished_at'])
+                    if transport:event['transport']=transport
+                    usage=transport.get('usage')
+                    if provider_call(task['runner']) and isinstance(usage,dict) and type(usage.get('totalTokenCount')) is int and usage['totalTokenCount']>=0:
+                        self.usage['calls_with_usage']+=1;self.usage['unknown_usage_calls']-=1
+                        self.usage['recorded_tokens']+=usage['totalTokenCount']
+                    if exc is None:
+                        event.update(status='success',output=deepcopy(output));outputs[task['key']]=output
+                        self.entries[task['key']]={'fingerprint':task['fingerprint'],'output':deepcopy(output),'transport':transport,
+                            'boundary':'Provider candidate retained; business validators are run again on resume.'}
+                    else:
+                        code=str(exc) if isinstance(exc,AgentError) else 'STEP_FAILED_'+type(exc).__name__
+                        event.update(status='interrupted' if isinstance(exc,(KeyboardInterrupt,SystemExit)) else 'failed',error=code)
+                        failed.append((task,exc,code))
+                    self.save()
+            if not failed:return [outputs[t['key']] for t in tasks]
+            for task,exc,code in failed:
+                if not isinstance(exc,Exception):raise exc
+                if attempt>=self.limits.transient_retries or not retryable(code):raise AgentError(code) from None
+            delay=min(2**attempt,4)
+            if self.seconds()+delay>=self.limits.max_seconds:raise AgentError('RUN_TIME_BUDGET_EXHAUSTED')
+            for task,_,_ in failed:task['event']['retry_scheduled']=True
+            self.save();self.wait(delay);pending=[t for t,_,_ in failed]
+        return [outputs[t['key']] for t in tasks]

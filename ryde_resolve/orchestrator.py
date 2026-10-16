@@ -12,19 +12,23 @@ from .execution import CheckpointStore, ExecutionSession, RunLimits, repairable
 
 class RydeOrchestrator:
     def __init__(self, evidence_gateway=None, advocate_runner=None, judge_runner=None,
-                 *, checkpoint_store=None, limits=None, clock=None, wait=None, reviewer_runner=None, issue_guidance=False):
+                 *, checkpoint_store=None, limits=None, clock=None, wait=None, reviewer_runner=None, issue_guidance=False, parallel_advocates=False, advocate_factory=None):
         self.evidence = evidence_gateway or EvidenceGateway()
         self.advocate = advocate_runner or OfflineAdvocate()
         self.judge = judge_runner or OfflineJudge()
         self.reviewer=reviewer_runner; self.issue_guidance=issue_guidance
+        self.parallel_advocates=parallel_advocates;self.advocate_factory=advocate_factory
+        if parallel_advocates and advocate_factory is None:raise AgentError('PARALLEL_ADVOCATE_FACTORY_REQUIRED')
         self.store = checkpoint_store
         self.limits = limits or RunLimits()
         self.clock = clock; self.wait = wait
         self.events = []
 
-    def run(self, case_id='DISP-002', *, resume=None):
+    def run(self, case_id='DISP-002', *, resume=None, run_id=None):
         self.events = []
-        run_id = resume or str(uuid4())
+        if resume and run_id and resume!=run_id:raise AgentError('RUN_ID_RESUME_MISMATCH')
+        run_id = resume or run_id or str(uuid4())
+        if self.store:self.store.path(run_id)
         modes = {'advocate': getattr(self.advocate, 'mode', 'custom_adapter'),
                  'judge': getattr(self.judge, 'mode', 'custom_adapter')}
         result = {'run_id': run_id, 'case_id': case_id, 'modes': modes,
@@ -34,7 +38,8 @@ class RydeOrchestrator:
                   'judge_raw_validation_errors': [], 'judge_final_validation_errors': [],
                   'repair_history': [], 'validation_errors': [], 'validation_warnings': [],
                   'execution_status': 'running', 'business_decision_status': 'pending',
-                  'review_reason_types': [], 'communication_log': self.events}
+                  'review_reason_types': [], 'communication_log': self.events,
+                  'workflow_options':{'issue_guidance':self.issue_guidance,'reviewer':self.reviewer is not None,'parallel_advocates':self.parallel_advocates}}
         kwargs={k:v for k,v in [('clock',self.clock),('wait',self.wait)] if v is not None}
         session=ExecutionSession(run_id,result,self.store,resume,self.limits,**kwargs)
 
@@ -54,6 +59,13 @@ class RydeOrchestrator:
             session.save()
             return result
 
+        parallel_runners={}
+        if self.parallel_advocates:
+            parallel_runners={rnd+':'+side:self.advocate_factory() for rnd in ('opening','response') for side in ('rider','driver')}
+            instances=list(parallel_runners.values())
+            models=[r.model for r in instances if getattr(r,'model',None) is not None]
+            if len({id(r) for r in instances})!=4 or len({id(m) for m in models})!=len(models):raise AgentError('PARALLEL_RUNNER_MUST_BE_ISOLATED')
+
         snapshot={'case_id':case_id}
         try:
             snapshot=step('prepare_case','EvidenceTools',{'case_id':case_id},lambda:self.evidence.prepare(case_id))
@@ -61,8 +73,9 @@ class RydeOrchestrator:
             if snapshot['case_id']!=case_id:raise AgentError('EVIDENCE_CASE_MISMATCH')
             result['snapshot']=deepcopy(snapshot)
             runners={'advocate':self.advocate,'judge':self.judge}
+            runners.update(parallel_runners)
             if self.reviewer:runners['reviewer']=self.reviewer
-            session.bind(snapshot,runners,{'issue_guidance':self.issue_guidance,'reviewer_enabled':self.reviewer is not None})
+            session.bind(snapshot,runners,{'issue_guidance':self.issue_guidance,'reviewer_enabled':self.reviewer is not None,'parallel_advocates':self.parallel_advocates})
             result['calculations']=step('calculate_rules','Audited calculations',{'snapshot_id':snapshot['snapshot_id']},
                                         lambda:calculate_rules(snapshot))
             policy=result['calculations'].get('policy_application')
@@ -76,18 +89,10 @@ class RydeOrchestrator:
                 from .issue_guidance import build_issue_ledger
                 result['issue_ledger']=build_issue_ledger(result['calculations'])
             for round_name in ('opening','response'):
-                for side in ('rider','driver'):
-                    other='driver' if side=='rider' else 'rider'
-                    opponent=deepcopy(result['arguments']['opening'].get(other)) if round_name=='response' else None
-                    inputs={'snapshot_id':snapshot['snapshot_id'],'opponent_opening':opponent,
-                            'evidence_refs':[f['evidence_id'] for f in snapshot['evidence_pack']['facts']]}
-                    guided=self.issue_guidance and round_name=='response' and callable(getattr(self.advocate,'run_guided',None))
-                    if guided:
-                        from .issue_guidance import response_guidance
-                        inputs['round_guidance']=response_guidance(result['issue_ledger'],side)
-                    output=step(round_name,side+' Advocate',inputs,
-                        lambda:self.advocate.run_guided(deepcopy(snapshot),side,round_name,deepcopy(opponent),deepcopy(inputs['round_guidance'])) if guided else self.advocate(deepcopy(snapshot),side,round_name,deepcopy(opponent)),
-                        runner=self.advocate,key=round_name+':'+side)
+                if self.issue_guidance and round_name=='response':
+                    from .issue_guidance import coordinate_openings
+                    result['issue_ledger']=coordinate_openings(result['issue_ledger'],result['arguments']['opening'])
+                def accept(side,output):
                     errors,warnings=check_advocate(snapshot,output,side)
                     result['validation_warnings'].extend(warnings)
                     if errors:
@@ -95,6 +100,32 @@ class RydeOrchestrator:
                         raise AgentError('INVALID_ADVOCATE_OUTPUT')
                     result['arguments'][round_name][side]=output
                     session.save()
+                tasks=[]
+                for side in ('rider','driver'):
+                    runner=parallel_runners.get(round_name+':'+side,self.advocate)
+                    other='driver' if side=='rider' else 'rider'
+                    opponent=deepcopy(result['arguments']['opening'].get(other)) if round_name=='response' else None
+                    inputs={'snapshot_id':snapshot['snapshot_id'],'opponent_opening':opponent,
+                            'evidence_refs':[f['evidence_id'] for f in snapshot['evidence_pack']['facts']]}
+                    guided=self.issue_guidance and round_name=='response' and callable(getattr(runner,'run_guided',None))
+                    if guided:
+                        from .issue_guidance import response_guidance
+                        inputs['round_guidance']=response_guidance(result['issue_ledger'],side)
+                    def invoke(runner=runner,side=side,opponent=opponent,inputs=inputs,guided=guided):
+                        return runner.run_guided(deepcopy(snapshot),side,round_name,deepcopy(opponent),deepcopy(inputs['round_guidance'])) if guided else runner(deepcopy(snapshot),side,round_name,deepcopy(opponent))
+                    def event_factory(side=side,inputs=inputs):
+                        event={'sequence':len(self.events)+1,'step':round_name,'agent':side+' Advocate',
+                            'started_at':datetime.now(timezone.utc).isoformat(),'input':deepcopy(inputs),'status':'running'}
+                        self.events.append(event);return event
+                    task={'key':round_name+':'+side,'inputs':inputs,'runner':runner,'fn':invoke,'event_factory':event_factory}
+                    if self.parallel_advocates:tasks.append(task)
+                    else:
+                        output=step(round_name,side+' Advocate',inputs,invoke,runner=runner,key=task['key'])
+                        accept(side,output)
+                if self.parallel_advocates:
+                    outputs=session.invoke_batch(tasks)
+                    # Barrier: validate both openings before either response, and both responses before Judge.
+                    for side,output in zip(('rider','driver'),outputs):accept(side,output)
             if self.issue_guidance:
                 from .issue_guidance import citation_progress
                 result['issue_progress']=citation_progress(result['arguments'])
@@ -157,7 +188,7 @@ class RydeOrchestrator:
             session.save();raise
         return finish()
 
-    def rerun_with_supplement(self, previous, new_snapshot, *, source_note):
+    def rerun_with_supplement(self, previous, new_snapshot, *, source_note, run_id=None):
         """One explicit, traceable supplement; rebuild all arguments against the new snapshot.
 
         This consumes supplied evidence only. It neither retrieves nor authenticates it.
@@ -182,8 +213,8 @@ class RydeOrchestrator:
             def prepare(self, case_id):
                 return deepcopy(captured)
         rerunner = RydeOrchestrator(evidence_gateway=CapturedEvidence(),
-                                   advocate_runner=self.advocate, judge_runner=self.judge, limits=self.limits, reviewer_runner=self.reviewer, issue_guidance=self.issue_guidance)
-        result = rerunner.run(previous['case_id'])
+                                   advocate_runner=self.advocate, judge_runner=self.judge, checkpoint_store=self.store, limits=self.limits, reviewer_runner=self.reviewer, issue_guidance=self.issue_guidance, clock=self.clock, wait=self.wait, parallel_advocates=self.parallel_advocates, advocate_factory=self.advocate_factory)
+        result = rerunner.run(previous['case_id'],run_id=run_id)
         result['supplement_lineage'] = {
             'round': 1, 'parent_run_id': previous['run_id'],
             'old_snapshot_id': old['snapshot_id'], 'new_snapshot_id': captured['snapshot_id'],

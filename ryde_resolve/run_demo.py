@@ -26,6 +26,7 @@ def main(argv=None):
     parser.add_argument('--checkpoint-dir', type=Path, help='Defaults to OUTPUT_DIR/checkpoints; contains full private case data.')
     parser.add_argument('--reviewer',choices=('none','vertex'),default='none',help='Optional extra read-only model call on validated decisive proposals.')
     parser.add_argument('--issue-guidance',action='store_true',help='Focus both response rounds on the same recorded decision conditions.')
+    parser.add_argument('--parallel-advocates',action='store_true',help='Run each Advocate pair concurrently with isolated clients and cumulative budgets.')
     parser.add_argument('--resume', help='Checkpoint run UUID; requires a single --case and identical inputs/configuration.')
     parser.add_argument('--max-calls', type=int, default=7)
     parser.add_argument('--max-seconds', type=float, default=900)
@@ -39,6 +40,7 @@ def main(argv=None):
         if args.judge in ('adp', 'vertex'): args.output_dir /= args.judge + '-live'
     if args.advocate_file and args.advocate != 'offline': parser.error('--advocate-file cannot be combined with a live Advocate')
     if args.thinking_level and args.judge != 'vertex' and args.advocate != 'teammate-vertex' and args.reviewer!='vertex': parser.error('--thinking-level requires a Vertex agent')
+    if args.parallel_advocates and args.advocate_file:parser.error('--parallel-advocates requires offline or live isolated Advocates')
     if args.advocate_file and args.case == 'all':
         parser.error('--advocate-file requires a single --case')
     try:
@@ -55,13 +57,15 @@ def main(argv=None):
     except (AgentError, ValueError, OSError) as exc:
         print(str(exc) if isinstance(exc, AgentError) else 'INVALID_ADVOCATE_FILE', file=sys.stderr)
         return 2
+    from .mock_agents import OfflineAdvocate
+    advocate_factory=(lambda:TeammateAdvocate(VertexJudge(config))) if args.advocate=='teammate-vertex' else OfflineAdvocate
     cases = case_ids if args.case == 'all' else [args.case]
     args.output_dir.mkdir(parents=True, exist_ok=True)
     store = CheckpointStore(args.checkpoint_dir or args.output_dir / 'checkpoints')
     results = []
     for case in cases:
         try:
-            result = RydeOrchestrator(advocate_runner=advocate, judge_runner=judge, checkpoint_store=store,limits=limits,reviewer_runner=reviewer,issue_guidance=args.issue_guidance).run(case,resume=args.resume)
+            result = RydeOrchestrator(advocate_runner=advocate, judge_runner=judge, checkpoint_store=store,limits=limits,reviewer_runner=reviewer,issue_guidance=args.issue_guidance,parallel_advocates=args.parallel_advocates,advocate_factory=advocate_factory).run(case,resume=args.resume)
         except AgentError as exc:
             print(str(exc),file=sys.stderr);return 2
         results.append(result)

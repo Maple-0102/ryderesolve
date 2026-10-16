@@ -1,0 +1,94 @@
+{
+  "date": "2026-10-16",
+  "base_commit": "e765eab238fc1d652054d168e7489a5f6d482178",
+  "branch": "judge/workflow-followups",
+  "runtime_implementation": "f210ef8861540e9c57b6bfa5496902afacea0a1be4086b93530142ecbe3c90b0",
+  "local_tests": {
+    "root": 224,
+    "evidence": 121,
+    "advocate": 15,
+    "total": 360
+  },
+  "offline_parallel_cases": [
+    {
+      "case_id": "DISP-001",
+      "validation_errors": []
+    },
+    {
+      "case_id": "DISP-002",
+      "validation_errors": []
+    },
+    {
+      "case_id": "DISP-003",
+      "validation_errors": []
+    },
+    {
+      "case_id": "SYN-ROUTE-001",
+      "validation_errors": []
+    }
+  ],
+  "scripts": [
+    "static case switching/ref disclosure passed",
+    "workbench read-only load/paid confirmation/stale preview/commit passed"
+  ],
+  "browser": {
+    "local_workbench_loaded": true,
+    "demo_human_record_saved_and_read_back": true,
+    "original_ai_unchanged": true,
+    "mode": "offline",
+    "human_entry_is_test_data": true
+  },
+  "fresh_main": {
+    "calls": 5,
+    "passed": false,
+    "errors": [
+      "ARGUMENT_CONFLICTING_REFERENCE_ROLE: /opening/driver/claims/1",
+      "UNRESOLVED_DATA_OR_POLICY_REVIEW"
+    ]
+  },
+  "comparison": {
+    "implementation": "f59ef2abc68ce7a6de905b8be9a07faa894e7e63f1f8421873de182ff94fec2e",
+    "summary": {
+      "single_judge": {
+        "matched": 2,
+        "common_or_execution_failures": 1,
+        "false_escalations": 0
+      },
+      "debate_judge": {
+        "matched": 1,
+        "common_or_execution_failures": 2,
+        "false_escalations": 0
+      },
+      "debate_with_review": {
+        "matched": 1,
+        "common_or_execution_failures": 2,
+        "false_escalations": 0
+      }
+    },
+    "secondary_analysis": "comparison/secondary-analysis.json",
+    "calls": 19,
+    "boundary": "Three development cases; raw candidate common checks and production release gates are separate. No held-out accuracy claim."
+  },
+  "final_live": {
+    "run_id": "fc737d3e-afc5-4f70-a6b8-72d13c3df122",
+    "all_agents_fresh": true,
+    "calls": 6,
+    "recorded_tokens": 104414,
+    "decision": "refund_partial",
+    "refund_amount": 4.5,
+    "currency": "SGD",
+    "reviewer": "pass",
+    "validation_errors": [],
+    "repairs": 0,
+    "runtime_matches_current": true
+  },
+  "recorded_usage": {
+    "provider_calls": 30,
+    "recorded_tokens": 456813,
+    "unknown_usage_calls": 0
+  },
+  "remote_ci": "not_verified",
+  "public_schemas_changed": false,
+  "vendor_modules_changed": false,
+  "boundary": "Usage is provider-reported token accounting, not billed currency or a verified credit balance. Human entries are local self-declarations. Mandatory policy human gates remain."
+}

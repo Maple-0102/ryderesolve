@@ -26,7 +26,7 @@ class TeammateAdvocate:
             if getattr(self,'_policy_application',None):context['policy_application'] = deepcopy(self._policy_application)
             if getattr(self,'_round_guidance',None):context['round_guidance']=deepcopy(self._round_guidance)
             user = json.dumps(context,ensure_ascii=False,allow_nan=False)
-        return self.model.generate(system + '\n\n' + EVIDENCE_BOUNDARIES, user, max_output_tokens=8192)
+        return self.model.generate(system + '\n\nKeep each claim atomic: separate a recorded event from a claim about entitlement or liability. A surge activation record alone does not establish entitlement to retain an unnotified increase.\n' + EVIDENCE_BOUNDARIES, user, max_output_tokens=8192)
 
     def __call__(self, snapshot, side, round_name, opponent=None):
         self.last_metadata = {}; self._invoked = False

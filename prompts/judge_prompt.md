@@ -117,7 +117,10 @@ V0.5 consistency requirements:
 - argument_assessments: exactly one row for EVERY actual claim/counterpoint path,
   in both rounds and both sides. The list order does not imply importance.
   assessment: supported / partly_supported / contradicted / insufficient_evidence /
-  unresolved / not_factual_claim. Explain supporting versus opposing evidence separately. Do not use
+  unresolved / not_factual_claim. Explain supporting versus opposing evidence separately.
+  supporting_evidence_refs and opposing_evidence_refs must be disjoint. If one source
+  contains facts bearing on different clauses of a mixed claim, explain the clauses
+  in reason, assign the source to one role only, and do not fabricate a second source. Do not use
   one ID in both lists; describe ambiguity as unresolved. Supported/partly_supported
   require supporting records, contradicted requires opposing records; party claims
   or historical context alone are not proof. This ledger assesses the substantive

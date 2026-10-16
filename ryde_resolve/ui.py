@@ -30,9 +30,11 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
         if not s:
             panels.append(f'<article id="{prefix}" role="tabpanel" {"hidden" if i else ""}><h2>{esc(result["case_id"])}</h2><p>案例加载失败，已阻止裁决。</p>{pretty(ruling)}{handoff_html}</article>')
             continue
-        origin = '主办方样例 · 非真实运营数据证明' if s['audit']['data_origin'] == 'organizer_sample' else '团队合成数据 · 绑定提供的 Ryde v2.1 政策' if s.get('policy_documents') else '团队合成案例 · 政策也是合成规则'
+        origin = '用户补充材料 · 来源未独立核验' if s['audit']['data_origin']=='unverified_input' else '主办方样例 · 非真实运营数据证明' if s['audit']['data_origin'] == 'organizer_sample' else '团队合成数据 · 绑定提供的 Ryde v2.1 政策' if s.get('policy_documents') else '团队合成案例 · 政策也是合成规则'
         decision = {'escalate': '待人工复核', 'uphold_charge': '建议保留收费',
                     'refund_full': '建议全额退款', 'refund_partial': '建议部分退款'}.get(ruling['decision'], ruling['decision'])
+        from .workflow_view import render_timeline
+        flow_html=render_timeline(result)
         execution_html = ''
         if result.get('execution_status'):
             status_labels={'completed':'流程已完成','failed':'流程失败：尚无可采纳裁决','interrupted':'流程中断，可检查恢复','running':'运行中'}
@@ -159,6 +161,7 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
 <div class="case-head"><div><p class="eyebrow">{esc(origin)}</p><h2>{esc(result['case_id'])}</h2></div><div class="pill">{esc(decision)}</div></div>
 <p class="muted">{esc(modes)}<br>快照 {esc(s['snapshot_id'])}<br>运行 {esc(result['run_id'])}</p>
 {execution_html}
+{flow_html}
 <section><h3>本次结果</h3><p>退款金额：{esc(ruling['refund_amount']) if ruling['refund_amount'] is not None else '未裁定'} SGD · 页面只展示建议，不执行收费或退款。</p><ul>{uncertainties}</ul><ul class="muted">{notes}</ul><h4>已记录的依据</h4><ul>{findings}</ul><details><summary>查看最终 JSON</summary>{pretty(ruling)}</details></section>
 <section><h3>计算结果与待澄清问题</h3><p class="muted">算术结果与已明确的规则分开列出；未明示的收费条件仍需澄清。距离／差额不等于责任／退款。</p><ul class="metrics">{''.join(calculations)}</ul><ul>{issues}</ul></section>
 <section><h3>Judge 如何看双方观点</h3>{analysis_html}</section>

@@ -29,5 +29,7 @@ jobs:
       - run: python -m unittest discover -s vendor/ryderesolve-advocate-system/tests -v
       - run: python -m ryde_resolve.run_demo --output-dir outputs/ci-official
       - run: node tests/test_ui_script.cjs outputs/ci-official/ryde-evaluation.html
+      - run: node tests/test_workbench_script.cjs
+      - run: python -m ryde_resolve.run_demo --parallel-advocates --issue-guidance --output-dir outputs/ci-parallel
       - run: python vendor/ryderesolve-evidence-tools/tests/wheel_smoke.py
       - run: git diff --check
