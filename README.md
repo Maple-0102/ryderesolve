@@ -6,6 +6,14 @@ The team repository is [Maple-0102/ryderesolve](https://github.com/Maple-0102/ry
 
 Start with the [Evidence integration guide](docs/EVIDENCE-INTEGRATION.md) for the current data contract, policy sources and unresolved no-show rules.
 
+## Submission materials
+
+- [English demo video and captions](demo/english-pitch/README.md): 7:29.7, with saved real-model reports and labeled offline controls.
+- [Architecture PowerPoint](demo/architecture/RydeResolve-Architecture.pptx): four editable slides.
+- [Latest Judge follow-up and evaluation limits](docs/CITATION-FIRST-2026-10-16.md).
+
+The video preserves the recording version at `52e5b53`, including failed outputs and conservative corrections. Later Judge improvements are documented separately; the footage is not presented as a fresh run of the latest `main`. Opening the video or saved reports does not call a model. Source materials retain their original attribution and rights; see [publication and source notes](docs/PUBLICATION-NOTES.md).
+
 ## Install and run offline
 
 Requires Python 3.12+. From the repository root:

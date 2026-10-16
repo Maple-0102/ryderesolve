@@ -1,6 +1,6 @@
 # Project working rules
 
-Read the [Evidence integration guide](../../docs/EVIDENCE-INTEGRATION.md) and [module README](README.md) before changing behavior. They contain the current contract, source boundaries and unresolved policy issues. Preserve established team interfaces and keep this repository private.
+Read the [Evidence integration guide](../../docs/EVIDENCE-INTEGRATION.md) and [module README](README.md) before changing behavior. They contain the current contract, source boundaries and unresolved policy issues. Preserve established team interfaces. Repository visibility follows the repository owner's explicit publication instructions; preserve source attribution and do not publish credentials or real customer records.
 
 - Scope is Evidence/Data + read-only tools. Do not claim the full multi-agent product is implemented or tested.
 - Never feed `evaluation/` annotations or editorial expected outcomes into runtime case inputs.

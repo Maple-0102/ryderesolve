@@ -2,7 +2,7 @@
 
 Evidence 0.3.0 converts case records into traceable facts for the Rider Advocate, Driver Advocate, Judge and UI. It uses deterministic calculations and read-only tools; it does not adjudicate disputes.
 
-This module is maintained in the private [team repository](https://github.com/Maple-0102/ryderesolve). It includes official DISP-001/002/003, separately versioned Ryde Policy v2.1, and the synthetic SYN-ROUTE-001 regression case.
+This module is maintained in the [team repository](https://github.com/Maple-0102/ryderesolve). It includes official DISP-001/002/003, separately versioned Ryde Policy v2.1, and the synthetic SYN-ROUTE-001 regression case.
 
 Read the [Evidence integration guide](../../docs/EVIDENCE-INTEGRATION.md) for the API, snapshot rules, source manifest and policy gaps. Use the [root README](../../README.md) to run the full team pipeline.
 
@@ -54,6 +54,6 @@ Use `prepare_case` for integration. It includes `raw`, `evidence_pack`, `audit`,
 
 ## Source integrity
 
-Original attachments and the import manifest are retained under [sources/official/2026-10-15](sources/official/2026-10-15/). They are excluded from the runtime wheel. Runtime DISP-001 omits explicitly listed answer/editorial fields; DISP-002 and DISP-003 retain their original JSON values. The organizer's source rights are unchanged; these materials remain private development inputs, not a newly licensed public dataset.
+Original attachments and the import manifest are retained under [sources/official/2026-10-15](sources/official/2026-10-15/). They are excluded from the runtime wheel. Runtime DISP-001 omits explicitly listed answer/editorial fields; DISP-002 and DISP-003 retain their original JSON values. The organizer's source rights and attribution are unchanged. Public repository access for competition review does not grant a new dataset license or independently authenticate these samples. See [publication notes](../../docs/PUBLICATION-NOTES.md).
 
 Preserve official/synthetic labels and case-scoped references. A valid reference proves that a record exists, not that an argument is correct. The local service binds to loopback and rejects external Host/Origin requests; it is a development tool, not an Internet deployment.

@@ -21,7 +21,7 @@ The importer is reproducible and rejects changes to already archived attachments
 .venv/bin/python vendor/ryderesolve-evidence-tools/scripts/import_official.py --source-dir /path/to/original-attachments
 ```
 
-Use the filenames recorded in the manifest. New organizer revisions require explicit source/version support rather than overwriting an archived version. The current normalizer only accepts the supported v2.1 document with its pinned hash. Preserve the source owners' rights and the repository's private visibility.
+Use the filenames recorded in the manifest. New organizer revisions require explicit source/version support rather than overwriting an archived version. The current normalizer only accepts the supported v2.1 document with its pinned hash. Preserve the source owners' rights and attribution. Repository visibility follows the owner's explicit publication decision; see [publication notes](PUBLICATION-NOTES.md).
 
 ## Policy interpretation
 

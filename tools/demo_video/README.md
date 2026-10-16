@@ -72,6 +72,6 @@ The recorder inserts a short synchronization pulse before each scene. Assembly r
 
 The final deliverables are `RydeResolve-Demo-English-1080p.mp4`, `RydeResolve-English.srt`, and `RydeResolve-English-transcript.txt`. The MP4 includes burned-in subtitles and chapter markers. Keep the subtitle file for platforms that accept a separate caption track; disable duplicate captions if using the burned-in version.
 
-The repository is private. A private GitHub asset is suitable for teammate review but is not a judge-accessible public submission link. Public or unlisted hosting is a separate publication step; no competition form submission is performed by these scripts.
+The repository owner has authorized public GitHub access for competition review. Check the submitted video link in a signed-out browser. Repository publication and competition form submission are separate steps; no competition form submission is performed by these scripts.
 
 The original review copy is retained locally under outputs/demo-video-2026-10-16/review-v1-backup/. It is not an additional submission asset.
