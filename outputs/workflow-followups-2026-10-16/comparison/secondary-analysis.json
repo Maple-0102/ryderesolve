@@ -1,0 +1,72 @@
+{
+  "kind": "read-only secondary analysis of retained candidates",
+  "rows": [
+    {
+      "exercise_id": "R21-FARE-ORIGINAL",
+      "single_common": {
+        "common_checks_pass": true,
+        "expectation_match": true,
+        "errors": []
+      },
+      "debate_raw_common": {
+        "common_checks_pass": true,
+        "decision": "refund_partial",
+        "refund_amount": 4.5,
+        "expectation_match": true,
+        "errors": []
+      },
+      "debate_production_pass": true,
+      "production_errors": []
+    },
+    {
+      "exercise_id": "R21-FARE-NOTIFIED",
+      "single_common": {
+        "common_checks_pass": false,
+        "expectation_match": false,
+        "errors": [
+          "NO_DECISION_INFERENCE"
+        ]
+      },
+      "debate_raw_common": {
+        "common_checks_pass": true,
+        "decision": "uphold_charge",
+        "refund_amount": 0,
+        "expectation_match": true,
+        "errors": []
+      },
+      "debate_production_pass": false,
+      "production_errors": [
+        "ARGUMENT_ASSESSMENT_WITHOUT_RECORD_SUPPORT: /opening/rider/claims/1",
+        "ARGUMENT_ASSESSMENT_WITHOUT_RECORD_SUPPORT: /response/rider/claims/1",
+        "UNRESOLVED_DATA_OR_POLICY_REVIEW"
+      ]
+    },
+    {
+      "exercise_id": "R21-FARE-NOTICE-MISSING",
+      "single_common": {
+        "common_checks_pass": true,
+        "expectation_match": true,
+        "errors": []
+      },
+      "debate_raw_common": {
+        "common_checks_pass": true,
+        "decision": "escalate",
+        "refund_amount": null,
+        "expectation_match": true,
+        "errors": []
+      },
+      "debate_production_pass": false,
+      "production_errors": [
+        "ARGUMENT_ASSESSMENT_WITHOUT_RECORD_SUPPORT: /response/rider/claims/2"
+      ]
+    }
+  ],
+  "summary": {
+    "cases": 3,
+    "single_common_matched": 2,
+    "debate_raw_common_matched": 3,
+    "debate_production_passed": 1
+  },
+  "boundary": "Raw candidates that fail production contracts remain rejected. Same three development cases, no new calls, no holdout or accuracy/generalization claim. Reviewer was reached on only one case.",
+  "input_sha256": "ba85c0564f9e5b4c221c36d64b971e2b8b2ef30c88e920c730f6cdb4554713d2"
+}

@@ -117,7 +117,10 @@ V0.5 consistency requirements:
 - argument_assessments: exactly one row for EVERY actual claim/counterpoint path,
   in both rounds and both sides. The list order does not imply importance.
   assessment: supported / partly_supported / contradicted / insufficient_evidence /
-  unresolved / not_factual_claim. Explain supporting versus opposing evidence separately. Do not use
+  unresolved / not_factual_claim. Explain supporting versus opposing evidence separately.
+  supporting_evidence_refs and opposing_evidence_refs must be disjoint. If one source
+  contains facts bearing on different clauses of a mixed claim, explain the clauses
+  in reason, assign the source to one role only, and do not fabricate a second source. Do not use
   one ID in both lists; describe ambiguity as unresolved. Supported/partly_supported
   require supporting records, contradicted requires opposing records; party claims
   or historical context alone are not proof. This ledger assesses the substantive
@@ -271,3 +274,22 @@ Source-bound Policy v2.1 requirements:
   precedent's amount or pretend the precedent is evidence about this trip.
 - Escalation is valid when a policy gate applies; confidence is an uncalibrated score,
   never measured accuracy. Explain which gate or missing condition prevents autonomy.
+
+
+Judge-only claim support guidance (software constraints, not additional Ryde policy):
+- Read claim_support_guide. Its groups describe source kinds and candidate usage,
+  not truth, relevance or independence. Inspect the original records yourself.
+- Distinguish "the rider says no notice arrived" from "no notice was sent". A ticket
+  plus a repeated chat assertion does not independently corroborate the latter.
+- communication_act requires literal communication_record references in its required
+  evidence list. Do not mix ticket party_statement IDs into that list. This scope
+  cannot certify the content of the speaker's allegation or all-time absence of notice.
+- Assess the WHOLE original claim. When attribution is combined with an incident
+  assertion, explain both parts; a recorded utterance cannot support every clause.
+  Preserve missing incident support rather than labeling a partly true paraphrase supported.
+- A known system notification can contradict an alleged lack of notice. Use the
+  contrary system record as opposing evidence; never reuse it as supporting evidence.
+  Absent notification data is unknown, not evidence contradicting the rider.
+- Unsupported advocacy is distinct from an unknown MATERIAL decision condition.
+  Reject unsupported assertions while deciding on independently established conditions.
+  If a material condition is unknown, or a mandatory human gate applies, escalate.

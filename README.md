@@ -39,12 +39,13 @@ The two vendored modules retain their contracts. See the existing [Advocate inte
 .venv/bin/python -m unittest discover -s vendor/ryderesolve-advocate-system/tests -v
 .venv/bin/python -m ryde_resolve.run_demo --output-dir outputs/offline-check
 node tests/test_ui_script.cjs outputs/offline-check/ryde-evaluation.html
+node tests/test_workbench_script.cjs
 .venv/bin/python vendor/ryderesolve-evidence-tools/tests/wheel_smoke.py
 ```
 
 These checks include local HTTP fixtures and isolated package installation, but do not call paid models. CI runs on Windows and Linux with Python 3.12 and 3.14; check the PR's current commit. POSIX permission tests are skipped on Windows and run on Linux. Keep `scorer-only-labels.json`, expected outcomes and original source archives outside model inputs.
 
-The [2026-10-13 evaluation record](docs/VALIDATION-2026-10-13.md) and [saved live run](outputs/team-live-2026-10-13/ryde-evaluation.html) predate Policy v2.1. Their results do not establish model quality on the current snapshots. Policy v2.1 binding is implemented in this integration branch. See the [2026-10-15 integration and validation record](docs/POLICY-V21-INTEGRATION-2026-10-15.md). Three same-version live Judge checks passed; the successful Fare integration reuses four previously generated real Advocate outputs with one new live Judge call. A fresh five-call pipeline rerun has not been claimed. The saved outputs also pass offline revalidation after the later contact/acknowledgment patch.
+The [2026-10-13 evaluation record](docs/VALIDATION-2026-10-13.md) and [saved live run](outputs/team-live-2026-10-13/ryde-evaluation.html) predate Policy v2.1. Their results do not establish model quality on the current snapshots. Policy v2.1 binding is implemented in this integration branch. See the [2026-10-15 integration and validation record](docs/POLICY-V21-INTEGRATION-2026-10-15.md). Three same-version live Judge checks passed; the successful Fare integration reuses four previously generated real Advocate outputs with one new live Judge call. At that stage a fresh five-call pipeline had not passed. The [2026-10-16 follow-up record](docs/WORKFLOW-FOLLOWUPS-2026-10-16.md) now includes a fresh successful six-call Advocate/Judge/reviewer pipeline and retains unsuccessful comparison attempts. The saved outputs also pass offline revalidation after the later contact/acknowledgment patch.
 
 The current policy-derived Judge development suite is available separately:
 
@@ -85,3 +86,13 @@ The workflow now saves stage checkpoints, resumes compatible runs without regene
 - Resolve the sample/threshold and no-show source discrepancies in the [detailed policy questions](docs/POLICY-QUESTIONS-2026-10-15.zh-CN.md). Current conservative handling is explicit and is not an organizer clarification.
 - Team-review the merged Evidence/Advocate/Judge interfaces and complete a fresh full live pipeline run when the policy decisions or upstream outputs change. DISP-001 exceeds the 2 km route threshold and requires human adjudication.
 - Keep evaluations tied to their exact source and policy versions; do not combine older results into a new accuracy claim.
+
+## Local supplement and human-review workbench
+
+```bash
+.venv/bin/python -m ryde_resolve.workbench --parallel-advocates
+```
+
+Open `http://127.0.0.1:8765`. The default uses offline placeholders. It shows actual stage events, source-difference previews, one explicit supplement round, and append-only local human outcomes. It preserves prior AI suggestions and official policy documents. See the [commands, live-mode controls and development comparison](docs/WORKFLOW-FOLLOWUPS-2026-10-16.md). Existing static reports remain historical views; a model suggestion is never an executed refund.
+
+For the CLI, `--parallel-advocates` runs each pair concurrently with separate clients, validation barriers, checkpoints and cumulative budgets. Default execution remains sequential. The optional reviewer and issue guidance remain explicit CLI flags; extra agents do not establish better accuracy.

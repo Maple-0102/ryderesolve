@@ -102,6 +102,23 @@ class ReviewTests(unittest.TestCase):
         self.assertNotIn('round_guidance',client.inputs[-1][1])
         self.assertIsNone(advocate._round_guidance)
 
+    def test_coordinator_pairs_existing_paths_without_resolving_unknown_sources(self):
+        from ryde_resolve.issue_guidance import coordinate_openings,response_guidance
+        ledger={'issues':[{'issue_id':'notice','record_status':'unknown','question':'Missing notice',
+            'evidence_refs':['E-001'],'policy_refs':['P-001']}],'boundary':'source only'}
+        openings={side:{'claims':[{'claim':'Agents agree notice was provided','evidence_refs':['E-001','E-UNLINKED']}]} for side in ('rider','driver')}
+        out=coordinate_openings(ledger,openings)
+        self.assertEqual(ledger['issues'][0]['record_status'],'unknown')
+        issue=out['issues'][0]
+        self.assertEqual(issue['coordination_action'],'preserve_source_gap')
+        self.assertEqual(issue['record_status'],'unknown')
+        for side in ('rider','driver'):
+            row=issue['opening_claims'][side][0]
+            self.assertEqual(row['argument_ref'],f'/opening/{side}/claims/0')
+            self.assertEqual(row['shared_evidence_refs'],['E-001'])
+        self.assertEqual(response_guidance(out,'rider')['issues'],response_guidance(out,'driver')['issues'])
+        self.assertEqual(out['termination']['remaining_response_rounds'],1)
+
     def test_guidance_failure_clears_context(self):
         client=FakeClient();client.mutate=lambda out:out.update(side='wrong')
         advocate=TeammateAdvocate(client)
