@@ -1,0 +1,26 @@
+[
+  {
+    "file": "r21-fare-original.html",
+    "original_sha256": "68fa6d95a8b27c7a7cc50534e046d3af227f2c849dd14e8e16ad5ef6beeb86eb",
+    "english_sha256": "6ba1fd03a5ad7e0072ac8f81a10e255eb227c596da9b449526dfa9e487f817ba",
+    "raw_payloads_and_scripts_preserved": true,
+    "structure_and_references_preserved": true,
+    "untranslated_ui_texts": 0
+  },
+  {
+    "file": "r21-noshow-original.html",
+    "original_sha256": "27f30a3975bc1b4491cdddc8cffa6881b3f84cfe907e640a3bb10491114c9b82",
+    "english_sha256": "6517ebb0ca7fa58bd3b0f6af999fb12ab0a138e509f982bd92ac1bf1b8db3549",
+    "raw_payloads_and_scripts_preserved": true,
+    "structure_and_references_preserved": true,
+    "untranslated_ui_texts": 0
+  },
+  {
+    "file": "r21-route-original.html",
+    "original_sha256": "73d8fb35e59a1b71c181bc40b0244f8dca7f5d8955103939b9bd941d5832ddad",
+    "english_sha256": "6ac0788342aba04f0f7f58669733db24a4fa8d3be5b576cee0720e11b7ae3bfa",
+    "raw_payloads_and_scripts_preserved": true,
+    "structure_and_references_preserved": true,
+    "untranslated_ui_texts": 0
+  }
+]
