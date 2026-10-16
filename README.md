@@ -20,6 +20,12 @@ On Windows, use `python` to create the environment and `.venv\Scripts\python.exe
 
 The default run uses the Evidence module with placeholder Advocates and an offline Judge. It makes no model calls. Open `outputs/ryde-evaluation.html` to inspect the run; switching cases in this static page does not call a model. Use `--case DISP-001`, `--case DISP-002` or `--case DISP-003` to run one case.
 
+## Recording version (2026-10-16)
+
+Open [the static recording index](outputs/latest-flow-2026-10-16/recording/index.html) locally after cloning. It needs no model account and makes no calls. See the [7-minute recording guide](docs/RECORDING-GUIDE-2026-10-16.md) and [latest validation and limitations](docs/LATEST-FLOW-VALIDATION-2026-10-16.md).
+
+The final fresh check used 15 calls for the three official cases: Fare and No-show passed after audited conservative corrections; Route was safely blocked for invalid source/policy-resolution claims. This is 2/3 final formal acceptance, 0/3 raw first-pass acceptance, not a model accuracy score. Earlier successful traces and offline revalidation remain historical evidence.
+
 ## Code ownership
 
 | Component | Location |
@@ -80,6 +86,8 @@ The ADP adapter is present, but a deployed Tencent ADP application has not been 
 ## Durable execution and optional review
 
 The workflow now saves stage checkpoints, resumes compatible runs without regenerating completed provider outputs, distinguishes execution failures from policy referrals, and enforces call/time/recorded-token limits. A 20-case Policy v2.1 development regression pack is available. Optional symmetric second-round issue guidance and an inference reviewer are disabled by default. See [workflow behavior, recovery commands and test boundaries](docs/ORCHESTRATION-2026-10-16.md).
+
+The [recording-integrity and optional context-format optimization](docs/RECORDING-INTEGRITY-2026-10-16.md) adds zero-call artifact verification and opt-in JSON whitespace compaction. The pinned recording branch remains at `52e5b53`. Compaction preserves all input data and is disabled by default; its model/cost impact has not been measured.
 
 ## Remaining integration work
 

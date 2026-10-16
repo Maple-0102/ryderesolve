@@ -1,0 +1,100 @@
+{
+  "kind": "static recording package",
+  "opening_provider_calls": 0,
+  "source_reports": [
+    {
+      "path": "../offline-checked/revalidation.json",
+      "sha256": "285454f215e58d11b5a1d35b1ee6438280b67c1705023d1b886f5b0abeca6257"
+    }
+  ],
+  "entries": [
+    {
+      "exercise_id": "R21-ROUTE-ORIGINAL",
+      "title": "官方 Route：超出 AI 权限",
+      "origin": "organizer_sample",
+      "replayed": true,
+      "source_sha256": "285454f215e58d11b5a1d35b1ee6438280b67c1705023d1b886f5b0abeca6257",
+      "runtime_implementation": "2f4f99bc7ffb9ccbde850b07a1690663a3d61b595d34b5a1c9db36f1493ebc0c",
+      "validation_errors": [],
+      "first_pass_valid": false,
+      "adjustments": 5,
+      "decision": "escalate",
+      "refund_amount": null,
+      "html": "r21-route-original.html",
+      "run_json": "r21-route-original.run.json"
+    },
+    {
+      "exercise_id": "R21-NOSHOW-ORIGINAL",
+      "title": "官方 No-show：政策待澄清",
+      "origin": "organizer_sample",
+      "replayed": true,
+      "source_sha256": "285454f215e58d11b5a1d35b1ee6438280b67c1705023d1b886f5b0abeca6257",
+      "runtime_implementation": "2f4f99bc7ffb9ccbde850b07a1690663a3d61b595d34b5a1c9db36f1493ebc0c",
+      "validation_errors": [],
+      "first_pass_valid": false,
+      "adjustments": 2,
+      "decision": "escalate",
+      "refund_amount": null,
+      "html": "r21-noshow-original.html",
+      "run_json": "r21-noshow-original.run.json"
+    },
+    {
+      "exercise_id": "R21-FARE-ORIGINAL",
+      "title": "官方 Fare：未通知加价",
+      "origin": "organizer_sample",
+      "replayed": true,
+      "source_sha256": "285454f215e58d11b5a1d35b1ee6438280b67c1705023d1b886f5b0abeca6257",
+      "runtime_implementation": "2f4f99bc7ffb9ccbde850b07a1690663a3d61b595d34b5a1c9db36f1493ebc0c",
+      "validation_errors": [],
+      "first_pass_valid": false,
+      "adjustments": 3,
+      "decision": "refund_partial",
+      "refund_amount": 4.5,
+      "html": "r21-fare-original.html",
+      "run_json": "r21-fare-original.run.json"
+    },
+    {
+      "exercise_id": "R21-FARE-NOTIFIED",
+      "title": "合成对照：通知记录完整",
+      "origin": "synthetic",
+      "replayed": true,
+      "source_sha256": "285454f215e58d11b5a1d35b1ee6438280b67c1705023d1b886f5b0abeca6257",
+      "runtime_implementation": "2f4f99bc7ffb9ccbde850b07a1690663a3d61b595d34b5a1c9db36f1493ebc0c",
+      "validation_errors": [],
+      "first_pass_valid": false,
+      "adjustments": 1,
+      "decision": "uphold_charge",
+      "refund_amount": 0,
+      "html": "r21-fare-notified.html",
+      "run_json": "r21-fare-notified.run.json"
+    },
+    {
+      "exercise_id": "R21-FARE-NOTICE-MISSING",
+      "title": "合成对照：通知记录缺失",
+      "origin": "synthetic",
+      "replayed": true,
+      "source_sha256": "285454f215e58d11b5a1d35b1ee6438280b67c1705023d1b886f5b0abeca6257",
+      "runtime_implementation": "2f4f99bc7ffb9ccbde850b07a1690663a3d61b595d34b5a1c9db36f1493ebc0c",
+      "validation_errors": [],
+      "first_pass_valid": true,
+      "adjustments": 0,
+      "decision": "escalate",
+      "refund_amount": null,
+      "html": "r21-fare-notice-missing.html",
+      "run_json": "r21-fare-notice-missing.run.json"
+    }
+  ],
+  "files": {
+    "index.html": "a264be072242a565307466b39b4a9149fb4368f676dccf2536453ddfb8045ce3",
+    "r21-fare-notice-missing.html": "9df0a53672d8f57a4bc2803ee7f694f61d53ad3a21142a6432bc0409c8401ebc",
+    "r21-fare-notice-missing.run.json": "e04ce04c8e2a6d51fddef4d3ad27ed7d2d0dd5e7217bae1ae4a10d43c93e8c39",
+    "r21-fare-notified.html": "504ff633baeb584d9c968f31e4a6608559cd87046f604f7efd914013c5dcdf82",
+    "r21-fare-notified.run.json": "b832c8327f2e1e1a1eeba55951754f3a3181c52e8eada86798ce5e73ff586d9e",
+    "r21-fare-original.html": "5a87d062655d0db10a3995a47a025decc62641cdc007d73b55b19a82497fb4dd",
+    "r21-fare-original.run.json": "01765f4cb0b906d05b2368e06ad27cb563eef8b233cf588160e890ad8889b63c",
+    "r21-noshow-original.html": "7f7e95e19631396387042baeea2845e01d1c2abb270426e15fd39453d571643c",
+    "r21-noshow-original.run.json": "a9a6ba7865f256b11c98ae3605b63dac309f03b941ab0bae740e303e9c34dd3c",
+    "r21-route-original.html": "effe160641e3c5183880b41307e42608e76b889b2bc8b579c330bc679802b4ee",
+    "r21-route-original.run.json": "9c792f656dfef51b8c91ac1f113da600db8554881fa69488df871dc4bdbc1f5c"
+  }
+}

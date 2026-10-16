@@ -145,13 +145,17 @@ class RydeOrchestrator:
             if errors and proposal is not None:
                 from .statement_gate import downgrade_statement_only_review
                 candidate,adjustments=downgrade_statement_only_review(snapshot,proposal)
+                if not adjustments:
+                    from .statement_gate import reconcile_independent_fare_analysis
+                    candidate,adjustments=reconcile_independent_fare_analysis(snapshot,proposal,result['arguments'])
                 if adjustments:
                     candidate_errors,candidate_warnings=check_judge(snapshot,candidate,result['arguments'])
                     if not candidate_errors:
                         adopted=candidate;errors=candidate_errors;warnings=candidate_warnings
                         result['judge_adjustments']=adjustments
-                        warnings=list(warnings)+[{'code':'STATEMENT_ONLY_REVIEW_DOWNGRADE','path':a['argument_ref'],
-                            'message':'Program downgraded a statement-only support label; inspect the retained original Judge proposal.'} for a in adjustments]
+                        warnings=list(warnings)+[{'code':'STATEMENT_ONLY_REVIEW_DOWNGRADE' if a['rule']=='statement_only_review_downgrade' else 'INDEPENDENT_FARE_LEDGER_CORRECTION',
+                            'path':a.get('argument_ref','/case_analysis/sides/'+a.get('side','')),
+                            'message':'Conservative source/summary correction; inspect the retained original proposal and adjustment audit.'} for a in adjustments]
             if errors and repairable(errors) and self.limits.judge_repairs and callable(getattr(self.judge,'repair',None)):
                 original_errors=list(errors)
                 result['repair_history'].append({'attempt':1,'original_proposal':deepcopy(proposal),'original_errors':original_errors})

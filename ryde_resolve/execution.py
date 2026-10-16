@@ -21,7 +21,9 @@ def implementation_digest():
     paths = [*ROOT.joinpath('ryde_resolve').glob('*.py'), *ROOT.joinpath('prompts').glob('*.md'),
              *ROOT.joinpath('schemas').glob('*.json')]
     for module in ('ryderesolve-advocate-system/ryderesolve_advocate','ryderesolve-evidence-tools/ryderesolve_evidence'):
-        paths.extend(ROOT.joinpath('vendor',module).rglob('*.py'))
+        paths.extend(p for p in ROOT.joinpath('vendor',module).rglob('*')
+                     if p.is_file() and p.suffix in ('.py', '.txt', '.json', '.md')
+                     and '__pycache__' not in p.parts)
     return digest({str(p.relative_to(ROOT)): sha256(p.read_bytes()).hexdigest() for p in sorted(paths)})
 
 
@@ -32,7 +34,7 @@ def runner_identity(runner):
         identity['function'] = digest({'module': runner.__module__, 'name': runner.__qualname__,
                                       'code': runner.__code__.co_code.hex()})
     config = getattr(runner, 'config', None)
-    identity['config'] = {k: getattr(config, k) for k in ('project', 'model', 'location', 'thinking_level', 'timeout')
+    identity['config'] = {k: getattr(config, k) for k in ('project', 'model', 'location', 'thinking_level', 'timeout', 'compact_context')
                           if hasattr(config, k)}
     if hasattr(config, 'endpoint'):
         identity['endpoint_hash'] = digest(config.endpoint)

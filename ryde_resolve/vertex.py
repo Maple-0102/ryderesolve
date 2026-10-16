@@ -21,6 +21,31 @@ from .agents import AgentError, NoRedirect, ROOT, build_judge_messages
 MAX_RESPONSE = 2_000_000
 
 
+def compact_json_context(text):
+    """Remove only insignificant JSON whitespace; retain literal bytes inside strings.
+
+    No source selection, key sorting, number rewriting, Unicode normalization or
+    semantic summarization. Non-JSON prompts remain byte-for-byte unchanged.
+    """
+    def nonfinite(_):
+        raise ValueError('nonfinite')
+    try:
+        json.loads(text, parse_constant=nonfinite)
+    except (ValueError, TypeError):
+        return text
+    output=[];quoted=False;escaped=False
+    for char in text:
+        if quoted:
+            output.append(char)
+            if escaped:escaped=False
+            elif char=='\\':escaped=True
+            elif char=='"':quoted=False
+        elif char=='"':
+            quoted=True;output.append(char)
+        elif char not in ' \t\r\n':output.append(char)
+    return ''.join(output)
+
+
 @dataclass(frozen=True)
 class VertexConfig:
     project: str
@@ -28,8 +53,11 @@ class VertexConfig:
     location: str = 'global'
     timeout: float = 120.0
     thinking_level: str | None = None
+    compact_context: bool = False
 
     def __post_init__(self):
+        if type(self.compact_context) is not bool:
+            raise AgentError('VERTEX_INVALID_COMPACT_CONTEXT')
         for value, pattern in ((self.project, r'[a-z][a-z0-9-]{4,62}'),
                                (self.model, r'gemini-[a-zA-Z0-9.-]{1,100}'),
                                (self.location, r'global|[a-z]+-[a-z]+[0-9]')):
@@ -60,7 +88,8 @@ class VertexConfig:
                        os.environ.get('RYDE_VERTEX_MODEL', config.get('model', 'gemini-3.8-flash')),
                        os.environ.get('RYDE_VERTEX_LOCATION', config.get('location', 'global')),
                        float(os.environ.get('RYDE_VERTEX_TIMEOUT', '120')),
-                       os.environ.get('RYDE_VERTEX_THINKING_LEVEL', config.get('thinking_level')))
+                       os.environ.get('RYDE_VERTEX_THINKING_LEVEL', config.get('thinking_level')),
+                       config.get('compact_context',False))
         except (TypeError, ValueError):
             raise AgentError('VERTEX_INVALID_CONFIG') from None
 
@@ -128,6 +157,9 @@ class VertexJudge:
     def generate(self, system, user, max_output_tokens=16384, *, response_schema=None):
         self.last_metadata = {}
         started = monotonic()
+        original_user = user
+        if self.config.compact_context: user = compact_json_context(user)
+        context_bytes = {'input':len(original_user.encode('utf-8')),'sent':len(user.encode('utf-8'))}
         body = {'systemInstruction': {'parts': [{'text': system}]},
                 'contents': [{'role': 'user', 'parts': [{'text': user}]}],
                 'generationConfig': {'responseMimeType': 'application/json',
@@ -164,6 +196,9 @@ class VertexJudge:
                                   'location': self.config.location, 'thinking_level': self.config.thinking_level or 'provider_default',
                                   'max_output_tokens': max_output_tokens, 'usage': usage,
                                   'response_schema_sha256': schema_hash,
+                                  'compact_context_requested': self.config.compact_context,
+                                  'context_encoding': 'minified_json' if user!=original_user else 'original',
+                                  'context_bytes': context_bytes,
                                   'duration_ms': round((monotonic() - started) * 1000, 2)}
             reason = candidate.get('finishReason')
             self.last_metadata['finish_reason'] = reason if isinstance(reason, str) and re.fullmatch(r'[A-Z_]{1,64}', reason) else 'UNKNOWN'

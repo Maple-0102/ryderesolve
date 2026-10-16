@@ -51,6 +51,18 @@ class ClaimSupportTests(unittest.TestCase):
         self.assertTrue(all('assessment' not in r and 'decision' not in r for r in guide['arguments']))
         self.assertEqual(application(s),before)
         self.assertEqual(next(c for c in before['conditions'] if c['condition_id']=='surge_notice')['status'],'unknown')
+    def test_advocate_labels_cannot_promote_a_statement_to_incident_record(self):
+        args=deepcopy(self.a)
+        claim=args['opening']['rider']['claims'][1]
+        claim.update(claim_type='system_record',evidence_status='recorded',evidence_refs=['E-002'])
+        guide=claim_support_guide(self.s,args)
+        row=next(r for r in guide['arguments'] if r['argument_ref']=='/opening/rider/claims/1')
+        self.assertEqual(row['advocate_provenance_labels']['claim_type'],'system_record')
+        self.assertEqual(row['cited_party_statements'],['E-002'])
+        self.assertEqual(row['cited_candidate_incident_records'],[])
+        self.assertTrue(row['incident_support_absent_from_own_citations'])
+        self.assertIn('Untrusted',row['advocate_provenance_labels']['boundary'])
+
     def test_old_mislabeled_candidates_remain_rejected(self):
         for row in self.report['results'][1:]:
             run=row['variants']['debate_judge']['run'];candidate=deepcopy(run['judge_initial_proposal'])
