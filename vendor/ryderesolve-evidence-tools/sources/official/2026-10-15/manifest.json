@@ -1,0 +1,48 @@
+{
+  "received_on": "2026-10-15",
+  "origin": "organizer_attachments_supplied_by_user",
+  "independently_authenticated": false,
+  "files": {
+    "DISP-001": {
+      "filename": "RydeResolve Route Deviation Dataset — DISP-001.md",
+      "archive_path": "sources/official/2026-10-15/DISP-001.md",
+      "file_sha256": "dffee7ba2c2e8777e51b1dde4bc258992c902bed6d408c4518eec9b288d9c494",
+      "original_json_sha256": "b01426b69f3faa197314a7288059cce5e962f92e0eae34fe11a4d34335b0c66d",
+      "runtime_json_sha256": "4c19d501eaa27e48059cfa59197cfe55f6e9f1ee1392a11dc8dd08c6f6b06090",
+      "excluded_pointers": [
+        "/case_metadata",
+        "/chat_log_analysis",
+        "/traffic_analysis",
+        "/evidence_summary",
+        "/recommended_ruling",
+        "/fare_breakdown/notes",
+        "/traffic_conditions/2/description"
+      ],
+      "projection_reason": "Exclude case answers and editorial adjudication; retained values and array indices unchanged."
+    },
+    "DISP-002": {
+      "filename": "RydeResolve Sample Dataset — DISP-002 No-Show Charge Dispute (SG)(1).md",
+      "archive_path": "sources/official/2026-10-15/DISP-002.md",
+      "file_sha256": "a11fb5b04672c15b56be01a637726945be192e26e276e3367fe7dc7d80685167",
+      "original_json_sha256": "6712c5be3edf06bf27fccdaabb7b46ecf9936dba56758b7db5e74e40599579ca",
+      "runtime_json_sha256": "6712c5be3edf06bf27fccdaabb7b46ecf9936dba56758b7db5e74e40599579ca",
+      "excluded_pointers": [],
+      "projection_reason": "JSON block unchanged; surrounding Markdown excluded."
+    },
+    "DISP-003": {
+      "filename": "Document 1 — Fare Dispute Sample Data (JSON).md",
+      "archive_path": "sources/official/2026-10-15/DISP-003.md",
+      "file_sha256": "fec27ef148ff8ab047bf182eeb4b21c6eb5d6eb0f91c2af66de78d8d9f663c90",
+      "original_json_sha256": "a89824de9bf71b2b2dbdce1454d94def7e9097ff50f5bfe554fccfb866ff0838",
+      "runtime_json_sha256": "a89824de9bf71b2b2dbdce1454d94def7e9097ff50f5bfe554fccfb866ff0838",
+      "excluded_pointers": [],
+      "projection_reason": "JSON block unchanged; surrounding Markdown excluded."
+    },
+    "policy": {
+      "filename": "Document 2 — Ryde Dispute Resolution Policy v2.1 (Markdown).md",
+      "archive_path": "sources/official/2026-10-15/policy-v2.1.md",
+      "file_sha256": "827c4d2cab2d4db9e176521000b079632bbe80c20f69c3ffd0addecc8cbc8699",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f"
+    }
+  }
+}

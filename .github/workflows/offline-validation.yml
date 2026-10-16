@@ -1,0 +1,33 @@
+name: Offline validation
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.12', '3.14']
+    runs-on: ${{ matrix.os }}
+    env:
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -v
+      - run: python -m unittest discover -s vendor/ryderesolve-evidence-tools/tests -v
+      - run: python -m unittest discover -s vendor/ryderesolve-advocate-system/tests -v
+      - run: python -m ryde_resolve.run_demo --output-dir outputs/ci-official
+      - run: node tests/test_ui_script.cjs outputs/ci-official/ryde-evaluation.html
+      - run: python vendor/ryderesolve-evidence-tools/tests/wheel_smoke.py
+      - run: git diff --check

@@ -1,0 +1,2 @@
+# Preserve attachment bytes used by the import manifest on every checkout.
+vendor/ryderesolve-evidence-tools/sources/official/**/*.md -text -whitespace

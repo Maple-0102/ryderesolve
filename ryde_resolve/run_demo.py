@@ -10,11 +10,13 @@ from .vertex import VertexJudge, VertexConfig
 from .ui import render_html
 from dataclasses import replace
 from .teammate_advocate import TeammateAdvocate
+from ryderesolve_evidence import EvidenceTools
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--case', default='all', choices=['all', 'DISP-002', 'SYN-ROUTE-001'])
+    case_ids = [row['case_id'] for row in EvidenceTools().list_cases()]
+    parser.add_argument('--case', default='all', choices=['all', *case_ids])
     parser.add_argument('--judge', choices=['offline', 'remote', 'adp', 'vertex'], default='offline')
     parser.add_argument('--advocate', choices=['offline', 'teammate-vertex'], default='offline')
     parser.add_argument('--thinking-level', choices=['LOW','MEDIUM','HIGH'], help='Explicit thinking level for Vertex Judge and Advocate.')
@@ -39,7 +41,7 @@ def main(argv=None):
     except (AgentError, ValueError, OSError) as exc:
         print(str(exc) if isinstance(exc, AgentError) else 'INVALID_ADVOCATE_FILE', file=sys.stderr)
         return 2
-    cases = ['DISP-002', 'SYN-ROUTE-001'] if args.case == 'all' else [args.case]
+    cases = case_ids if args.case == 'all' else [args.case]
     results = [RydeOrchestrator(advocate_runner=advocate, judge_runner=judge).run(case) for case in cases]
     args.output_dir.mkdir(parents=True, exist_ok=True)
     for result in results:

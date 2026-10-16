@@ -26,6 +26,8 @@ def calculate_rules(snapshot):
     return {
         'status': 'review_required' if audit['requires_policy_or_data_review'] else 'calculated',
         'selected_clock': None,
+        'free_wait_clock': deepcopy(audit.get('policy_context', {}).get('free_wait_clock')),
+        'policy_context': deepcopy(audit.get('policy_context', {})),
         'fee_applicable': None,
         'calculations': calculations,
         'issues': deepcopy(audit['issues']),
@@ -44,7 +46,9 @@ def calculate_rules(snapshot):
 
 def charged_amount(snapshot):
     raw = snapshot['raw']
-    if 'fare_breakdown' in raw:
+    if 'charged_total_cents' in raw.get('fare_breakdown', {}):
         return Decimal(str(raw['fare_breakdown']['charged_total_cents'])) / 100
+    if 'actual_fare' in raw.get('trip_data', {}):
+        return Decimal(str(raw['trip_data']['actual_fare']))
     amount = raw.get('trip_data', {}).get('cancellation_fee')
     return Decimal(str(amount)) if amount is not None else None

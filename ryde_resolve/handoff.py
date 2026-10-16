@@ -13,8 +13,16 @@ def build_handoff(result):
     resolved = {r['issue_code'] for r in analysis.get('review_responses', []) if r['status'] == 'resolved'}
     if s:
         for issue in review_plan(s)['items']:
-            if issue['category'] == 'informational' or issue['code'] in resolved: continue
-            if issue['category'] == 'judge_analysis':
+            if issue['category'] == 'informational' or (issue['category'] == 'judge_analysis' and issue['code'] in resolved): continue
+            if issue['code'] in {'ROUTE_DISTANCE_REQUIRES_HUMAN_REVIEW', 'DISPUTE_VALUE_REQUIRES_HUMAN_REVIEW', 'SAFETY_INDICATOR_REQUIRES_HUMAN_REVIEW'}:
+                add(issue['code'], issue['message'], '人工复核负责人',
+                    '官方政策规定本案必须由人工裁决；补齐材料不能免除该门槛。',
+                    '将当前证据、政策原文和双方陈述交人工审核；AI 仅整理材料，不据此自动裁决。')
+            elif issue['code'] in {'NO_SHOW_THRESHOLD_CLOCK_UNSPECIFIED', 'POLICY_SOURCE_CONFLICT'}:
+                add(issue['code'], '请主办方明确案内 8 分钟 no-show 阈值起算点，以及与 v2.1 §2.1 五分钟规则的关系和来源优先级。',
+                    '主办方／平台政策负责人', '免费等待起点已明确，但不足以决定争议收费条件。',
+                    '保留两份来源及缺失标记；收到可追溯的正式澄清后显式更新政策版本并重跑。')
+            elif issue['category'] == 'judge_analysis':
                 add(issue['code'], '提供有来源的改道背景与额外收费依据核实记录；司机陈述本身不够。',
                     '平台运营／证据负责人', '决定改道是否有依据、额外收费是否成立。',
                     '由 Evidence 方补充可追溯记录、重建案卷快照，再重新运行分析。')

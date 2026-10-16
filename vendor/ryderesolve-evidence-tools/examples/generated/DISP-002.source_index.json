@@ -1,8 +1,8 @@
 {
   "case_id": "DISP-002",
   "source_sha256": "6712c5be3edf06bf27fccdaabb7b46ecf9936dba56758b7db5e74e40599579ca",
-  "snapshot_id": "7e30f1a73924807803f201f5813d92342c135e2025e146b063081a68575b65b7",
-  "normalizer_version": "0.2.0",
+  "snapshot_id": "70f7cb30bed0e3d0fa81d6aeeae7f10bc77cbc43ee58d832df999a66ac56eeb3",
+  "normalizer_version": "0.3.0",
   "evidence": {
     "E-001": {
       "kind": "derived_observation",
@@ -242,6 +242,13 @@
         "/trip_data/pickup_location",
         "/trip_data/dropoff_location"
       ]
+    },
+    "E-039": {
+      "kind": "derived_metric",
+      "source_refs": [
+        "/trip_data/scheduled_time",
+        "/trip_data/cancellation_time"
+      ]
     }
   },
   "policy": {
@@ -268,6 +275,126 @@
         "/cancellation_policy/no_show_threshold_min"
       ],
       "policy_origin": "organizer_sample"
+    },
+    "P-RYDE-2.1-S2.1": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/2.1"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S2.2": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/2.2"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S2.3": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/2.3"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S2.4": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/2.4"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S2.5": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/2.5"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S5.1": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/5.1"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S5.2": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/5.2"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S5.3": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/5.3"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S6.1": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/6.1"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S6.2": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/6.2"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S6.3": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/6.3"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
+    },
+    "P-RYDE-2.1-S7.3": {
+      "source_document_id": "RYDE-POLICY-V2.1",
+      "source_refs": [
+        "/sections/7.3"
+      ],
+      "policy_origin": "organizer_policy_document",
+      "document_sha256": "2a90f8974e09e417c60300b2cb05a616d2cc12bdea893eba6456ca686d1c244f",
+      "version": "2.1",
+      "effective_date": "2026-01-01"
     }
   }
 }

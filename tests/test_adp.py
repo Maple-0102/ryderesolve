@@ -130,6 +130,7 @@ class ADPTests(unittest.TestCase):
         for timeout in (float('nan'),0,301):
             with self.assertRaises(AgentError): ADPConfig('test-key',timeout=timeout)
 
+    @unittest.skipIf(os.name == 'nt', 'POSIX fchmod/0600; run in Linux CI or WSL')
     def test_local_key_private_and_env_precedence(self):
         with tempfile.TemporaryDirectory() as d,patch.dict(os.environ,{},clear=True):
             p=Path(d)/'.local/key';save_key('private-test-key',p)
@@ -144,7 +145,13 @@ class ADPTests(unittest.TestCase):
     def test_symlink_key_is_rejected(self):
         with tempfile.TemporaryDirectory() as d:
             original=Path(d)/'existing';original.write_text('keep')
-            link=Path(d)/'link';link.symlink_to(original)
+            link=Path(d)/'link'
+            try:
+                link.symlink_to(original)
+            except OSError as exc:
+                if os.name == 'nt' and getattr(exc, 'winerror', None) == 1314:
+                    self.skipTest('Windows symlink privilege unavailable; exercised in Linux CI')
+                raise
             with self.assertRaisesRegex(AgentError,'UNSAFE'): save_key('new-test-key',link)
             self.assertEqual(original.read_text(),'keep')
 

@@ -1,4 +1,4 @@
-"""Thin adapter over the teammate's unmodified, versioned EvidenceTools."""
+"""Thin adapter over versioned EvidenceTools and its source-bound policy documents."""
 from ryderesolve_evidence import EvidenceTools
 from ryderesolve_evidence.core import build_bundle
 from ryderesolve_evidence.validation import validate_agent_outputs
@@ -18,7 +18,7 @@ def verify_snapshot(snapshot):
     """Rebuild using the same normalizer; reject mixed raw/pack/index/audit versions."""
     audit = snapshot['audit']
     bundle = build_bundle(snapshot['raw'], {k: audit.get(k) for k in
-                         ('data_origin', 'policy_origin', 'source_url')})
+                         ('data_origin', 'policy_origin', 'source_url')}, snapshot.get('policy_documents'))
     expected = {
         'case_id': bundle.pack['case_id'],
         'snapshot_id': bundle.audit['snapshot_id'],
@@ -31,6 +31,8 @@ def verify_snapshot(snapshot):
     for key, value in expected.items():
         if snapshot.get(key) != value:
             raise ValueError(f'SNAPSHOT_MISMATCH: {key}')
+    if snapshot.get('policy_documents', {}) != bundle.policy_documents:
+        raise ValueError('SNAPSHOT_MISMATCH: policy_documents')
     return bundle
 
 

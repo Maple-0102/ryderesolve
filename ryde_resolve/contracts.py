@@ -38,6 +38,11 @@ def check_judge(snapshot, output, arguments=None):
         if not output.get('uncertainties'):
             errors.append('ESCALATION_REASON_MISSING')
     else:
+        required_confidence = snapshot['audit'].get('policy_context', {}).get('confidence_requirement', {}).get('minimum')
+        if required_confidence is not None:
+            confidence = output.get('confidence')
+            if type(confidence) not in (int, float) or confidence < required_confidence:
+                errors.append('POLICY_CONFIDENCE_REQUIREMENT_NOT_MET')
         if output.get('uncertainties'):
             errors.append('FINAL_WITH_UNRESOLVED_UNCERTAINTIES')
         if output.get('escalate_to_human') is not False:
@@ -61,6 +66,10 @@ def check_judge(snapshot, output, arguments=None):
                 errors.append('FULL_REFUND_MISMATCH')
             if decision == 'refund_partial' and not (charged is not None and 0 < money < charged):
                 errors.append('PARTIAL_REFUND_MISMATCH')
+            if snapshot['evidence_pack']['dispute_type'] == 'fare_dispute' and decision in ('refund_full', 'refund_partial'):
+                difference = snapshot['audit']['metrics'].get('fare_difference', {}).get('difference_cents')
+                if difference is None or money > max(Decimal(str(difference)) / 100, Decimal(0)):
+                    errors.append('REFUND_EXCEEDS_DISPUTED_FARE_DIFFERENCE')
 
     support_errors, support_warnings = check_finding_support(snapshot, output)
     analysis_errors, analysis_warnings = check_case_analysis(snapshot, output, arguments)

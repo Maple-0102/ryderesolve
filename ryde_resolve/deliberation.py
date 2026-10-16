@@ -3,6 +3,8 @@ from .review_policy import review_plan
 
 
 def condition_specs(snapshot):
+    if snapshot['evidence_pack']['dispute_type'] == 'fare_dispute':
+        return [{'condition_id': 'fare_charge', 'question': 'Do the quote, surge components, timely notification and applicable fare policy support the disputed fare difference?'}]
     if snapshot['evidence_pack']['dispute_type'] == 'route_deviation':
         return [
             {'condition_id': 'route_justification', 'question': 'Is the route change justified by verified context?'},
@@ -81,7 +83,7 @@ def check_deliberation(snapshot, output, arguments):
                 errors.append('DISPUTED_POINT_BASIS_MISSING')
         if set(conditions) == required_ids:
             uphold = output['decision'] == 'uphold_charge'
-            decisive = 'extra_charge' if 'extra_charge' in conditions else 'no_show_charge'
+            decisive = 'extra_charge' if 'extra_charge' in conditions else 'fare_charge' if 'fare_charge' in conditions else 'no_show_charge'
             if conditions[decisive]['status'] != ('met' if uphold else 'not_met'):
                 errors.append('DECISION_CONDITION_CONFLICT')
             if uphold and any(c['status'] != 'met' for c in conditions.values()):
