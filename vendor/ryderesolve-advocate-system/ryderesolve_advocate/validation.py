@@ -50,6 +50,8 @@ def validate_output(output, pack, side):
                                 errors.append(f"Unknown {field} in {group}[{i}]")
                 if row.get("evidence_refs") == []:
                     warnings.append({"code": "UNSUPPORTED_STATEMENT", "path": f"/{group}/{i}"})
+                if not row.get("claim_type") or not row.get("evidence_status"):
+                    warnings.append({"code": "MISSING_PROVENANCE_LABEL", "path": f"/{group}/{i}"})
         if output.get("claims") == []:
             warnings.append({"code": "NO_CLAIMS", "path": "/claims"})
     return {"structurally_valid": not errors, "errors": errors, "warnings": warnings,

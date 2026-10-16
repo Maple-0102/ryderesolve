@@ -42,6 +42,24 @@ class Tests(unittest.TestCase):
         output['case_id'] = 'OTHER'
         self.assertFalse(validate_output(output, self.pack, 'rider')['structurally_valid'])
 
+    def test_provenance_labels_accepted_and_missing_warned(self):
+        output = fixture(self.pack, 'rider')
+        output['claims'][0]['claim_type'] = 'party_statement'
+        output['claims'][0]['evidence_status'] = 'reported'
+        report = validate_output(output, self.pack, 'rider')
+        self.assertTrue(report['structurally_valid'])
+        self.assertFalse(any(w['code'] == 'MISSING_PROVENANCE_LABEL' for w in report['warnings']))
+        del output['claims'][0]['claim_type']
+        report = validate_output(output, self.pack, 'rider')
+        self.assertTrue(report['structurally_valid'])
+        self.assertIn('MISSING_PROVENANCE_LABEL', [w['code'] for w in report['warnings']])
+
+    def test_invalid_provenance_label_rejected(self):
+        output = fixture(self.pack, 'rider')
+        output['claims'][0]['claim_type'] = 'fact'
+        output['claims'][0]['evidence_status'] = 'verified'
+        self.assertFalse(validate_output(output, self.pack, 'rider')['structurally_valid'])
+
     def test_empty_refs_warning(self):
         output = fixture(self.pack, 'rider')
         output['claims'][0]['evidence_refs'] = []

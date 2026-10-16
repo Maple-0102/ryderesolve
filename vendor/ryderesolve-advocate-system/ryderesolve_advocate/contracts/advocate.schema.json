@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Advocate Output v0.2",
+  "title": "Advocate Output v0.3 (backward-compatible provenance labels)",
   "type": "object",
   "required": [
     "case_id",
@@ -55,6 +55,26 @@
               "pattern": "\\S"
             },
             "uniqueItems": true
+          },
+          "claim_type": {
+            "type": "string",
+            "enum": [
+              "party_statement",
+              "system_record",
+              "derived_calculation",
+              "policy_application",
+              "advocacy_inference"
+            ]
+          },
+          "evidence_status": {
+            "type": "string",
+            "enum": [
+              "reported",
+              "recorded",
+              "derived",
+              "conditional",
+              "unverified"
+            ]
           }
         },
         "additionalProperties": true
@@ -91,6 +111,26 @@
               "pattern": "\\S"
             },
             "uniqueItems": true
+          },
+          "claim_type": {
+            "type": "string",
+            "enum": [
+              "party_statement",
+              "system_record",
+              "derived_calculation",
+              "policy_application",
+              "advocacy_inference"
+            ]
+          },
+          "evidence_status": {
+            "type": "string",
+            "enum": [
+              "reported",
+              "recorded",
+              "derived",
+              "conditional",
+              "unverified"
+            ]
           }
         },
         "additionalProperties": true
