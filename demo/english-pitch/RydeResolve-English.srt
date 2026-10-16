@@ -1,0 +1,564 @@
+1
+00:00:00,393 --> 00:00:02,657
+You book a ride for twelve Singapore dollars.
+
+2
+00:00:03,311 --> 00:00:06,530
+At the end, you are charged sixteen dollars and
+fifty cents.
+
+3
+00:00:07,191 --> 00:00:08,900
+The rider wants an explanation.
+
+4
+00:00:09,550 --> 00:00:11,150
+The driver completed the journey.
+
+5
+00:00:11,800 --> 00:00:15,438
+The support team must decide what happened, which
+rule applies, and what to do
+
+6
+00:00:15,463 --> 00:00:16,009
+next.
+
+7
+00:00:16,659 --> 00:00:19,280
+A small fare difference has become a problem of
+trust.
+
+8
+00:00:21,113 --> 00:00:24,790
+Meet Ryde Resolve, an evidence based dispute
+resolution prototype.
+
+9
+00:00:25,433 --> 00:00:29,093
+It brings the rider's perspective, the driver's
+perspective, and the relevant
+
+10
+00:00:29,118 --> 00:00:31,109
+policy into one reviewable workflow.
+
+11
+00:00:31,759 --> 00:00:35,663
+Our goal is to help support teams prepare
+consistent, explainable decisions,
+
+12
+00:00:35,835 --> 00:00:39,028
+while keeping people in control when the rules or
+evidence do not support an
+
+13
+00:00:39,053 --> 00:00:40,403
+automatic recommendation.
+
+14
+00:00:42,273 --> 00:00:43,243
+Here is the journey.
+
+15
+00:00:43,887 --> 00:00:44,921
+Select a case.
+
+16
+00:00:45,571 --> 00:00:47,302
+Prepare a versioned evidence pack.
+
+17
+00:00:47,952 --> 00:00:51,742
+Let the rider and driver advocates make their
+opening arguments, then respond
+
+18
+00:00:51,767 --> 00:00:52,965
+once to the other side.
+
+19
+00:00:53,615 --> 00:00:57,595
+A Judge considers the original evidence, both
+arguments, and the policy.
+
+20
+00:00:58,256 --> 00:01:01,948
+Programmatic checks then decide whether the
+recommendation can be shown or needs
+
+21
+00:01:01,973 --> 00:01:02,769
+human review.
+
+22
+00:01:04,633 --> 00:01:06,918
+Let's follow the official fare dispute sample.
+
+23
+00:01:07,562 --> 00:01:11,765
+This is an interactive report from a saved real
+model run, not a new model request
+
+24
+00:01:11,790 --> 00:01:12,781
+during this recording.
+
+25
+00:01:13,431 --> 00:01:15,966
+It proposes a four dollar fifty partial refund.
+
+26
+00:01:16,616 --> 00:01:20,058
+We will trace that result back to its evidence and
+policy, and then show the
+
+27
+00:01:20,083 --> 00:01:21,662
+local operational workbench.
+
+28
+00:01:23,513 --> 00:01:25,983
+The first question is what the records actually
+show.
+
+29
+00:01:26,637 --> 00:01:28,705
+Each fact has an evidence identifier.
+
+30
+00:01:29,355 --> 00:01:32,607
+Clicking a reference opens the underlying record and
+its source path.
+
+31
+00:01:33,268 --> 00:01:36,509
+Here, the surge event records that the rider was not
+notified.
+
+32
+00:01:37,159 --> 00:01:41,129
+That explicit false value is different from simply
+having no notification log.
+
+33
+00:01:41,779 --> 00:01:43,650
+The distinction matters to the decision.
+
+34
+00:01:45,513 --> 00:01:47,244
+Now open the policy reference.
+
+35
+00:01:47,898 --> 00:01:51,536
+Section three point three of the supplied policy
+calls for refunding the surge
+
+36
+00:01:51,561 --> 00:01:54,487
+differential when the required notification was not
+provided.
+
+37
+00:01:55,137 --> 00:01:59,216
+The report keeps the clause, document identity, and
+source excerpt together.
+
+38
+00:01:59,866 --> 00:02:03,493
+Reviewers can inspect the rule being applied instead
+of relying on a confident
+
+39
+00:02:03,518 --> 00:02:04,444
+sounding summary.
+
+40
+00:02:06,313 --> 00:02:09,098
+The two advocates work from the same evidence
+snapshot.
+
+41
+00:02:09,742 --> 00:02:13,016
+The rider advocate argues that the original quote
+should be respected.
+
+42
+00:02:13,666 --> 00:02:17,119
+The driver advocate highlights that the ride was
+completed and the surge change
+
+43
+00:02:17,144 --> 00:02:18,320
+was system generated.
+
+44
+00:02:18,970 --> 00:02:20,961
+Both must cite their supporting records.
+
+45
+00:02:21,611 --> 00:02:24,842
+Taking a side does not give an agent permission to
+invent evidence.
+
+46
+00:02:26,713 --> 00:02:28,900
+Each side then gets one response round.
+
+47
+00:02:29,555 --> 00:02:33,084
+This gives the agents a chance to address the other
+side's argument without turning
+
+48
+00:02:33,109 --> 00:02:35,024
+the process into an endless debate.
+
+49
+00:02:35,685 --> 00:02:38,122
+The Judge records how it assessed both positions.
+
+50
+00:02:38,772 --> 00:02:42,269
+A statement proves what someone said; it does not
+automatically prove that the
+
+51
+00:02:42,294 --> 00:02:43,166
+event happened.
+
+52
+00:02:43,827 --> 00:02:46,600
+Agreement between agents cannot fill a missing
+source.
+
+53
+00:02:48,473 --> 00:02:52,666
+The arithmetic is transparent: sixteen fifty
+charged, minus the twelve dollar
+
+54
+00:02:52,691 --> 00:02:54,226
+quote, equals four fifty.
+
+55
+00:02:54,869 --> 00:02:58,431
+The recommendation preserves the quoted fare for the
+completed trip and returns
+
+56
+00:02:58,456 --> 00:02:59,523
+the surge difference.
+
+57
+00:03:00,184 --> 00:03:02,328
+This is a partial refund of the trip charge.
+
+58
+00:03:02,978 --> 00:03:05,752
+The interface displays a suggestion and its reasons.
+
+59
+00:03:06,402 --> 00:03:08,741
+It does not move money or execute a refund.
+
+60
+00:03:10,593 --> 00:03:12,802
+A useful system also knows when to stop.
+
+61
+00:03:13,446 --> 00:03:17,654
+In the no show sample, policy defines five free
+minutes from the scheduled pickup.
+
+62
+00:03:18,304 --> 00:03:21,834
+But the case also contains an eight minute threshold
+with an unresolved starting
+
+63
+00:03:21,859 --> 00:03:23,470
+point and policy precedence.
+
+64
+00:03:24,130 --> 00:03:27,964
+We keep those differences visible and refer the case
+for clarification, rather
+
+65
+00:03:27,989 --> 00:03:30,676
+than silently choosing the clock that favors one
+side.
+
+66
+00:03:32,513 --> 00:03:35,081
+The route deviation sample shows another boundary.
+
+67
+00:03:35,724 --> 00:03:39,737
+Its reported road distance exceeds the reference
+route by four point three kilometers.
+
+68
+00:03:40,398 --> 00:03:44,118
+The supplied policy requires human adjudication
+above two kilometers.
+
+69
+00:03:44,768 --> 00:03:47,694
+A plausible refund argument cannot bypass that gate.
+
+70
+00:03:48,355 --> 00:03:52,275
+The team can still inspect the evidence and
+calculations, but a person must make
+
+71
+00:03:52,300 --> 00:03:53,574
+the authorized decision.
+
+72
+00:03:55,433 --> 00:03:56,860
+Here is the local workbench.
+
+73
+00:03:57,503 --> 00:04:01,674
+A reviewer can select a case, start processing, and
+see the recorded execution
+
+74
+00:04:01,699 --> 00:04:02,331
+stages.
+
+75
+00:04:02,981 --> 00:04:07,032
+This part of the demonstration uses offline
+providers, so the controls are real
+
+76
+00:04:07,057 --> 00:04:09,005
+but no new cloud model is being called.
+
+77
+00:04:09,655 --> 00:04:13,897
+Saved live reports retain their own provenance,
+separate from these offline runs.
+
+78
+00:04:15,753 --> 00:04:19,500
+When new information arrives, the reviewer can
+upload a complete amended source
+
+79
+00:04:19,525 --> 00:04:23,180
+file, declare where it came from, and preview the
+exact changes.
+
+80
+00:04:23,823 --> 00:04:26,119
+This example is clearly labeled synthetic.
+
+81
+00:04:26,769 --> 00:04:30,586
+A confirmed supplement creates a new snapshot and
+reruns the arguments.
+
+82
+00:04:31,247 --> 00:04:35,113
+The old result remains available, and the pinned
+official policy cannot be rewritten
+
+83
+00:04:35,138 --> 00:04:35,977
+through this form.
+
+84
+00:04:37,833 --> 00:04:41,629
+For a referred case, the workbench also provides a
+human outcome form.
+
+85
+00:04:42,273 --> 00:04:46,074
+It asks for the reviewer, the decision, the amount,
+the reason, and supporting
+
+86
+00:04:46,099 --> 00:04:46,851
+references.
+
+87
+00:04:47,501 --> 00:04:51,329
+Local records are append only: they preserve the
+earlier AI suggestion.
+
+88
+00:04:51,979 --> 00:04:55,547
+This prototype does not authenticate the reviewer or
+execute a payment.
+
+89
+00:04:56,197 --> 00:04:58,851
+Those are clear requirements for a production
+integration.
+
+90
+00:05:00,713 --> 00:05:03,368
+We built the workflow around failure as well as
+success.
+
+91
+00:05:04,011 --> 00:05:05,731
+Completed stages are checkpointed.
+
+92
+00:05:06,392 --> 00:05:10,084
+Compatible command line runs can resume without
+regenerating every completed
+
+93
+00:05:10,109 --> 00:05:10,742
+output.
+
+94
+00:05:11,403 --> 00:05:14,514
+Calls, active time, and recorded tokens have limits.
+
+95
+00:05:15,163 --> 00:05:18,959
+A provider failure is reported separately from a
+policy driven human referral,
+
+96
+00:05:19,153 --> 00:05:21,883
+because those are different problems with different
+next actions.
+
+97
+00:05:23,753 --> 00:05:28,190
+The saved fare demonstration completed six fresh
+model calls: four advocate turns,
+
+98
+00:05:28,243 --> 00:05:32,027
+a Judge, and an optional reviewer, and passed the
+implementation's checks.
+
+99
+00:05:32,671 --> 00:05:35,369
+We also retained unsuccessful development attempts.
+
+100
+00:05:36,019 --> 00:05:39,385
+Some arguments still mishandled the boundary between
+a person's statement and
+
+101
+00:05:39,410 --> 00:05:41,140
+an independently supported fact.
+
+102
+00:05:41,790 --> 00:05:46,097
+These small development examples do not establish
+real world accuracy, fairness,
+
+103
+00:05:46,160 --> 00:05:47,445
+or faster resolution.
+
+104
+00:05:49,313 --> 00:05:53,147
+Our team split the build into evidence and tools,
+the advocate system, and Judge
+
+105
+00:05:53,172 --> 00:05:55,837
+orchestration with evaluation and interface work.
+
+106
+00:05:56,481 --> 00:06:00,380
+The most useful development habit was agreeing on
+stable identifiers and output
+
+107
+00:06:00,405 --> 00:06:01,450
+contracts early.
+
+108
+00:06:02,111 --> 00:06:05,652
+That allowed the modules to evolve in parallel while
+keeping every claim connected
+
+109
+00:06:05,677 --> 00:06:07,146
+to the same version of the case.
+
+110
+00:06:09,033 --> 00:06:10,786
+Our practical tool tips are simple.
+
+111
+00:06:11,429 --> 00:06:13,801
+Use JSON schemas to check interfaces.
+
+112
+00:06:14,451 --> 00:06:16,681
+Keep original attachments and source hashes.
+
+113
+00:06:17,342 --> 00:06:19,540
+Review changes in GitHub pull requests.
+
+114
+00:06:20,190 --> 00:06:24,067
+Add a regression case for each reproduced failure,
+and separate offline tests
+
+115
+00:06:24,092 --> 00:06:25,616
+from paid model evaluation.
+
+116
+00:06:26,277 --> 00:06:29,138
+Keep evaluation answers outside agent inputs.
+
+117
+00:06:29,788 --> 00:06:32,888
+These habits make changes easier to inspect and
+reproduce.
+
+118
+00:06:34,753 --> 00:06:38,696
+Ryde Resolve turns scattered records into an
+inspectable conversation and a reasoned
+
+119
+00:06:38,721 --> 00:06:39,517
+next step.
+
+120
+00:06:40,160 --> 00:06:44,407
+The value is a clearer explanation for riders, a
+visible voice for drivers, and
+
+121
+00:06:44,432 --> 00:06:46,390
+a structured handoff for support teams.
+
+122
+00:06:47,040 --> 00:06:51,026
+Our next step is broader independent evaluation and
+authenticated operational
+
+123
+00:06:51,051 --> 00:06:51,847
+integration.
+
+124
+00:06:52,508 --> 00:06:56,309
+Every dispute deserves an explanation, and every
+recommendation should show its
+
+125
+00:06:56,334 --> 00:06:56,910
+evidence.

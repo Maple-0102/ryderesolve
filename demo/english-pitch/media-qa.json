@@ -1,0 +1,166 @@
+{
+  "source_commit": "fb374f1",
+  "duration_seconds": 418.5,
+  "width": 1920,
+  "height": 1080,
+  "fps": 25,
+  "video_codec": "h264",
+  "audio_codec": "aac",
+  "size_bytes": 37737869,
+  "subtitle_cues": 125,
+  "chapter_count": 19,
+  "sync": [
+    {
+      "scene": "01-hook",
+      "trim_start": 1.92,
+      "duration": 20.72,
+      "frames": 518
+    },
+    {
+      "scene": "02-value",
+      "trim_start": 1.84,
+      "duration": 21.16,
+      "frames": 529
+    },
+    {
+      "scene": "03-workflow",
+      "trim_start": 1.88,
+      "duration": 22.36,
+      "frames": 559
+    },
+    {
+      "scene": "04-case",
+      "trim_start": 1.88,
+      "duration": 18.88,
+      "frames": 472
+    },
+    {
+      "scene": "05-evidence",
+      "trim_start": 1.88,
+      "duration": 22.0,
+      "frames": 550
+    },
+    {
+      "scene": "06-policy",
+      "trim_start": 2.12,
+      "duration": 20.8,
+      "frames": 520
+    },
+    {
+      "scene": "07-advocates",
+      "trim_start": 1.92,
+      "duration": 20.4,
+      "frames": 510
+    },
+    {
+      "scene": "08-response",
+      "trim_start": 1.92,
+      "duration": 21.76,
+      "frames": 544
+    },
+    {
+      "scene": "09-decision",
+      "trim_start": 1.88,
+      "duration": 22.12,
+      "frames": 553
+    },
+    {
+      "scene": "10-no-show",
+      "trim_start": 1.84,
+      "duration": 21.92,
+      "frames": 548
+    },
+    {
+      "scene": "11-route",
+      "trim_start": 1.88,
+      "duration": 22.92,
+      "frames": 573
+    },
+    {
+      "scene": "12-workbench",
+      "trim_start": 1.96,
+      "duration": 20.32,
+      "frames": 508
+    },
+    {
+      "scene": "13-supplement",
+      "trim_start": 1.88,
+      "duration": 22.08,
+      "frames": 552
+    },
+    {
+      "scene": "14-human",
+      "trim_start": 1.92,
+      "duration": 22.88,
+      "frames": 572
+    },
+    {
+      "scene": "15-recovery",
+      "trim_start": 1.84,
+      "duration": 23.04,
+      "frames": 576
+    },
+    {
+      "scene": "16-evaluation",
+      "trim_start": 1.92,
+      "duration": 25.56,
+      "frames": 639
+    },
+    {
+      "scene": "17-build",
+      "trim_start": 2.0,
+      "duration": 19.72,
+      "frames": 493
+    },
+    {
+      "scene": "18-tips",
+      "trim_start": 1.8,
+      "duration": 25.72,
+      "frames": 643
+    },
+    {
+      "scene": "19-close",
+      "trim_start": 1.8,
+      "duration": 24.12,
+      "frames": 603
+    }
+  ],
+  "visual_qa": "Reviewed 38 extracted final-video frames across all 19 scenes, with additional full-resolution checks of evidence, policy, captions and the supplement preview. No sampled caption clipping or untranslated native controls remained.",
+  "full_decode": "passed, both audio and video",
+  "frame_count": 10462,
+  "audio_integrated_lufs": -16.5,
+  "audio_true_peak_dbfs": -4.4,
+  "silences_over_1_6_seconds": [
+    2.015021,
+    2.015833,
+    2.015375,
+    2.030542,
+    2.007229,
+    2.032521,
+    2.042875,
+    2.007604,
+    2.052208,
+    2.008396,
+    2.011687,
+    2.037958,
+    2.008396,
+    2.006958,
+    2.025854,
+    2.025521,
+    2.073708,
+    2.035062
+  ],
+  "captions_match_narration": true,
+  "narration_word_count": 1043,
+  "original_archives_verified": [
+    "DISP-001",
+    "DISP-002",
+    "DISP-003",
+    "policy"
+  ],
+  "video_sha256": "f0f34f671d72abff5a439225a2e6e9d2ab5d357e87213ddcea8dfdc90a6ac24c",
+  "visual_sample_count": 38,
+  "interaction_verification": "Actual browser mouse actions aligned to speech-word cues. Evidence and policy references opened; an offline run completed; synthetic input preview succeeded. No supplement rerun or human outcome was committed.",
+  "publication_status": "Private review copy; owner requested review before external hosting.",
+  "audio_review_scope": "Full audio decode, loudness, true peak and silence analysis; captions matched to speech-service word timing. No human listening approval is claimed."
+}

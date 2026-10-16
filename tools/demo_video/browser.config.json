@@ -1,0 +1,12 @@
+{
+  "browser": {
+    "browserName": "chromium",
+    "launchOptions": {
+      "args": ["--lang=en-US"]
+    },
+    "contextOptions": {
+      "locale": "en-US",
+      "viewport": {"width": 1920, "height": 1080}
+    }
+  }
+}

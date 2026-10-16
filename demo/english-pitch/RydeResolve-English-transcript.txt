@@ -1,0 +1,56 @@
+A small charge. A bigger trust problem.
+You book a ride for twelve Singapore dollars. At the end, you are charged sixteen dollars and fifty cents. The rider wants an explanation. The driver completed the journey. The support team must decide what happened, which rule applies, and what to do next. A small fare difference has become a problem of trust.
+
+An explanation both sides can inspect
+Meet Ryde Resolve, an evidence based dispute resolution prototype. It brings the rider's perspective, the driver's perspective, and the relevant policy into one reviewable workflow. Our goal is to help support teams prepare consistent, explainable decisions, while keeping people in control when the rules or evidence do not support an automatic recommendation.
+
+One shared record. Two perspectives.
+Here is the journey. Select a case. Prepare a versioned evidence pack. Let the rider and driver advocates make their opening arguments, then respond once to the other side. A Judge considers the original evidence, both arguments, and the policy. Programmatic checks then decide whether the recommendation can be shown or needs human review.
+
+The fare dispute: DISP-003
+Let's follow the official fare dispute sample. This is an interactive report from a saved real model run, not a new model request during this recording. It proposes a four dollar fifty partial refund. We will trace that result back to its evidence and policy, and then show the local operational workbench.
+
+Click a reference. Inspect the source.
+The first question is what the records actually show. Each fact has an evidence identifier. Clicking a reference opens the underlying record and its source path. Here, the surge event records that the rider was not notified. That explicit false value is different from simply having no notification log. The distinction matters to the decision.
+
+A recommendation must have a rule
+Now open the policy reference. Section three point three of the supplied policy calls for refunding the surge differential when the required notification was not provided. The report keeps the clause, document identity, and source excerpt together. Reviewers can inspect the rule being applied instead of relying on a confident sounding summary.
+
+A rider advocate and a driver advocate
+The two advocates work from the same evidence snapshot. The rider advocate argues that the original quote should be respected. The driver advocate highlights that the ride was completed and the surge change was system generated. Both must cite their supporting records. Taking a side does not give an agent permission to invent evidence.
+
+One opening. One response. Then review.
+Each side then gets one response round. This gives the agents a chance to address the other side's argument without turning the process into an endless debate. The Judge records how it assessed both positions. A statement proves what someone said; it does not automatically prove that the event happened. Agreement between agents cannot fill a missing source.
+
+SGD 4.50 suggested refund
+The arithmetic is transparent: sixteen fifty charged, minus the twelve dollar quote, equals four fifty. The recommendation preserves the quoted fare for the completed trip and returns the surge difference. This is a partial refund of the trip charge. The interface displays a suggestion and its reasons. It does not move money or execute a refund.
+
+An unresolved rule stays unresolved
+A useful system also knows when to stop. In the no show sample, policy defines five free minutes from the scheduled pickup. But the case also contains an eight minute threshold with an unresolved starting point and policy precedence. We keep those differences visible and refer the case for clarification, rather than silently choosing the clock that favors one side.
+
+Policy can require a human decision
+The route deviation sample shows another boundary. Its reported road distance exceeds the reference route by four point three kilometers. The supplied policy requires human adjudication above two kilometers. A plausible refund argument cannot bypass that gate. The team can still inspect the evidence and calculations, but a person must make the authorized decision.
+
+From a report to a working case queue
+Here is the local workbench. A reviewer can select a case, start processing, and see the recorded execution stages. This part of the demonstration uses offline providers, so the controls are real but no new cloud model is being called. Saved live reports retain their own provenance, separate from these offline runs.
+
+Preview the change before rerunning
+When new information arrives, the reviewer can upload a complete amended source file, declare where it came from, and preview the exact changes. This example is clearly labeled synthetic. A confirmed supplement creates a new snapshot and reruns the arguments. The old result remains available, and the pinned official policy cannot be rewritten through this form.
+
+Human judgment with a recorded rationale
+For a referred case, the workbench also provides a human outcome form. It asks for the reviewer, the decision, the amount, the reason, and supporting references. Local records are append only: they preserve the earlier AI suggestion. This prototype does not authenticate the reviewer or execute a payment. Those are clear requirements for a production integration.
+
+Design for incomplete information and failure
+We built the workflow around failure as well as success. Completed stages are checkpointed. Compatible command line runs can resume without regenerating every completed output. Calls, active time, and recorded tokens have limits. A provider failure is reported separately from a policy driven human referral, because those are different problems with different next actions.
+
+A successful demo is a starting point
+The saved fare demonstration completed six fresh model calls: four advocate turns, a Judge, and an optional reviewer, and passed the implementation's checks. We also retained unsuccessful development attempts. Some arguments still mishandled the boundary between a person's statement and an independently supported fact. These small development examples do not establish real world accuracy, fairness, or faster resolution.
+
+Three components. One shared contract.
+Our team split the build into evidence and tools, the advocate system, and Judge orchestration with evaluation and interface work. The most useful development habit was agreeing on stable identifiers and output contracts early. That allowed the modules to evolve in parallel while keeping every claim connected to the same version of the case.
+
+Make each change easy to verify
+Our practical tool tips are simple. Use JSON schemas to check interfaces. Keep original attachments and source hashes. Review changes in GitHub pull requests. Add a regression case for each reproduced failure, and separate offline tests from paid model evaluation. Keep evaluation answers outside agent inputs. These habits make changes easier to inspect and reproduce.
+
+Every dispute deserves an explanation
+Ryde Resolve turns scattered records into an inspectable conversation and a reasoned next step. The value is a clearer explanation for riders, a visible voice for drivers, and a structured handoff for support teams. Our next step is broader independent evaluation and authenticated operational integration. Every dispute deserves an explanation, and every recommendation should show its evidence.
