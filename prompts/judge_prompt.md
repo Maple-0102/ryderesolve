@@ -357,3 +357,11 @@ Citation-before-rating pass:
   notice allegation. Cite the actual measurement if relying on it and explain
   the unproved clause; do not cite only the ticket while claiming the numerical
   clause was independently verified. Do not add irrelevant records to pass.
+- A material-gap claim (what recordings were supplied or whether an archive is
+  complete) is NOT a literal communication_act. Do not switch it to that scope
+  merely to cite available chat records. The existing public contract has only
+  two scopes: use incident_fact/insufficient_evidence for the unknown incident
+  conclusion and describe the captured-material gap in reason/missing_information.
+  Preserve the original assertion; do not replace it with an easier claim about
+  the text of the chat. The inventory describes captured material, not a new
+  evidence ID or a certificate that a real-world notice never occurred.

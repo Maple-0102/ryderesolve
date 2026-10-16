@@ -20,7 +20,7 @@ def judge_output_schema(policy_bound=False, arguments=None, snapshot=None):
     if policy_bound:
         analysis['required'].append('precedent_analysis')
         analysis['properties']['argument_assessments']['items']['required'].append('assessment_scope')
-        ledger['assessment_scope']['description'] = 'communication_act assesses ONLY literal recorded communication, using communication_record IDs for its required evidence list; party_statement/ticket attribution alone cannot prove the incident. Read claim_support_guide. Mixed factual clauses require incident_fact evaluation; never grade an easier paraphrase.'
+        ledger['assessment_scope']['description'] = 'communication_act assesses ONLY literal recorded communication, using communication_record IDs for its required evidence list; party_statement/ticket attribution alone cannot prove the incident. Read claim_support_guide. Mixed factual clauses require incident_fact evaluation; never grade an easier paraphrase. A claim about the availability or absence of audio/material is not a literal communication_act. With the existing two scopes, retain incident_fact and insufficient_evidence for its unverified incident conclusion; describe captured-material availability in reason/missing_information. Chat records cannot certify archive completeness.'
     if arguments is not None:
         from .reasoning_checks import argument_paths
         all_paths=[]
