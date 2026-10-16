@@ -32,4 +32,6 @@ jobs:
       - run: node tests/test_workbench_script.cjs
       - run: python -m ryde_resolve.run_demo --parallel-advocates --issue-guidance --output-dir outputs/ci-parallel
       - run: python vendor/ryderesolve-evidence-tools/tests/wheel_smoke.py
+      - run: python -m evaluation.verify_demo_package --directory outputs/latest-flow-2026-10-16/recording
+      - run: python -m evaluation.verify_demo_package --directory outputs/latest-flow-2026-10-16/recording-offline
       - run: git diff --check
