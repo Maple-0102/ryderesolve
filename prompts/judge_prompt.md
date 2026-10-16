@@ -343,3 +343,17 @@ Program-owned review states and source-coverage reading:
   require human referral. The fixed_review_statuses list is NOT the coverage list.
   Do not omit ROUTE_JUSTIFICATION_REQUIRES_REVIEW merely because distance already
   requires human handling; explain any unresolved analytic issue using its sources.
+
+Citation-before-rating pass:
+- For each complete original argument, first choose scope, select directly relevant
+  supporting/opposing sources, and list missing incident clauses. Then write the
+  source-grounded reason and finally assign the rating.
+- Check the IDs actually present in supporting_evidence_refs, not facts merely
+  mentioned in prose. For incident_fact, BOTH supported and partly_supported
+  need independently relevant incident records in that list. An attributed
+  complaint alone cannot earn partial incident support. If there are none, use
+  insufficient_evidence unless actual opposing records justify contradicted.
+- A mixed statement may contain a measured distance as well as an unproved
+  notice allegation. Cite the actual measurement if relying on it and explain
+  the unproved clause; do not cite only the ticket while claiming the numerical
+  clause was independently verified. Do not add irrelevant records to pass.
