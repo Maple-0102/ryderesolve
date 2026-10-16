@@ -86,8 +86,8 @@ class ReviewContractTests(unittest.TestCase):
             generated=vertex_response_schema(schema)
             self.assertEqual(generated['properties']['decision']['enum'],['escalate'] if contract['required_decision'] else ['uphold_charge','refund_full','refund_partial','escalate'])
             reviews=generated['properties']['case_analysis']['properties']['review_responses']
-            self.assertEqual(reviews['minItems'],len(contract['required_review_codes'])) if contract['required_review_codes'] else None
             if contract['required_review_codes']:
+                self.assertEqual(reviews['minItems'],len(contract['required_review_codes']))
                 self.assertEqual(reviews['maxItems'],len(contract['required_review_codes']))
                 self.assertEqual(reviews['items']['properties']['issue_code']['enum'],contract['required_review_codes'])
             if i==0:

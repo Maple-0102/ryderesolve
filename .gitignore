@@ -135,3 +135,18 @@ outputs/latest-flow-2026-10-16/recording-offline/*
 !outputs/latest-flow-2026-10-16/recording-offline/*.json
 
 !outputs/latest-flow-2026-10-16/recording-verification.json
+
+# Reviewed protected-state/source-scope reports; checkpoints and logs remain private
+!outputs/policy-lock-source-scope-2026-10-16/
+outputs/policy-lock-source-scope-2026-10-16/*
+!outputs/policy-lock-source-scope-2026-10-16/rejudge/
+outputs/policy-lock-source-scope-2026-10-16/rejudge/*
+!outputs/policy-lock-source-scope-2026-10-16/rejudge/judge-regressions.json
+!outputs/policy-lock-source-scope-2026-10-16/fresh-route/
+outputs/policy-lock-source-scope-2026-10-16/fresh-route/*
+!outputs/policy-lock-source-scope-2026-10-16/fresh-route/fresh-pipeline.json
+!outputs/policy-lock-source-scope-2026-10-16/fresh-route/ryde-evaluation.html
+!outputs/policy-lock-source-scope-2026-10-16/offline-final/
+outputs/policy-lock-source-scope-2026-10-16/offline-final/*
+!outputs/policy-lock-source-scope-2026-10-16/offline-final/revalidation.json
+!outputs/policy-lock-source-scope-2026-10-16/offline-final/ryde-evaluation.html
