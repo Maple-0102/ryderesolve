@@ -243,322 +243,359 @@ charged, minus the twelve dollar
 quote, equals four fifty.
 
 55
-00:02:54,869 --> 00:02:58,431
-The recommendation preserves the quoted fare for the
-completed trip and returns
-
-56
-00:02:58,456 --> 00:02:59,523
+00:02:54,869 --> 00:02:58,469
+The suggestion preserves the quoted fare and returns
 the surge difference.
 
-57
-00:03:00,184 --> 00:03:02,328
-This is a partial refund of the trip charge.
-
-58
-00:03:02,978 --> 00:03:05,752
-The interface displays a suggestion and its reasons.
-
-59
-00:03:06,402 --> 00:03:08,741
+56
+00:02:59,130 --> 00:03:01,469
 It does not move money or execute a refund.
 
+57
+00:03:03,313 --> 00:03:05,566
+This result did not pass on the first attempt.
+
+58
+00:03:06,209 --> 00:03:08,755
+Open the original errors, then the adjustment log.
+
+59
+00:03:09,405 --> 00:03:13,086
+The program reduced two unsupported argument ratings
+and reconciled the rider
+
 60
-00:03:10,593 --> 00:03:12,802
-A useful system also knows when to stop.
+00:03:13,111 --> 00:03:13,657
+summary.
 
 61
-00:03:13,446 --> 00:03:17,654
+00:03:14,307 --> 00:03:17,690
+It kept the original model output, the decision, and
+the amount.
+
+62
+00:03:18,340 --> 00:03:22,195
+The refund survives only because independent records
+already establish the fare
+
+63
+00:03:22,220 --> 00:03:24,896
+conditions, and all checks pass after correction.
+
+64
+00:03:25,546 --> 00:03:28,972
+This audit trail helps reviewers see exactly what
+the model got wrong.
+
+65
+00:03:30,833 --> 00:03:33,042
+A useful system also knows when to stop.
+
+66
+00:03:33,686 --> 00:03:37,894
 In the no show sample, policy defines five free
 minutes from the scheduled pickup.
 
-62
-00:03:18,304 --> 00:03:21,834
+67
+00:03:38,544 --> 00:03:42,074
 But the case also contains an eight minute threshold
 with an unresolved starting
 
-63
-00:03:21,859 --> 00:03:23,470
+68
+00:03:42,099 --> 00:03:43,710
 point and policy precedence.
 
-64
-00:03:24,130 --> 00:03:27,964
+69
+00:03:44,370 --> 00:03:48,204
 We keep those differences visible and refer the case
 for clarification, rather
 
-65
-00:03:27,989 --> 00:03:30,676
+70
+00:03:48,229 --> 00:03:50,916
 than silently choosing the clock that favors one
 side.
 
-66
-00:03:32,513 --> 00:03:35,081
-The route deviation sample shows another boundary.
-
-67
-00:03:35,724 --> 00:03:39,737
-Its reported road distance exceeds the reference
-route by four point three kilometers.
-
-68
-00:03:40,398 --> 00:03:44,118
-The supplied policy requires human adjudication
-above two kilometers.
-
-69
-00:03:44,768 --> 00:03:47,694
-A plausible refund argument cannot bypass that gate.
-
-70
-00:03:48,355 --> 00:03:52,275
-The team can still inspect the evidence and
-calculations, but a person must make
-
 71
-00:03:52,300 --> 00:03:53,574
-the authorized decision.
+00:03:52,753 --> 00:03:56,522
+The route sample exceeds the reference by four point
+three kilometers, above
 
 72
-00:03:55,433 --> 00:03:56,860
-Here is the local workbench.
+00:03:56,547 --> 00:03:58,582
+the two kilometer human review threshold.
 
 73
-00:03:57,503 --> 00:04:01,674
+00:03:59,225 --> 00:04:03,162
+In this saved run, the model incorrectly marked that
+restriction as resolved.
+
+74
+00:04:03,812 --> 00:04:06,488
+It also made four unsupported argument assessments.
+
+75
+00:04:07,149 --> 00:04:09,053
+The validator rejected the output.
+
+76
+00:04:09,703 --> 00:04:13,510
+Here are the original claims, the check
+explanations, and the next steps.
+
+77
+00:04:14,160 --> 00:04:17,934
+No accepted ruling is published, and the refund
+amount stays undetermined.
+
+78
+00:04:18,584 --> 00:04:20,586
+The failure remains visible for review.
+
+79
+00:04:22,473 --> 00:04:23,900
+Here is the local workbench.
+
+80
+00:04:24,543 --> 00:04:28,714
 A reviewer can select a case, start processing, and
 see the recorded execution
 
-74
-00:04:01,699 --> 00:04:02,331
+81
+00:04:28,739 --> 00:04:29,371
 stages.
 
-75
-00:04:02,981 --> 00:04:07,032
+82
+00:04:30,021 --> 00:04:34,072
 This part of the demonstration uses offline
 providers, so the controls are real
 
-76
-00:04:07,057 --> 00:04:09,005
+83
+00:04:34,097 --> 00:04:36,045
 but no new cloud model is being called.
 
-77
-00:04:09,655 --> 00:04:13,897
+84
+00:04:36,695 --> 00:04:40,937
 Saved live reports retain their own provenance,
 separate from these offline runs.
 
-78
-00:04:15,753 --> 00:04:19,500
+85
+00:04:42,793 --> 00:04:46,540
 When new information arrives, the reviewer can
 upload a complete amended source
 
-79
-00:04:19,525 --> 00:04:23,180
+86
+00:04:46,565 --> 00:04:50,220
 file, declare where it came from, and preview the
 exact changes.
 
-80
-00:04:23,823 --> 00:04:26,119
+87
+00:04:50,863 --> 00:04:53,159
 This example is clearly labeled synthetic.
 
-81
-00:04:26,769 --> 00:04:30,586
+88
+00:04:53,809 --> 00:04:57,626
 A confirmed supplement creates a new snapshot and
 reruns the arguments.
 
-82
-00:04:31,247 --> 00:04:35,113
+89
+00:04:58,287 --> 00:05:02,153
 The old result remains available, and the pinned
 official policy cannot be rewritten
 
-83
-00:04:35,138 --> 00:04:35,977
+90
+00:05:02,178 --> 00:05:03,017
 through this form.
 
-84
-00:04:37,833 --> 00:04:41,629
+91
+00:05:04,873 --> 00:05:08,669
 For a referred case, the workbench also provides a
 human outcome form.
 
-85
-00:04:42,273 --> 00:04:46,074
+92
+00:05:09,313 --> 00:05:13,114
 It asks for the reviewer, the decision, the amount,
 the reason, and supporting
 
-86
-00:04:46,099 --> 00:04:46,851
+93
+00:05:13,139 --> 00:05:13,891
 references.
 
-87
-00:04:47,501 --> 00:04:51,329
+94
+00:05:14,541 --> 00:05:18,369
 Local records are append only: they preserve the
 earlier AI suggestion.
 
-88
-00:04:51,979 --> 00:04:55,547
+95
+00:05:19,019 --> 00:05:22,587
 This prototype does not authenticate the reviewer or
 execute a payment.
 
-89
-00:04:56,197 --> 00:04:58,851
+96
+00:05:23,237 --> 00:05:25,891
 Those are clear requirements for a production
 integration.
 
-90
-00:05:00,713 --> 00:05:03,368
+97
+00:05:27,753 --> 00:05:30,408
 We built the workflow around failure as well as
 success.
 
-91
-00:05:04,011 --> 00:05:05,731
+98
+00:05:31,051 --> 00:05:32,771
 Completed stages are checkpointed.
 
-92
-00:05:06,392 --> 00:05:10,084
+99
+00:05:33,432 --> 00:05:37,124
 Compatible command line runs can resume without
 regenerating every completed
 
-93
-00:05:10,109 --> 00:05:10,742
+100
+00:05:37,149 --> 00:05:37,782
 output.
 
-94
-00:05:11,403 --> 00:05:14,514
+101
+00:05:38,443 --> 00:05:41,554
 Calls, active time, and recorded tokens have limits.
 
-95
-00:05:15,163 --> 00:05:18,959
+102
+00:05:42,203 --> 00:05:45,999
 A provider failure is reported separately from a
 policy driven human referral,
 
-96
-00:05:19,153 --> 00:05:21,883
+103
+00:05:46,193 --> 00:05:48,923
 because those are different problems with different
 next actions.
 
-97
-00:05:23,753 --> 00:05:28,190
-The saved fare demonstration completed six fresh
-model calls: four advocate turns,
-
-98
-00:05:28,243 --> 00:05:32,027
-a Judge, and an optional reviewer, and passed the
-implementation's checks.
-
-99
-00:05:32,671 --> 00:05:35,369
-We also retained unsuccessful development attempts.
-
-100
-00:05:36,019 --> 00:05:39,385
-Some arguments still mishandled the boundary between
-a person's statement and
-
-101
-00:05:39,410 --> 00:05:41,140
-an independently supported fact.
-
-102
-00:05:41,790 --> 00:05:46,097
-These small development examples do not establish
-real world accuracy, fairness,
-
-103
-00:05:46,160 --> 00:05:47,445
-or faster resolution.
-
 104
-00:05:49,313 --> 00:05:53,147
+00:05:50,793 --> 00:05:54,959
+The latest evaluation used three official samples
+and fifteen fresh model calls:
+
+105
+00:05:55,152 --> 00:05:57,448
+four advocate turns and one Judge per case.
+
+106
+00:05:58,091 --> 00:06:01,626
+Two of three cases passed the final checks after
+program corrections.
+
+107
+00:06:02,287 --> 00:06:04,409
+None passed on the original first attempt.
+
+108
+00:06:05,059 --> 00:06:09,284
+Fare produced a refund suggestion, no show required
+policy clarification, and
+
+109
+00:06:09,309 --> 00:06:10,235
+Route was blocked.
+
+110
+00:06:10,885 --> 00:06:13,648
+These are development checks, not an accuracy score.
+
+111
+00:06:14,309 --> 00:06:18,583
+Earlier offline revalidation is a separate result,
+not fresh model success.
+
+112
+00:06:20,473 --> 00:06:24,307
 Our team split the build into evidence and tools,
 the advocate system, and Judge
 
-105
-00:05:53,172 --> 00:05:55,837
+113
+00:06:24,332 --> 00:06:26,997
 orchestration with evaluation and interface work.
 
-106
-00:05:56,481 --> 00:06:00,380
+114
+00:06:27,641 --> 00:06:31,540
 The most useful development habit was agreeing on
 stable identifiers and output
 
-107
-00:06:00,405 --> 00:06:01,450
+115
+00:06:31,565 --> 00:06:32,610
 contracts early.
 
-108
-00:06:02,111 --> 00:06:05,652
+116
+00:06:33,271 --> 00:06:36,812
 That allowed the modules to evolve in parallel while
 keeping every claim connected
 
-109
-00:06:05,677 --> 00:06:07,146
+117
+00:06:36,837 --> 00:06:38,306
 to the same version of the case.
 
-110
-00:06:09,033 --> 00:06:10,786
+118
+00:06:40,193 --> 00:06:41,946
 Our practical tool tips are simple.
 
-111
-00:06:11,429 --> 00:06:13,801
+119
+00:06:42,589 --> 00:06:44,961
 Use JSON schemas to check interfaces.
 
-112
-00:06:14,451 --> 00:06:16,681
+120
+00:06:45,611 --> 00:06:47,841
 Keep original attachments and source hashes.
 
-113
-00:06:17,342 --> 00:06:19,540
+121
+00:06:48,502 --> 00:06:50,700
 Review changes in GitHub pull requests.
 
-114
-00:06:20,190 --> 00:06:24,067
+122
+00:06:51,350 --> 00:06:55,227
 Add a regression case for each reproduced failure,
 and separate offline tests
 
-115
-00:06:24,092 --> 00:06:25,616
+123
+00:06:55,252 --> 00:06:56,776
 from paid model evaluation.
 
-116
-00:06:26,277 --> 00:06:29,138
+124
+00:06:57,437 --> 00:07:00,298
 Keep evaluation answers outside agent inputs.
 
-117
-00:06:29,788 --> 00:06:32,888
+125
+00:07:00,948 --> 00:07:04,048
 These habits make changes easier to inspect and
 reproduce.
 
-118
-00:06:34,753 --> 00:06:38,696
+126
+00:07:05,913 --> 00:07:09,856
 Ryde Resolve turns scattered records into an
 inspectable conversation and a reasoned
 
-119
-00:06:38,721 --> 00:06:39,517
+127
+00:07:09,881 --> 00:07:10,677
 next step.
 
-120
-00:06:40,160 --> 00:06:44,407
+128
+00:07:11,320 --> 00:07:15,567
 The value is a clearer explanation for riders, a
 visible voice for drivers, and
 
-121
-00:06:44,432 --> 00:06:46,390
+129
+00:07:15,592 --> 00:07:17,550
 a structured handoff for support teams.
 
-122
-00:06:47,040 --> 00:06:51,026
+130
+00:07:18,200 --> 00:07:22,186
 Our next step is broader independent evaluation and
 authenticated operational
 
-123
-00:06:51,051 --> 00:06:51,847
+131
+00:07:22,211 --> 00:07:23,007
 integration.
 
-124
-00:06:52,508 --> 00:06:56,309
+132
+00:07:23,668 --> 00:07:27,469
 Every dispute deserves an explanation, and every
 recommendation should show its
 
-125
-00:06:56,334 --> 00:06:56,910
+133
+00:07:27,494 --> 00:07:28,070
 evidence.

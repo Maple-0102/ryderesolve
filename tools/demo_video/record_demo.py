@@ -6,19 +6,20 @@ import re
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT/'outputs/demo-video-2026-10-16'
-CAPTURE = ROOT/'output/playwright/video'
+OUT = ROOT/'outputs/demo-video-2026-10-16-v2'
+CAPTURE = ROOT/'output/playwright/video-v2'
 SESSION = 'ryde-demo'
 BOOK = json.loads((OUT/'timeline.json').read_text(encoding='utf-8'))
-REPORT = 'http://127.0.0.1:8775/runs/'
-LIVE = json.loads((ROOT/'outputs/workflow-followups-2026-10-16/final-parallel-live/DISP-003.run.json').read_text(encoding='utf-8'))['run_id']
-NOSHOW = json.loads((OUT/'offline/DISP-002.run.json').read_text(encoding='utf-8'))['run_id']
-ROUTE = json.loads((OUT/'offline/DISP-001.run.json').read_text(encoding='utf-8'))['run_id']
+REPORT = 'http://127.0.0.1:8776/recording/'
+LIVE = json.loads((OUT/'web/recording/r21-fare-original.run.json').read_text(encoding='utf-8'))['run_id']
+NOSHOW = json.loads((OUT/'web/recording/r21-noshow-original.run.json').read_text(encoding='utf-8'))['run_id']
 S = lambda heading: 'section:has(> h3:text-is('+json.dumps(heading)+'))'
 RESULT = S('Recommendation')
 CALC = S('Calculations and open questions')
 ADVOCATES = S('Advocate openings and responses')
 ASSESS = S('How the Judge assesses both sides')
+AUDIT = S('Conservative program corrections')
+DIAGNOSTICS = S('Check explanations and next steps')
 
 def cli(*args):
     command = ['npx.cmd','--yes','--package','@playwright/cli@0.1.22','playwright-cli','-s='+SESSION,*map(str,args)]
@@ -56,14 +57,15 @@ plans={
  '06-policy':[('open the policy reference','click',RESULT+' a.ref[href="#case-0-policy-P-RYDE-2.1-S3.3"]'),('Section three','focus','[id="case-0-policy-P-RYDE-2.1-S3.3"]'),('source excerpt','point','[id="case-0-policy-P-RYDE-2.1-S3.3"] pre')],
  '07-advocates':[('rider advocate','point',ADVOCATES+' .columns > div:first-child h3'),('driver advocate','point',ADVOCATES+' .columns > div:last-child h3'),('supporting records','point','#case-0-argument-opening-driver-claims-0 .ref')],
  '08-response':[('one response round','point',ADVOCATES+' .columns > div:first-child h4:text-is("Response to the other side")'),('The Judge records','focus',ASSESS),('A statement proves','point',ASSESS+' h4:text-is("Claim-by-claim assessment")')],
- '09-decision':[('sixteen fifty','point',CALC+' .metrics li:first-child'),('recommendation preserves','focus',RESULT),('partial refund','point',RESULT+' > p'),('does not move money','point',RESULT+' > p')],
+ '09-decision':[('sixteen fifty','point',CALC+' .metrics li:first-child'),('suggestion preserves','focus',RESULT),('does not move money','point',RESULT+' > p')],
+ '09a-audit':[('original errors','click',AUDIT+' details:nth-of-type(1) > summary'),('adjustment log','click',AUDIT+' details:nth-of-type(2) > summary'),('two unsupported','text',AUDIT+' details:nth-of-type(2) pre','"rule": "independent_fare_argument_downgrade"'),('rider summary','text',AUDIT+' details:nth-of-type(2) pre','"rule": "independent_fare_side_summary"'),('original model output','click',AUDIT+' details:nth-of-type(3) > summary'),('the amount','text',AUDIT+' details:nth-of-type(3) pre','"refund_amount": 4.5'),('independent records','focus',RESULT),('all checks pass','focus',S('Output validation'))],
  '10-no-show':[('five free minutes','point','.metrics li:has(b:text-is("Policy free-wait period"))'),('eight minute threshold','focus',CALC+' li:has(> b:text-matches("NO_SHOW_THRESHOLD_CLOCK_UNSPECIFIED"))'),('policy precedence','point',CALC+' li:has(> b:text-matches("POLICY_SOURCE_CONFLICT"))')],
- '11-route':[('four point three','point','.metrics li:has-text("Reported road distance")'),('two kilometers','focus',CALC+' li:has(> b:text-matches("ROUTE_DISTANCE_REQUIRES_HUMAN_REVIEW"))'),('person must','point',CALC+' li:has(> b:text-matches("ROUTE_DISTANCE_REQUIRES_HUMAN_REVIEW"))')],
+ '11-route':[('four point three','point','.metrics li:has-text("Reported road distance")'),('two kilometer','focus',CALC+' li:has(> b:text-matches("ROUTE_DISTANCE_REQUIRES_HUMAN_REVIEW"))'),('incorrectly marked','focus',DIAGNOSTICS+' > ul > li:last-child'),('four unsupported','focus',S('Output validation')),('original claims','focus',DIAGNOSTICS+' > ul > li:first-child'),('next steps','point',DIAGNOSTICS+' > ul > li:first-child > p:has-text("Next action")'),('refund amount','focus',RESULT+' > p')],
  '12-workbench':[('select a case','select','#case','DISP-002'),('start processing','click','#start'),('recorded execution stages','focus','#runs'),('Saved live reports','point','#runs a[href="/runs/'+LIVE+'"]')],
  '13-supplement':[('upload a complete','upload','#raw',str((OUT/'synthetic-supplement-DISP-002.json').resolve())),('declare where','fill','#note','SYNTHETIC DEMONSTRATION ONLY: added one rider message. No new official evidence.'),('preview the exact changes','click','#preview'),('clearly labeled synthetic','text','#preview-output','SYNTHETIC DEMONSTRATION ONLY: I was waiting at the north entrance.'),('new snapshot','text','#preview-output','"new_snapshot_id"'),('old result','point','#report')],
  '14-human':[('reviewer','fill','#reviewer','Demo reviewer — not authenticated'),('the decision','point','#decision'),('the reason','fill','#reason','DEMONSTRATION ONLY. Policy clarification remains required; no outcome is being saved.'),('supporting references','check','#evidence input[value="E-003"]'),('Local records','check','#policies input[value="P-RYDE-2.1-S2.1"]'),('does not authenticate','point','#human')],
  '15-recovery':[('checkpointed','glow','#checkpoints'),('Calls active time','glow','#limits'),('provider failure','glow','#failure')],
- '16-evaluation':[('six fresh model calls','glow','#success'),('unsuccessful development attempts','glow','#limits')],
+ '16-evaluation':[('fifteen fresh model calls','glow','#calls'),('Two of three','glow','#success'),('None passed','glow','#first-pass'),('development checks','point','#limits'),('Earlier offline','point','#limits')],
  '17-build':[('evidence and tools','glow','#data'),('advocate system','glow','#agents'),('Judge orchestration','glow','#orchestration')],
  '18-tips':[('JSON schemas','glow','#contracts'),('source hashes','glow','#sources'),('GitHub pull requests','glow','#review')],
  '19-close':[('riders','point','.pill:first-child'),('drivers','point','.pill:nth-child(2)'),('support teams','point','.pill:nth-child(3)')]
@@ -71,7 +73,7 @@ plans={
 
 starts={'04-case':'.case-head','05-evidence':RESULT,'06-policy':RESULT,'07-advocates':ADVOCATES,
         '08-response':ADVOCATES+' .columns > div:first-child h4:text-is("Response to the other side")',
-        '09-decision':CALC,'10-no-show':CALC,'11-route':CALC,
+        '09-decision':CALC,'09a-audit':AUDIT,'10-no-show':CALC,'11-route':CALC,
         '13-supplement':'main > section:nth-of-type(3)','14-human':'main > section:nth-of-type(4)'}
 
 JS_HELPERS = r'''
@@ -95,12 +97,12 @@ JS_HELPERS = r'''
 def prepare(scene):
     if scene['type']=='slide':
         url='http://127.0.0.1:8776/presentation.html?slide='+scene['slide'];badge='Hackathon prototype'
-    elif scene['type']=='report':url=REPORT+LIVE;badge='Saved live run · 16 Oct 2026'
-    elif scene['type']=='noshow':url=REPORT+NOSHOW;badge='Offline control demonstration · DISP-002'
-    elif scene['type']=='route':url=REPORT+ROUTE;badge='Offline control demonstration · DISP-001'
+    elif scene['type']=='report':url=REPORT+'r21-fare-original.html';badge='Saved real run · DISP-003 · 52e5b53'
+    elif scene['type']=='noshow':url=REPORT+'r21-noshow-original.html';badge='Saved real run · DISP-002 · 52e5b53'
+    elif scene['type']=='route':url=REPORT+'r21-route-original.html';badge='Saved real run · DISP-001 · 52e5b53'
     else:url='http://127.0.0.1:8775/';badge='Offline controls · no new model calls'
     if scene['id']=='01-hook':badge='Official sample · DISP-003'
-    context={**scene,'badge':badge}
+    context={**scene,'badge':badge,'source_commit':BOOK['workbench_source_commit'] if scene['type']=='workbench' else BOOK['source_commit']}
     setup='async page => {\n'+JS_HELPERS+f'\nawait page.goto({json.dumps(url)});\nawait page.waitForFunction(()=>!!window.demoScene);\nawait page.evaluate(s=>window.demoScene(s),{json.dumps(context)});\n'
     if scene['type']=='workbench':
         setup+='await page.waitForFunction(()=>document.querySelector("#runs").children.length>0);\n'
@@ -161,7 +163,7 @@ def record(scene):
     print('RECORDED',scene['id'],scene['duration'],'seconds',flush=True)
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--start',type=int,default=1);parser.add_argument('--end',type=int,default=19);parser.add_argument('--scenes',type=int,nargs='+');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--start',type=int,default=1);parser.add_argument('--end',type=int,default=len(BOOK['scenes']));parser.add_argument('--scenes',type=int,nargs='+');parser.add_argument('--prepare-only',action='store_true');args=parser.parse_args()
     CAPTURE.mkdir(parents=True,exist_ok=True)
     # Validate every narration cue before starting the recorder.
     for scene in BOOK['scenes']:
@@ -171,6 +173,8 @@ def main():
     cli('resize','1920','1080')
     run_file('initialize','async page => {await page.addInitScript({path:"tools/demo_video/demo-overlay.js"});}')
     selected=[BOOK['scenes'][i-1] for i in args.scenes] if args.scenes else BOOK['scenes'][args.start-1:args.end]
-    for scene in selected:record(scene)
+    for scene in selected:
+        if args.prepare_only:prepare(scene)
+        else:record(scene)
 
 if __name__=='__main__':main()

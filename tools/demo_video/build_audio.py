@@ -10,7 +10,7 @@ import textwrap
 import edge_tts
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / 'outputs/demo-video-2026-10-16'
+OUT = ROOT / 'outputs/demo-video-2026-10-16-v2'
 
 def duration(path):
     return float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'default=nw=1:nk=1', str(path)], text=True))

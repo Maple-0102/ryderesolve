@@ -23,13 +23,16 @@ One opening. One response. Then review.
 Each side then gets one response round. This gives the agents a chance to address the other side's argument without turning the process into an endless debate. The Judge records how it assessed both positions. A statement proves what someone said; it does not automatically prove that the event happened. Agreement between agents cannot fill a missing source.
 
 SGD 4.50 suggested refund
-The arithmetic is transparent: sixteen fifty charged, minus the twelve dollar quote, equals four fifty. The recommendation preserves the quoted fare for the completed trip and returns the surge difference. This is a partial refund of the trip charge. The interface displays a suggestion and its reasons. It does not move money or execute a refund.
+The arithmetic is transparent: sixteen fifty charged, minus the twelve dollar quote, equals four fifty. The suggestion preserves the quoted fare and returns the surge difference. It does not move money or execute a refund.
+
+The first output did not pass
+This result did not pass on the first attempt. Open the original errors, then the adjustment log. The program reduced two unsupported argument ratings and reconciled the rider summary. It kept the original model output, the decision, and the amount. The refund survives only because independent records already establish the fare conditions, and all checks pass after correction. This audit trail helps reviewers see exactly what the model got wrong.
 
 An unresolved rule stays unresolved
 A useful system also knows when to stop. In the no show sample, policy defines five free minutes from the scheduled pickup. But the case also contains an eight minute threshold with an unresolved starting point and policy precedence. We keep those differences visible and refer the case for clarification, rather than silently choosing the clock that favors one side.
 
-Policy can require a human decision
-The route deviation sample shows another boundary. Its reported road distance exceeds the reference route by four point three kilometers. The supplied policy requires human adjudication above two kilometers. A plausible refund argument cannot bypass that gate. The team can still inspect the evidence and calculations, but a person must make the authorized decision.
+A failed output stays visible
+The route sample exceeds the reference by four point three kilometers, above the two kilometer human review threshold. In this saved run, the model incorrectly marked that restriction as resolved. It also made four unsupported argument assessments. The validator rejected the output. Here are the original claims, the check explanations, and the next steps. No accepted ruling is published, and the refund amount stays undetermined. The failure remains visible for review.
 
 From a report to a working case queue
 Here is the local workbench. A reviewer can select a case, start processing, and see the recorded execution stages. This part of the demonstration uses offline providers, so the controls are real but no new cloud model is being called. Saved live reports retain their own provenance, separate from these offline runs.
@@ -43,8 +46,8 @@ For a referred case, the workbench also provides a human outcome form. It asks f
 Design for incomplete information and failure
 We built the workflow around failure as well as success. Completed stages are checkpointed. Compatible command line runs can resume without regenerating every completed output. Calls, active time, and recorded tokens have limits. A provider failure is reported separately from a policy driven human referral, because those are different problems with different next actions.
 
-A successful demo is a starting point
-The saved fare demonstration completed six fresh model calls: four advocate turns, a Judge, and an optional reviewer, and passed the implementation's checks. We also retained unsuccessful development attempts. Some arguments still mishandled the boundary between a person's statement and an independently supported fact. These small development examples do not establish real world accuracy, fairness, or faster resolution.
+Latest official-sample evaluation
+The latest evaluation used three official samples and fifteen fresh model calls: four advocate turns and one Judge per case. Two of three cases passed the final checks after program corrections. None passed on the original first attempt. Fare produced a refund suggestion, no show required policy clarification, and Route was blocked. These are development checks, not an accuracy score. Earlier offline revalidation is a separate result, not fresh model success.
 
 Three components. One shared contract.
 Our team split the build into evidence and tools, the advocate system, and Judge orchestration with evaluation and interface work. The most useful development habit was agreeing on stable identifiers and output contracts early. That allowed the modules to evolve in parallel while keeping every claim connected to the same version of the case.

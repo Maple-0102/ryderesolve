@@ -8,7 +8,7 @@ import subprocess
 from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / 'outputs/demo-video-2026-10-16'
+OUT = ROOT / 'outputs/demo-video-2026-10-16-v2'
 VIDEO = OUT / 'RydeResolve-Demo-English-1080p.mp4'
 QA_FRAMES = OUT / 'qa-frames'
 
@@ -29,7 +29,7 @@ def main():
     assert video['width'] == 1920 and video['height'] == 1080
     assert video['codec_name'] == 'h264' and audio['codec_name'] == 'aac'
     assert audio['channels'] == 2 and audio['sample_rate'] == '48000'
-    assert len(probe['chapters']) == len(book['scenes']) == 19
+    assert len(probe['chapters']) == len(book['scenes']) == 20
     for chapter, scene in zip(probe['chapters'], book['scenes']):
         assert abs(float(chapter['start_time']) - scene['start']) < .002
 
@@ -54,7 +54,23 @@ def main():
     captions = ' '.join(' '.join(block.splitlines()[2:]) for block in blocks)
     narration = ' '.join(s['narration'] for s in book['scenes'])
     assert captions.split() == narration.split()
-    assert len(blocks) == 125
+    assert len(blocks) == qa['subtitle_cues']
+    assert not re.search(r'[\u3400-\u9fff]', captions)
+
+    sources = json.loads((OUT / 'recording-sources.json').read_text(encoding='utf-8'))
+    assert sources['commit'] == book['source_commit']
+    for source in sources['files']:
+        staged = OUT / 'web/recording' / Path(source['file']).name
+        assert hashlib.sha256(staged.read_bytes()).hexdigest() == source['sha256']
+    runs = [json.loads((OUT / f'web/recording/r21-{name}-original.run.json').read_text(encoding='utf-8'))
+            for name in ('fare', 'noshow', 'route')]
+    assert sum(r['execution_usage']['provider_calls'] for r in runs) == 15
+    assert sum(not r['validation_errors'] for r in runs) == 2
+    assert sum(bool(r['first_pass_valid']) for r in runs) == 0
+    assert len(runs[0]['judge_adjustments']) == 3 and runs[0]['ruling']['refund_amount'] == 4.5
+    assert runs[1]['business_decision_status'] == 'awaiting_human'
+    assert runs[2]['execution_status'] == 'failed' and len(runs[2]['validation_errors']) == 5
+    assert runs[2]['ruling']['refund_amount'] is None
 
     vendor = ROOT / 'vendor/ryderesolve-evidence-tools'
     manifest = json.loads((vendor / 'sources/official/2026-10-15/manifest.json').read_text(encoding='utf-8'))
@@ -94,6 +110,9 @@ def main():
         'captions_match_narration': True,
         'narration_word_count': len(narration.split()),
         'original_archives_verified': verified_sources,
+        'recording_package_verified': sources,
+        'saved_run_summary': {'cases': 3, 'recorded_model_calls': 15, 'final_checks_passed': 2, 'raw_first_pass_passed': 0,
+                             'new_model_calls_for_video': 0, 'boundary': 'Development checks, not an accuracy score.'},
         'video_sha256': hashlib.sha256(VIDEO.read_bytes()).hexdigest(),
         'visual_sample_count': len(samples),
         'visual_qa': 'pending review of extracted frames',

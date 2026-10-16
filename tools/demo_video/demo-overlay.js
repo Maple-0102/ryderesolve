@@ -1,6 +1,52 @@
 // Editorial English presentation layer only. No records, policy, outputs or APIs are changed.
 (() => {
   const translations = {
+    '官方 Fare：未通知加价':'Official Fare: unnotified surge increase',
+    '官方 No-show：政策待澄清':'Official No-show: policy clarification required',
+    '官方 Route：超出 AI 权限':'Official Route: beyond AI authority',
+    '真实模型调用的保存记录：展示这次运行结果；打开本页不会再次调用模型。':'Saved real model run. Opening this report does not call a model.',
+    '这是事后记录，页面不执行退款。请同时展示原始检查与程序修正。':'Retained run record; no refund is executed. Inspect the original checks and program corrections together.',
+    '返回演示目录':'Return to demo index',
+    '检查原因与下一步':'Check explanations and next steps',
+    '当前阻止发布的问题：':'Current publication blocker: ',
+    '已保留的原始候选问题：':'Retained original candidate issue: ',
+    '正常人工处理原因：':'Policy referral reason: ',
+    '原论点：':'Original claim: ',
+    '模型把必须澄清或由人工处理的问题标成了已解决，但现有材料不能解除这个限制。':'The model marked a required clarification or human gate as resolved. The supplied material cannot remove that restriction.',
+    '继续保留人工或政策澄清出口，不能凭模型表态消除权限门槛。':'Keep the human or policy-clarification handoff. A model assertion cannot remove the authority gate.',
+    '论点的引用类型不满足所选判断范围。记录了某人的说法，不等于证实了所述事件。':'The cited source type does not support this assessment scope. Recording a statement does not verify the alleged event.',
+    '核对原论点的每个事实部分及原始记录，补齐相关依据或保留证据不足。':'Check each factual clause against original records. Supply relevant support or retain insufficient evidence.',
+    '仍有影响裁决的证据、政策或输出检查问题，当前建议不能发布。':'Evidence, policy or output-check issues still affect this candidate; it cannot be released in that state.',
+    '查看其他具体检查原因及待澄清事项。':'Inspect the specific check explanations and unresolved questions.',
+    '政策与样例规则的关系尚未明确。':'The relationship between the policy and sample rules remains unclear.',
+    '先确认适用规则，再决定是否能够自动处理。':'Clarify the applicable rule before deciding whether automated handling is possible.',
+    '程序保守修正':'Conservative program corrections',
+    '程序保留原输出，对不满足来源要求的论点降低支持评级，或按逐条评价修正汇总标签，然后重新检查全部规则。Fare 仅在政策条件及主依据独立成立时允许此修正；裁决与金额不变，未执行任何收费或退款。':'The program retains the original output, lowers unsupported argument ratings or reconciles summary labels, then reruns all checks. Fare corrections require independently established policy conditions and primary grounds. Decision and amount stay unchanged; no payment is executed.',
+    '原始模型检查错误':'Original model check errors',
+    '逐条修正记录':'Adjustment audit log',
+    '原始 Judge 建议':'Original Judge proposal',
+    '流程失败：尚无可采纳裁决':'Execution failed: no accepted ruling',
+    '模型输出未通过检查':'Model output rejected by checks',
+    '暂无可采纳的裁决依据。':'No accepted ruling grounds are available.',
+    '客服／证据负责人':'Support / evidence owner',
+    '该论点暂不能按已确认事实采用；不等于对方自动成立。':'This claim cannot be treated as a verified fact. It does not automatically validate the opposing claim.',
+    '核对该论点所需记录，取得新材料后重建快照；如无法取得则保留缺失状态。':'Check the required records and rebuild the snapshot when new material arrives. Otherwise retain the gap.',
+    '缺少裁决所需的关键材料。':'Material evidence needed for a decision is missing.',
+    '确认材料来源并补充案卷，再重新分析。':'Verify provenance, supplement the case, then reassess.',
+    '提供有来源的改道背景与额外收费依据核实记录；司机陈述本身不够。':'Provide sourced records of the detour context and extra-charge justification. The driver statement alone is insufficient.',
+    '平台运营／证据负责人':'Platform operations / evidence owner',
+    '决定改道是否有依据、额外收费是否成立。':'Affects whether the detour and extra charge are justified.',
+    '由 Evidence 方补充可追溯记录、重建案卷快照，再重新运行分析。':'Add traceable records through Evidence, rebuild the snapshot, then rerun analysis.',
+    '平台政策／数据负责人':'Platform policy / data owner',
+    '影响关键政策或数据条件是否成立。':'Affects whether material policy or data conditions hold.',
+    '提供权威政策或更正后的源数据；保留变更来源，重建快照后重跑，不能只修改 resolved 标签。':'Provide authoritative policy or corrected source data. Preserve provenance and rebuild the snapshot before rerunning; changing a resolved label is insufficient.',
+    '人工复核负责人':'Human review owner',
+    '官方政策规定本案必须由人工裁决；补齐材料不能免除该门槛。':'Official policy requires human adjudication. Supplementing evidence does not remove that gate.',
+    '将当前证据、政策原文和双方陈述交人工审核；AI 仅整理材料，不据此自动裁决。':'Hand the current evidence, original policy and both positions to a human. AI organizes the material without an automatic ruling.',
+    '定位本次输出检查中的错误码并修复对应模块输出。':'Locate the validation error codes and correct the responsible module output.',
+    '集成／Judge 开发负责人':'Integration / Judge owner',
+    '当前未产生可采纳的裁决输出。':'No accepted ruling was produced.',
+    '修复失败步骤并运行回归测试，然后对同一案卷重新执行完整流程。':'Fix the failed step and run regression checks before rerunning the complete case workflow.',
     '案件处理与补充材料':'Case workbench and new information',
     '离线演示模式：新处理不调用云端模型；已有报告保留各自执行记录。':'Offline demonstration: new runs make no cloud-model calls. Imported reports retain their original execution records.',
     '真实模型模式：只有确认后的“处理”和“重新处理”会使用额度。':'Live mode: confirmed processing and reruns use model quota.',
@@ -91,11 +137,11 @@
     `;document.head.append(style);
     if(document.querySelector('#slide'))document.body.classList.add('demo-slides');
     const top=document.createElement('div');top.id='demo-top';top.innerHTML='<strong>Ryde<span>Resolve</span></strong><div><div id="demo-chapter"></div><div id="demo-title"></div></div><div id="demo-badge"></div>';document.body.append(top);
-    const bottom=document.createElement('div');bottom.id='demo-bottom';bottom.innerHTML='<span>ENGLISH DEMO VIEW · BUILD fb374f1</span>';document.body.append(bottom);
+    const bottom=document.createElement('div');bottom.id='demo-bottom';bottom.innerHTML='<span>ENGLISH DEMO VIEW · RECORDING 52e5b53</span>';document.body.append(bottom);
     const pointer=document.createElement('div');pointer.id='demo-pointer';pointer.innerHTML='<svg width="32" height="42" viewBox="0 0 32 42"><path d="M3 2 L3 31 L11 24 L18 38 L24 35 L17 22 L29 22 Z" fill="#fff" stroke="#073f46" stroke-width="2.5" stroke-linejoin="round"/></svg>';document.body.append(pointer);
     document.addEventListener('mousemove',e=>{pointer.style.left=e.clientX+'px';pointer.style.top=e.clientY+'px';});
     document.addEventListener('mousedown',e=>{const p=document.createElement('div');p.className='demo-ripple';p.style.left=e.clientX-32+'px';p.style.top=e.clientY-32+'px';document.body.append(p);setTimeout(()=>p.remove(),900);});
-    window.demoScene=(scene)=>{document.querySelector('#demo-chapter').textContent=scene.chapter;document.querySelector('#demo-title').textContent=scene.title;document.querySelector('#demo-badge').textContent=scene.badge||'Hackathon prototype';};
+    window.demoScene=(scene)=>{document.querySelector('#demo-chapter').textContent=scene.chapter;document.querySelector('#demo-title').textContent=scene.title;document.querySelector('#demo-badge').textContent=scene.badge||'Hackathon prototype';document.querySelector('#demo-bottom span').textContent='ENGLISH DEMO VIEW · SOURCE '+(scene.source_commit||'52e5b53').slice(0,7);};
     let observing;
     const update=()=>{observing?.disconnect();const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let node;while(node=walker.nextNode()){if(node.parentElement.closest('script,style,pre,#demo-top,#demo-bottom'))continue;const next=translate(node.nodeValue);if(next!==node.nodeValue)node.nodeValue=next;}document.querySelectorAll('[placeholder]').forEach(e=>e.placeholder=translate(e.placeholder));observing?.observe(document.body,{childList:true,subtree:true,characterData:true});};
     observing=new MutationObserver(update);update();

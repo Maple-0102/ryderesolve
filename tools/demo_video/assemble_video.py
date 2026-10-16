@@ -5,8 +5,8 @@ import re
 import subprocess
 
 ROOT=Path(__file__).resolve().parents[2]
-OUT=ROOT/'outputs/demo-video-2026-10-16'
-CAPTURE=ROOT/'output/playwright/video'
+OUT=ROOT/'outputs/demo-video-2026-10-16-v2'
+CAPTURE=ROOT/'output/playwright/video-v2'
 
 def run(args,**kwargs):
     return subprocess.run(args,check=True,**kwargs)
@@ -80,7 +80,7 @@ def main():
     total=float(probe['format']['duration'])
     assert 300<=total<=480 and video['width']==1920 and video['height']==1080
     assert video['r_frame_rate']=='25/1' and video['codec_name']=='h264' and audio['codec_name']=='aac'
-    qa={'source_commit':book['source_commit'],'duration_seconds':total,'width':video['width'],'height':video['height'],'fps':25,
+    qa={'source_commit':book['source_commit'],'workbench_source_commit':book['workbench_source_commit'],'duration_seconds':total,'width':video['width'],'height':video['height'],'fps':25,
         'video_codec':video['codec_name'],'audio_codec':audio['codec_name'],'size_bytes':dest.stat().st_size,
         'subtitle_cues':count,'chapter_count':len(probe['chapters']),'sync':audit,'visual_qa':'pending'}
     (OUT/'media-qa.json').write_text(json.dumps(qa,indent=2),encoding='utf-8')
