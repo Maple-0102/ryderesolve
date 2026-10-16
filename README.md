@@ -30,6 +30,10 @@ The final fresh check used 15 calls for the three official cases: Fare and No-sh
 
 The [protected review states and source-scope follow-up](docs/POLICY-LOCK-SOURCE-SCOPE-2026-10-16.md) adds program-owned unresolved states, complete issue coverage and a captured-material inventory. A fresh five-call official Route pipeline now passes final checks after two audited source-rating downgrades (raw first-pass still fails). Three retained official outputs also pass offline replay; Fare and No-show have not been freshly rerun end to end on this patch. The recording version above stays preserved.
 
+## Citation-before-rating follow-up (2026-10-16)
+
+The [citation-first follow-up](docs/CITATION-FIRST-2026-10-16.md) moves source selection and gaps before the Judge rating. A same-transcript Judge comparison and a fresh five-call Route passed raw checks with zero corrections. Manual inspection found material-gap scope concerns in the latter; after the final guidance refinement, a fresh Judge on that transcript also passed and corrected those rows. The final refinement has not been freshly sampled end to end. Shared contracts and the recorded demo remain unchanged.
+
 ## Code ownership
 
 | Component | Location |

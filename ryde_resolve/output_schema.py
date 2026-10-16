@@ -20,7 +20,7 @@ def judge_output_schema(policy_bound=False, arguments=None, snapshot=None):
     if policy_bound:
         analysis['required'].append('precedent_analysis')
         analysis['properties']['argument_assessments']['items']['required'].append('assessment_scope')
-        ledger['assessment_scope']['description'] = 'communication_act assesses ONLY literal recorded communication, using communication_record IDs for its required evidence list; party_statement/ticket attribution alone cannot prove the incident. Read claim_support_guide. Mixed factual clauses require incident_fact evaluation; never grade an easier paraphrase.'
+        ledger['assessment_scope']['description'] = 'communication_act assesses ONLY literal recorded communication, using communication_record IDs for its required evidence list; party_statement/ticket attribution alone cannot prove the incident. Read claim_support_guide. Mixed factual clauses require incident_fact evaluation; never grade an easier paraphrase. A claim about the availability or absence of audio/material is not a literal communication_act. With the existing two scopes, retain incident_fact and insufficient_evidence for its unverified incident conclusion; describe captured-material availability in reason/missing_information. Chat records cannot certify archive completeness.'
     if arguments is not None:
         from .reasoning_checks import argument_paths
         all_paths=[]
@@ -37,11 +37,32 @@ def judge_output_schema(policy_bound=False, arguments=None, snapshot=None):
         rows['description']='Exactly one assessment per actual argument path; complete coverage is checked locally. Total rows: '+str(len(all_paths))
     ledger['assessment']['description'] = (
         'Rate the ORIGINAL complete claim, not a corrected paraphrase. supported requires every substantive clause. '
-        'A charge-based refund rule does not support a claim that refund requires proving the detour was unjustified.')
+        'A charge-based refund rule does not support a claim that refund requires proving the detour was unjustified. '
+        'Choose this rating AFTER selecting the cited records and describing the missing clauses. '
+        'For incident_fact, ticket/chat attribution alone cannot earn supported OR partly_supported. '
+        'If no independently relevant incident record appears in supporting_evidence_refs, use insufficient_evidence '
+        'unless actual opposing evidence justifies contradicted. A supported attribution clause alone is not partial incident support.')
+    ledger['supporting_evidence_refs']['description'] = (
+        'Select only records that support the ORIGINAL assertion under assessment_scope. '
+        'For incident_fact, supported AND partly_supported require an independently relevant incident record '
+        'in THIS list; a complaint/ticket or repeated chat alone is insufficient. '
+        'A factual number mentioned only in reason does not count as a cited record. '
+        'Never add an unrelated record to satisfy this requirement.')
+    ledger['missing_information']['description'] = (
+        'List the substantive clauses not established by the selected records. '
+        'An absent recording does not prove absence of verbal notice. '
+        'A mixed claim can have known attribution but insufficient incident evidence.')
     ledger['reason']['description'] = (
         'Cover the original WHOLE claim at argument_ref, using: Original assertion; attribution/communication support; incident support/opposition; policy consequence/remaining gap. '
         'Explicitly name any unproved full-trip inference or mismatch between route justification and extra-charge entitlement. '
         'Do not substitute the policy wording for the claim and call the original supported.')
+    if policy_bound:
+        # Gemini emits object fields in propertyOrdering: inspect sources and gaps
+        # before committing to a rating. The public schema/validator is unchanged.
+        order=('argument_ref','assessment_scope','supporting_evidence_refs','opposing_evidence_refs',
+               'policy_refs','missing_information','reason','assessment')
+        analysis['properties']['argument_assessments']['items']['properties'] = {
+            key:ledger[key] for key in order}
     properties = {
         'case_id': string,
         'decision': {'type': 'string', 'enum': ['uphold_charge', 'refund_full', 'refund_partial', 'escalate']},

@@ -150,3 +150,21 @@ outputs/policy-lock-source-scope-2026-10-16/fresh-route/*
 outputs/policy-lock-source-scope-2026-10-16/offline-final/*
 !outputs/policy-lock-source-scope-2026-10-16/offline-final/revalidation.json
 !outputs/policy-lock-source-scope-2026-10-16/offline-final/ryde-evaluation.html
+
+# Reviewed citation-before-rating reports; retain checkpoints privately
+!outputs/citation-first-2026-10-16/
+outputs/citation-first-2026-10-16/*
+!outputs/citation-first-2026-10-16/rejudge-last-route/
+outputs/citation-first-2026-10-16/rejudge-last-route/*
+!outputs/citation-first-2026-10-16/rejudge-last-route/judge-regressions.json
+!outputs/citation-first-2026-10-16/fresh-route/
+outputs/citation-first-2026-10-16/fresh-route/*
+!outputs/citation-first-2026-10-16/fresh-route/fresh-pipeline.json
+!outputs/citation-first-2026-10-16/fresh-route/ryde-evaluation.html
+!outputs/citation-first-2026-10-16/final-rejudge-new-route/
+outputs/citation-first-2026-10-16/final-rejudge-new-route/*
+!outputs/citation-first-2026-10-16/final-rejudge-new-route/judge-regressions.json
+!outputs/citation-first-2026-10-16/offline-final/
+outputs/citation-first-2026-10-16/offline-final/*
+!outputs/citation-first-2026-10-16/offline-final/revalidation.json
+!outputs/citation-first-2026-10-16/offline-final/ryde-evaluation.html

@@ -96,3 +96,17 @@ class ReviewContractTests(unittest.TestCase):
                 self.assertEqual(generated['properties']['case_analysis']['properties']['review_responses']['items']['properties']['status']['enum'],['unresolved'])
         s,args,raw=self.saved(2)
         self.assertEqual(lock_review_statuses(s,raw),(raw,[]))
+
+    def test_generation_orders_source_selection_and_gaps_before_rating_without_changing_contract(self):
+        s,args,raw=self.saved()
+        baseline=json.loads((ROOT/'schemas/judge-analysis.schema.json').read_text())
+        generated=vertex_response_schema(judge_output_schema(policy_bound=True,arguments=args,snapshot=s))
+        row=generated['properties']['case_analysis']['properties']['argument_assessments']['items']
+        order=row['propertyOrdering']
+        self.assertEqual(set(order),set(baseline['properties']['argument_assessments']['items']['properties']))
+        self.assertLess(order.index('supporting_evidence_refs'),order.index('reason'))
+        self.assertLess(order.index('missing_information'),order.index('reason'))
+        self.assertLess(order.index('reason'),order.index('assessment'))
+        original_errors=check_judge(s,raw,args)[0]
+        self.assertTrue(any(e.startswith('ARGUMENT_ASSESSMENT_WITHOUT_RECORD_SUPPORT') for e in original_errors))
+        self.assertEqual(json.loads((ROOT/'schemas/judge-analysis.schema.json').read_text()),baseline)
