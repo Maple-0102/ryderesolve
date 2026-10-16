@@ -5,7 +5,7 @@ import json
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def judge_output_schema(policy_bound=False, arguments=None):
+def judge_output_schema(policy_bound=False, arguments=None, snapshot=None):
     """Complete Judge shape without any case-specific expected decision or scoring labels."""
     string = {'type': 'string'}
     strings = {'type': 'array', 'items': string}
@@ -55,6 +55,20 @@ def judge_output_schema(policy_bound=False, arguments=None):
         'confidence': {'type': 'number', 'minimum': 0, 'maximum': 1},
         'case_analysis': analysis,
     }
+    if snapshot is not None:
+        from .review_contract import program_review_contract
+        contract=program_review_contract(snapshot)
+        fixed=contract['fixed_review_statuses']
+        if fixed:
+            status=analysis['properties']['review_responses']['items']['properties']['status']
+            status['description']='Program-owned unresolved status for these issue codes: '+', '.join(row['issue_code'] for row in fixed)+'. Referring to a human is not resolving the issue.'
+            from .review_policy import review_plan
+            if not any(item['category']=='judge_analysis' for item in review_plan(snapshot)['items']):
+                status['enum']=['unresolved']
+        if contract['required_decision']=='escalate':
+            properties['decision']['enum']=['escalate']
+            properties['refund_amount']['description']='Must be null: the program review plan requires human referral.'
+            properties['escalate_to_human']['description']='Must be true: the program review plan requires human referral.'
     required = list(properties)
     properties['notes'] = strings  # Optional non-material notes, allowed by the local contract.
     return {'type': 'object', 'properties': properties, 'required': required, 'additionalProperties': False}

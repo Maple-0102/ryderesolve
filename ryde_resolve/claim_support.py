@@ -2,6 +2,26 @@
 from .reasoning_checks import evidence_categories
 
 
+def captured_materials(snapshot):
+    """Inventory only the captured JSON representation, never real-world completeness."""
+    def shape(value):
+        if value is None:return 'null'
+        if isinstance(value,bool):return 'boolean'
+        if isinstance(value,dict):return 'object'
+        if isinstance(value,list):return 'array'
+        if isinstance(value,str):return 'string'
+        return 'number'
+    sections=[]
+    for key,value in snapshot['raw'].items():
+        row={'source_ref':'/'+key.replace('~','~0').replace('/','~1'),'json_type':shape(value)}
+        if isinstance(value,(list,dict)):row['entry_count']=len(value)
+        sections.append(row)
+    communications=[{'evidence_id':ref,'source_refs':list(item['source_refs'])}
+                    for ref,item in snapshot['source_index']['evidence'].items() if item['kind']=='communication_record']
+    return {'raw_sections':sections,'communication_records':communications,
+            'boundary':'Inventory of this captured JSON snapshot only, not certification that an event, call, recording or notice never existed. An absent field or record is not a negative event fact; chat messages do not establish the completeness of a call/audio archive. Inspect original raw values before describing a gap.'}
+
+
 def claim_support_guide(snapshot, arguments):
     index=snapshot['source_index']['evidence']
     groups={'communication_records':[], 'attributed_party_statements':[],
@@ -28,9 +48,15 @@ def claim_support_guide(snapshot, arguments):
                         'cited_party_statements':[r for r in refs if r in groups['attributed_party_statements']],
                         'cited_candidate_incident_records':[r for r in refs if r in groups['candidate_incident_records']],
                         'other_or_unknown_cited_refs':[r for r in refs if r not in index or r in groups['background_only']]})
-    return {'reference_groups':groups,'arguments':rows,
+    return {'reference_groups':groups,'arguments':rows,'captured_materials':captured_materials(snapshot),
+        'reading_tasks':{
+            'attributed_report':'Who said what? A party ticket supports attribution, not the alleged incident.',
+            'recorded_communication':'What literal message/action is captured? communication_act does not prove notice, consent or liability beyond those words.',
+            'incident_assertion':'What occurred on the trip? Check every event clause against relevant primary records, including counterevidence.',
+            'material_gap':'What is absent or unknown in THIS captured material? Inspect captured_materials and raw; put gaps in reason/missing_information. A gap does not prove the alleged incident or absence of real-world notice. These are internal reading tasks, not new assessment_scope enum values.'},
         'boundary':'Source-kind hints only, not case evidence or an assessment of claim truth. Read original raw records and the WHOLE claim. A candidate record can be irrelevant or contradictory. No source gap or policy gate is resolved here.',
         'scope_rules':[
+            'For a material-availability claim such as no supplied call recording, distinguish snapshot coverage from incident truth. Do not rate incident_fact supported merely because chat/complaint citations exist. Keep any unsupported event inference insufficient_evidence with the precise gap; do not invent an evidence ID for the inventory or assert an unprovided recording never existed.',
             'communication_act evaluates only literal recorded communication, not the truth of what the speaker alleges. Its required support/opposition list must contain communication_record IDs only under the existing contract.',
             'party_statement IDs preserve attributed reports. A ticket statement and a repeated chat assertion are not independent corroboration of the incident.',
             'For a mixed assertion, do not rate the whole claim supported merely because its opening attribution or one clause is recorded. Explain each unsupported clause. Use incident_fact and insufficient_evidence where the alleged event lacks support; do not label it contradicted solely because a log is absent.',

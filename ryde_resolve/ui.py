@@ -150,7 +150,7 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
         adjustment_html = ''
         if result.get('judge_adjustments'):
             adjustment_html = ('<section><h3>程序保守修正</h3>'
-                '<p>程序保留原输出，对不满足来源要求的论点降低支持评级，或按逐条评价修正汇总标签，然后重新检查全部规则。Fare 仅在政策条件及主依据独立成立时允许此修正；裁决与金额不变，未执行任何收费或退款。</p>'
+                '<p>程序保留原输出，恢复由程序锁定的待人工／待澄清状态，对不满足来源要求的论点降低支持评级，或按逐条评价修正汇总标签，然后重新检查全部规则。转人工安排不等于问题已经解决。Fare 仅在政策条件及主依据独立成立时允许此修正；裁决与金额不变，未执行任何收费或退款。</p>'
                 '<details><summary>原始模型检查错误</summary>' + pretty(result.get('judge_raw_validation_errors', [])) + '</details>'
                 '<details><summary>逐条修正记录</summary>' + pretty(result['judge_adjustments']) + '</details>'
                 '<details><summary>原始 Judge 建议</summary>' + pretty(result.get('judge_proposal')) + '</details></section>')

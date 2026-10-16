@@ -78,6 +78,8 @@ def build_judge_messages(snapshot, arguments, calculations):
     payload.update(arguments=arguments, calculations=calculations)
     from .claim_support import claim_support_guide
     payload['claim_support_guide']=claim_support_guide(snapshot,arguments)
+    from .review_contract import program_review_contract
+    payload['program_review_contract']=program_review_contract(snapshot)
     if snapshot.get('policy_documents'):
         payload['policy_documents'] = snapshot['policy_documents']
     return [{'role': 'system', 'content': prompt},
