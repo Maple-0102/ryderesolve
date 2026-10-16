@@ -114,6 +114,17 @@ class VertexJudge:
             raise AgentError('VERTEX_CONFIDENCE_REQUIRED')
         return result
 
+    def repair(self, snapshot, arguments, calculations, previous, errors):
+        """One bounded structural correction; the orchestrator rechecks every invariant."""
+        messages = build_judge_messages(snapshot, arguments, calculations)
+        context = json.loads(messages[1]['content'])
+        context['structural_repair'] = {'previous_proposal': previous, 'validation_errors': errors,
+            'instruction': 'Repair only missing structure or argument coverage using this same case. Preserve the business decision and amount if a prior proposal exists. Do not change evidence, policy, resolve flags or invent references. Return the entire corrected object.'}
+        from .output_schema import judge_output_schema, vertex_response_schema
+        from .policy_v21 import bound
+        return self.generate(messages[0]['content'], json.dumps(context,ensure_ascii=False,allow_nan=False),
+            response_schema=vertex_response_schema(judge_output_schema(policy_bound=bound(snapshot),arguments=arguments)))
+
     def generate(self, system, user, max_output_tokens=16384, *, response_schema=None):
         self.last_metadata = {}
         started = monotonic()

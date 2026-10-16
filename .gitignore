@@ -56,3 +56,22 @@ outputs/policy-v21-2026-10-15/fare-live/*
 outputs/policy-v21-2026-10-15/fare-replayed-advocates/*
 !outputs/policy-v21-2026-10-15/fare-replayed-advocates/DISP-003.run.json
 !outputs/policy-v21-2026-10-15/fare-replayed-advocates/ryde-evaluation.html
+
+# Full durable runtime states are private local artifacts
+**/checkpoints/
+
+# Reviewed orchestration validation (private checkpoints stay ignored)
+!outputs/orchestration-2026-10-16/
+outputs/orchestration-2026-10-16/*
+!outputs/orchestration-2026-10-16/validation-summary.json
+!outputs/orchestration-2026-10-16/functional-checks.json
+!outputs/orchestration-2026-10-16/current-source-revalidation.json
+!outputs/orchestration-2026-10-16/reviewer-probes-initial.json
+!outputs/orchestration-2026-10-16/reviewer-probes.json
+!outputs/orchestration-2026-10-16/fare-live/
+outputs/orchestration-2026-10-16/fare-live/*
+!outputs/orchestration-2026-10-16/fare-live/DISP-003.run.json
+!outputs/orchestration-2026-10-16/fare-replayed-advocates/
+outputs/orchestration-2026-10-16/fare-replayed-advocates/*
+!outputs/orchestration-2026-10-16/fare-replayed-advocates/DISP-003.run.json
+!outputs/orchestration-2026-10-16/fare-replayed-advocates/ryde-evaluation.html

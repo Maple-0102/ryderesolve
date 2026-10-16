@@ -33,6 +33,21 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
         origin = '主办方样例 · 非真实运营数据证明' if s['audit']['data_origin'] == 'organizer_sample' else '团队合成数据 · 绑定提供的 Ryde v2.1 政策' if s.get('policy_documents') else '团队合成案例 · 政策也是合成规则'
         decision = {'escalate': '待人工复核', 'uphold_charge': '建议保留收费',
                     'refund_full': '建议全额退款', 'refund_partial': '建议部分退款'}.get(ruling['decision'], ruling['decision'])
+        execution_html = ''
+        if result.get('execution_status'):
+            status_labels={'completed':'流程已完成','failed':'流程失败：尚无可采纳裁决','interrupted':'流程中断，可检查恢复','running':'运行中'}
+            reason_labels={'policy_gate':'政策要求人工裁决','policy_clarification':'等待政策澄清',
+                'missing_evidence':'等待补充证据','output_invalid':'模型输出未通过检查',
+                'transport_error':'模型调用失败，可检查恢复','execution_limit_or_resume_error':'预算耗尽或恢复条件不符',
+                'inference_review':'推导复核提出问题，等待人工检查','human_review_requested':'等待人工复核'}
+            if result['execution_status']=='failed':decision='流程失败／待恢复'
+            execution_html='<section><h3>执行状态与恢复</h3><p>'+esc(status_labels.get(result['execution_status'],result['execution_status']))+'</p><p>'+esc('；'.join(reason_labels.get(x,x) for x in result.get('review_reason_types',[])))+'</p>'
+            execution_html+='<p>业务状态：'+esc(result.get('business_decision_status'))+'；首次输出通过：'+esc(result.get('first_pass_valid'))+'</p>'
+            execution_html+='<details><summary>调用、复用与预算</summary>'+pretty(result.get('execution_usage',{}))+'</details>'
+            if result.get('repair_history'):execution_html+='<details><summary>限次修复记录（保留原始失败）</summary>'+pretty(result['repair_history'])+'</details>'
+            if result.get('inference_review'):execution_html+='<details><summary>推导复核结果（额外检查，不代表事实认证）</summary>'+pretty(result['inference_review'])+'</details>'
+            if result.get('issue_ledger'):execution_html+='<details><summary>第二轮争议点与引用进展</summary>'+pretty({'ledger':result['issue_ledger'],'progress':result.get('issue_progress',{})})+'</details>'
+            execution_html+='</section>'
         calculations = []
         for metric in result['calculations'].get('calculations', []):
             if 'seconds' in metric:
@@ -143,6 +158,7 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
         panels.append(f'''<article id="{prefix}" role="tabpanel" aria-labelledby="tab-{i}" {"hidden" if i else ""}>
 <div class="case-head"><div><p class="eyebrow">{esc(origin)}</p><h2>{esc(result['case_id'])}</h2></div><div class="pill">{esc(decision)}</div></div>
 <p class="muted">{esc(modes)}<br>快照 {esc(s['snapshot_id'])}<br>运行 {esc(result['run_id'])}</p>
+{execution_html}
 <section><h3>本次结果</h3><p>退款金额：{esc(ruling['refund_amount']) if ruling['refund_amount'] is not None else '未裁定'} SGD · 页面只展示建议，不执行收费或退款。</p><ul>{uncertainties}</ul><ul class="muted">{notes}</ul><h4>已记录的依据</h4><ul>{findings}</ul><details><summary>查看最终 JSON</summary>{pretty(ruling)}</details></section>
 <section><h3>计算结果与待澄清问题</h3><p class="muted">算术结果与已明确的规则分开列出；未明示的收费条件仍需澄清。距离／差额不等于责任／退款。</p><ul class="metrics">{''.join(calculations)}</ul><ul>{issues}</ul></section>
 <section><h3>Judge 如何看双方观点</h3>{analysis_html}</section>

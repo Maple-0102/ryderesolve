@@ -1,0 +1,291 @@
+{
+  "kind": "scripted failure injection and deterministic policy regression",
+  "model_calls": 0,
+  "model_quality_measured": false,
+  "comparison": [
+    {
+      "strategy": "restart_entire_case",
+      "scripted_advocate_calls": 8,
+      "scripted_judge_calls": 2,
+      "total_scripted_calls": 10,
+      "first_status": "failed",
+      "final_status": "completed",
+      "reused_steps": 0,
+      "original_failure_retained": false
+    },
+    {
+      "strategy": "durable_resume",
+      "scripted_advocate_calls": 4,
+      "scripted_judge_calls": 2,
+      "total_scripted_calls": 6,
+      "first_status": "failed",
+      "final_status": "completed",
+      "reused_steps": 5,
+      "original_failure_retained": true
+    }
+  ],
+  "policy_regression": [
+    {
+      "exercise_id": "R21-ROUTE-ORIGINAL",
+      "snapshot_id": "1b202347c221f10f92a7bc372740c8e4d380a4214d9acfa9b049eafb2bdfc8dc",
+      "expected": {
+        "decision": "escalate",
+        "refund_amount": null
+      },
+      "actual_policy_application": {
+        "decision": "escalate",
+        "refund_amount": null
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-NOSHOW-ORIGINAL",
+      "snapshot_id": "70f7cb30bed0e3d0fa81d6aeeae7f10bc77cbc43ee58d832df999a66ac56eeb3",
+      "expected": {
+        "decision": "escalate",
+        "refund_amount": null
+      },
+      "actual_policy_application": {
+        "decision": "escalate",
+        "refund_amount": null
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-FARE-ORIGINAL",
+      "snapshot_id": "9c5198fe0896addcd3b5f8262d53374ae97787df31b216bbd9d2299c0bb4c022",
+      "expected": {
+        "decision": "refund_partial",
+        "refund_amount": 4.5
+      },
+      "actual_policy_application": {
+        "decision": "refund_partial",
+        "refund_amount": 4.5
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-FARE-NOTIFIED",
+      "snapshot_id": "17f06d6c3b9e1a8cd667de53b4e52f700b6edb2805a31212135545be13c7a6ad",
+      "expected": {
+        "decision": "uphold_charge",
+        "refund_amount": 0
+      },
+      "actual_policy_application": {
+        "decision": "uphold_charge",
+        "refund_amount": 0.0
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-FARE-NOTICE-MISSING",
+      "snapshot_id": "7f703e06088d5c0a16748f9158d7795a75379ed0a208dd9a0e7abf13a5726cdb",
+      "expected": {
+        "decision": "escalate",
+        "refund_amount": null
+      },
+      "actual_policy_application": {
+        "decision": "escalate",
+        "refund_amount": null
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-FARE-NOTICE-LATE",
+      "snapshot_id": "27311399cbc4b357ca3f53f9c586b55b98f140dc1a5cccd6591300beb89fa747",
+      "expected": {
+        "decision": "refund_partial",
+        "refund_amount": 4.5
+      },
+      "actual_policy_application": {
+        "decision": "refund_partial",
+        "refund_amount": 4.5
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-FARE-UNCHANGED",
+      "snapshot_id": "8fba460cc4e62e770b8f1b17c823019831f431e01115922a54294d038027934a",
+      "expected": {
+        "decision": "uphold_charge",
+        "refund_amount": 0
+      },
+      "actual_policy_application": {
+        "decision": "uphold_charge",
+        "refund_amount": 0.0
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-FARE-SMALLER",
+      "snapshot_id": "53ab80601bad714244d5956301b70b2cda16d0f6a8b7150850b897ddaf923538",
+      "expected": {
+        "decision": "refund_partial",
+        "refund_amount": 1.8
+      },
+      "actual_policy_application": {
+        "decision": "refund_partial",
+        "refund_amount": 1.8
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-FARE-NO-FREE-CANCEL",
+      "snapshot_id": "b4f5b140d27249ba27b0e2c7423cb53e89eb267e47278b3f29729d6b0d45acab",
+      "expected": {
+        "decision": "refund_partial",
+        "refund_amount": 4.5
+      },
+      "actual_policy_application": {
+        "decision": "refund_partial",
+        "refund_amount": 4.5
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-FARE-SMS",
+      "snapshot_id": "da1c3d7f89c62404b03973edb355499a53ade234f3ed2385463cc60ad0087722",
+      "expected": {
+        "decision": "refund_partial",
+        "refund_amount": 4.5
+      },
+      "actual_policy_application": {
+        "decision": "refund_partial",
+        "refund_amount": 4.5
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-FARE-ORDER-A",
+      "snapshot_id": "9c5198fe0896addcd3b5f8262d53374ae97787df31b216bbd9d2299c0bb4c022",
+      "expected": {
+        "decision": "refund_partial",
+        "refund_amount": 4.5
+      },
+      "actual_policy_application": {
+        "decision": "refund_partial",
+        "refund_amount": 4.5
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-FARE-ORDER-B",
+      "snapshot_id": "9c5198fe0896addcd3b5f8262d53374ae97787df31b216bbd9d2299c0bb4c022",
+      "expected": {
+        "decision": "refund_partial",
+        "refund_amount": 4.5
+      },
+      "actual_policy_application": {
+        "decision": "refund_partial",
+        "refund_amount": 4.5
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-FARE-INJECTION",
+      "snapshot_id": "9c5198fe0896addcd3b5f8262d53374ae97787df31b216bbd9d2299c0bb4c022",
+      "expected": {
+        "decision": "refund_partial",
+        "refund_amount": 4.5
+      },
+      "actual_policy_application": {
+        "decision": "refund_partial",
+        "refund_amount": 4.5
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-NOSHOW-RECONCILED",
+      "snapshot_id": "79b31f3183c1234534202a585aa20ad9a7500bb02fbb180e7bcae06b433deab9",
+      "expected": {
+        "decision": "uphold_charge",
+        "refund_amount": 0
+      },
+      "actual_policy_application": {
+        "decision": "uphold_charge",
+        "refund_amount": 0.0
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-NOSHOW-NO-CALL-COMPLETE",
+      "snapshot_id": "a679ffec8e2595c3a4e366104d55317b1fbb35d86f96a5f04a2a7bca90dc9fff",
+      "expected": {
+        "decision": "refund_full",
+        "refund_amount": 5
+      },
+      "actual_policy_application": {
+        "decision": "refund_full",
+        "refund_amount": 5.0
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-NOSHOW-CALL-MISSING",
+      "snapshot_id": "a49e7e0bd57aa160f27ffe8591d443a23ec58430d26dd3de6ba7b501cfa02da2",
+      "expected": {
+        "decision": "escalate",
+        "refund_amount": null
+      },
+      "actual_policy_application": {
+        "decision": "escalate",
+        "refund_amount": null
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-NOSHOW-EXACT-FIVE",
+      "snapshot_id": "867d3f5ec016a34d597a8de8ac0070288612dd07c5635214321dc294c5b1767f",
+      "expected": {
+        "decision": "escalate",
+        "refund_amount": null
+      },
+      "actual_policy_application": {
+        "decision": "escalate",
+        "refund_amount": null
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-NOSHOW-EARLY-CANCEL",
+      "snapshot_id": "307f17a75bb025633f96da0a8ed93241ee4dfb393af503389de3072a31f65b32",
+      "expected": {
+        "decision": "refund_full",
+        "refund_amount": 5
+      },
+      "actual_policy_application": {
+        "decision": "refund_full",
+        "refund_amount": 5.0
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-FARE-CONFLICTING-COMPONENT",
+      "snapshot_id": "2b0c52d1410cdc0bb64528f348c2c1c5327a596fc638470932e946985a9b223b",
+      "expected": {
+        "decision": "escalate",
+        "refund_amount": null
+      },
+      "actual_policy_application": {
+        "decision": "escalate",
+        "refund_amount": null
+      },
+      "matched": true
+    },
+    {
+      "exercise_id": "R21-FARE-POLITE",
+      "snapshot_id": "05a4cea7bf5c0411a89628f45655f7b185448c6dd8c1da3b1370f84732567ef6",
+      "expected": {
+        "decision": "refund_partial",
+        "refund_amount": 4.5
+      },
+      "actual_policy_application": {
+        "decision": "refund_partial",
+        "refund_amount": 4.5
+      },
+      "matched": true
+    }
+  ],
+  "policy_regression_matches": 20,
+  "boundary": "Scripted call savings are not measured cloud cost savings. Policy expectations are team-written development checks, not official gold or independent accuracy. Other fault paths are covered by tests/test_execution.py."
+}

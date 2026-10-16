@@ -170,8 +170,13 @@ V0.5 consistency requirements:
   platform rules. No-show uses no_show_charge and cannot be
   resolved while the authoritative clock/data issues remain unresolved.
 - Every final responsibility inference also needs condition_refs containing ALL
-  required condition IDs. Its evidence/policy refs must include those used by the
-  conditions. Citing an unrelated trip-start event does not prove responsibility.
+  required condition IDs. Construct decision_conditions first, then take the union
+  of ALL their evidence_refs and the union of ALL their policy_refs, and include
+  these in the final responsibility finding. This includes every citation from
+  fare_charge, even when its basis also contains trip or GPS records; selecting
+  only the surge log and fare breakdown fails this contract. Cite only sources
+  actually used in the conditions. Citing an unrelated trip-start event alone
+  does not prove responsibility.
 - Every disputed point in a definitive ruling must cite evidence and policy.
 - The orchestrator creates the human handoff separately. Do not invent assignees or
   send messages. Provide concrete missing information so a person can obtain it.

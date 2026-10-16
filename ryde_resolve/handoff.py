@@ -38,6 +38,10 @@ def build_handoff(result):
             add(gate['code'],gate['reason'],'人工复核／政策负责人',
                 '政策门槛尚未满足，AI不能通过自评高分或照抄样例建议放行。',
                 '保留原始数据、政策版本和争议差额；由人工确认政策优先级或完成审核。')
+    if result.get('reviewer_blocked'):
+        add('INFERENCE_REVIEW', '；'.join(c['explanation'] for c in result['inference_review']['checks'] if c['status']!='clear'),
+            '人工复核负责人','推导复核发现未排除的问题；原始 Judge 提案保留但不执行。',
+            '核对复核员指向的结论、原文摘录和反证；由人工决定，不通过投票或高分覆盖。')
     if result['validation_errors']:
         add('PIPELINE_OUTPUT_REJECTED', '定位本次输出检查中的错误码并修复对应模块输出。', '集成／Judge 开发负责人',
             '当前未产生可采纳的裁决输出。', '修复失败步骤并运行回归测试，然后对同一案卷重新执行完整流程。')

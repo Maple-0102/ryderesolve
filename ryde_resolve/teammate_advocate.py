@@ -20,10 +20,11 @@ class TeammateAdvocate:
     def _generate(self, system, user):
         self._invoked = True
         # Advocate emits arguments, not a Judge ruling; use the shared low-level JSON transport.
-        if getattr(self, '_policy_application', None):
+        if getattr(self, '_policy_application', None) or getattr(self,'_round_guidance',None):
             import json
             context = json.loads(user)
-            context['policy_application'] = deepcopy(self._policy_application)
+            if getattr(self,'_policy_application',None):context['policy_application'] = deepcopy(self._policy_application)
+            if getattr(self,'_round_guidance',None):context['round_guidance']=deepcopy(self._round_guidance)
             user = json.dumps(context,ensure_ascii=False,allow_nan=False)
         return self.model.generate(system + '\n\n' + EVIDENCE_BOUNDARIES, user, max_output_tokens=8192)
 
@@ -53,3 +54,9 @@ class TeammateAdvocate:
         output['snapshot_id'] = snapshot['snapshot_id']
         output['round'] = round_name
         return output
+
+    def run_guided(self,snapshot,side,round_name,opponent,guidance):
+        if round_name!='response':raise AgentError('GUIDANCE_REQUIRES_RESPONSE_ROUND')
+        self._round_guidance=deepcopy(guidance)
+        try:return self(snapshot,side,round_name,opponent)
+        finally:self._round_guidance=None

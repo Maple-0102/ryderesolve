@@ -76,6 +76,10 @@ The model must be available to your account and project. To run one case:
 
 The ADP adapter is present, but a deployed Tencent ADP application has not been verified.
 
+## Durable execution and optional review
+
+The workflow now saves stage checkpoints, resumes compatible runs without regenerating completed provider outputs, distinguishes execution failures from policy referrals, and enforces call/time/recorded-token limits. A 20-case Policy v2.1 development regression pack is available. Optional symmetric second-round issue guidance and an inference reviewer are disabled by default. See [workflow behavior, recovery commands and test boundaries](docs/ORCHESTRATION-2026-10-16.md).
+
 ## Remaining integration work
 
 - Resolve the sample/threshold and no-show source discrepancies in the [detailed policy questions](docs/POLICY-QUESTIONS-2026-10-15.zh-CN.md). Current conservative handling is explicit and is not an organizer clarification.

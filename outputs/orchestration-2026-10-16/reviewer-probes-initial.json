@@ -1,0 +1,1369 @@
+{
+  "kind": "two live inference-reviewer development probes",
+  "model_quality_measured": true,
+  "boundary": "One supplied Fare case and a team-seeded inference fault. Same provider/model, not independent ground truth or an accuracy benchmark.",
+  "model": "gemini-3.8-flash",
+  "thinking_level": "LOW",
+  "results": [
+    {
+      "probe": "saved_valid_proposal",
+      "expected_review_pass": true,
+      "candidate_contract_errors": [],
+      "candidate": {
+        "case_id": "DISP-003",
+        "decision": "refund_partial",
+        "refund_amount": 4.5,
+        "currency": "SGD",
+        "amount_unit": "major",
+        "findings": [
+          {
+            "finding": "The rider is entitled to a full refund of the $4.50 surge differential because the surge multiplier increased from 1.0x to 1.5x between quote and pickup without the mandatory in-app notification to the rider, leaving the quoted base fare of $12.00 intact.",
+            "evidence_refs": [
+              "E-001",
+              "E-002",
+              "E-015",
+              "E-016",
+              "E-017",
+              "E-018",
+              "E-019",
+              "E-020",
+              "E-021",
+              "E-022",
+              "E-023",
+              "E-024",
+              "E-025",
+              "E-026"
+            ],
+            "policy_refs": [
+              "P-RYDE-2.1-S3.1",
+              "P-RYDE-2.1-S3.2",
+              "P-RYDE-2.1-S3.3",
+              "P-RYDE-2.1-S3.4",
+              "P-RYDE-2.1-S3.5",
+              "P-RYDE-2.1-S6.1",
+              "P-RYDE-2.1-S6.2"
+            ],
+            "finding_type": "inference",
+            "topic": "responsibility",
+            "condition_refs": [
+              "fare_charge",
+              "surge_components",
+              "surge_timing",
+              "surge_notice"
+            ]
+          }
+        ],
+        "uncertainties": [],
+        "escalate_to_human": false,
+        "confidence": 0.98,
+        "case_analysis": {
+          "question": "Is the rider entitled to a partial refund of $4.50 corresponding to the unnotified surge differential when the surge multiplier increased from 1.0x at quote to 1.5x at trip start without in-app notification?",
+          "sides": {
+            "rider": {
+              "argument_refs": [
+                "/opening/rider/claims/0",
+                "/opening/rider/claims/1",
+                "/opening/rider/claims/2",
+                "/opening/rider/claims/3",
+                "/opening/rider/counterpoints/0",
+                "/opening/rider/counterpoints/1",
+                "/response/rider/claims/0",
+                "/response/rider/claims/1",
+                "/response/rider/claims/2",
+                "/response/rider/claims/3",
+                "/response/rider/counterpoints/0"
+              ],
+              "assessment": "accepted",
+              "reason": "All factual claims and counterpoints are supported by the trip fare breakdown, surge logs explicitly recording rider_notified=false, and Sections 3.1 through 3.5.",
+              "evidence_refs": [
+                "E-002",
+                "E-013",
+                "E-014",
+                "E-015",
+                "E-021",
+                "E-022",
+                "E-023",
+                "E-024",
+                "E-025",
+                "E-026"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4",
+                "P-RYDE-2.1-S3.5",
+                "P-RYDE-2.1-S6.1",
+                "P-RYDE-2.1-S6.2",
+                "P-RYDE-2.1-S6.3"
+              ]
+            },
+            "driver": {
+              "argument_refs": [
+                "/opening/driver/claims/0",
+                "/opening/driver/claims/1",
+                "/opening/driver/claims/2",
+                "/opening/driver/counterpoints/0",
+                "/response/driver/claims/0",
+                "/response/driver/claims/1",
+                "/response/driver/claims/2",
+                "/response/driver/counterpoints/0"
+              ],
+              "assessment": "partly_supported",
+              "reason": "The driver's claims that the service was properly performed and surge was initiated by system demand rather than driver fault are factually supported, and the driver correctly acknowledges in counterpoints that Section 3.3 mandates a refund of the unnotified surge differential to the rider.",
+              "evidence_refs": [
+                "E-001",
+                "E-003",
+                "E-004",
+                "E-005",
+                "E-006",
+                "E-007",
+                "E-008",
+                "E-009",
+                "E-011",
+                "E-014",
+                "E-015",
+                "E-016",
+                "E-017",
+                "E-018",
+                "E-019",
+                "E-020",
+                "E-024",
+                "E-026"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4",
+                "P-RYDE-2.1-S3.5"
+              ]
+            }
+          },
+          "disputed_points": [
+            {
+              "issue": "Whether the rider is entitled to a refund of the $4.50 difference caused by the surge multiplier increasing from 1.0x to 1.5x.",
+              "reasoning": "Under Sections 3.1, 3.2, and 3.3, upfront quotes are binding at quote-time surge unless a surge increase is notified via in-app notice prior to trip start. Because the surge pricing log explicitly confirms rider_notified=false and the entire $4.50 difference is surge-attributable, Section 3.3 mandates a full refund of the surge differential.",
+              "evidence_refs": [
+                "E-015",
+                "E-022",
+                "E-024",
+                "E-025",
+                "E-026"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4",
+                "P-RYDE-2.1-S3.5"
+              ]
+            }
+          ],
+          "review_responses": [],
+          "missing_information": [],
+          "argument_assessments": [
+            {
+              "argument_ref": "/opening/rider/claims/0",
+              "assessment": "supported",
+              "reason": "The quote of $12.00 was generated at 1.0x surge, which Section 3.1 establishes as binding.",
+              "supporting_evidence_refs": [
+                "E-002",
+                "E-015",
+                "E-022",
+                "E-024"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/rider/claims/1",
+              "assessment": "supported",
+              "reason": "Surge increased to 1.5x at 21:04:30 and surge pricing log confirms rider_notified was false.",
+              "supporting_evidence_refs": [
+                "E-015",
+                "E-024"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/rider/claims/2",
+              "assessment": "supported",
+              "reason": "The entire $4.50 difference is attributable to surge multiplier increase with base components unchanged, entitling the rider to a refund of the surge differential under Section 3.3 and 3.4.",
+              "supporting_evidence_refs": [
+                "E-015",
+                "E-021",
+                "E-022",
+                "E-023",
+                "E-025",
+                "E-026"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4",
+                "P-RYDE-2.1-S3.5"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/rider/claims/3",
+              "assessment": "supported",
+              "reason": "Dispute value is $4.50 (under $10) with 0 fraud flags, permitting a final AI agent ruling under Sections 6.1, 6.2, and 6.3.",
+              "supporting_evidence_refs": [
+                "E-013",
+                "E-014",
+                "E-023",
+                "E-025"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S6.1",
+                "P-RYDE-2.1-S6.2",
+                "P-RYDE-2.1-S6.3"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/rider/counterpoints/0",
+              "assessment": "supported",
+              "reason": "Successful completion of the trip does not override the mandatory surge notification obligation under Section 3.2.",
+              "supporting_evidence_refs": [
+                "E-016",
+                "E-017",
+                "E-018",
+                "E-019",
+                "E-020",
+                "E-024"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/rider/counterpoints/1",
+              "assessment": "supported",
+              "reason": "Refunding the $4.50 surge differential while retaining the $12.00 quoted fare constitutes a partial refund of the charged trip under local policy conventions.",
+              "supporting_evidence_refs": [
+                "E-002",
+                "E-015",
+                "E-021",
+                "E-022"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/driver/claims/0",
+              "assessment": "supported",
+              "reason": "Trip telemetry and records confirm the driver completed the journey from Bugis Junction to Marina Bay Sands in 13 minutes matching estimated duration.",
+              "supporting_evidence_refs": [
+                "E-001",
+                "E-003",
+                "E-009",
+                "E-011",
+                "E-016",
+                "E-017",
+                "E-018",
+                "E-019",
+                "E-020"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/driver/claims/1",
+              "assessment": "supported",
+              "reason": "Surge pricing logs confirm surge was activated by the platform system at 21:04:30 due to market demand rather than driver manipulation.",
+              "supporting_evidence_refs": [
+                "E-015",
+                "E-024"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/driver/claims/2",
+              "assessment": "partly_supported",
+              "reason": "Core fare components of $9.00 surgeable subtotal plus booking fee were earned through completed service, but driver compensation allocation rules are an internal platform matter distinct from rider refund entitlement.",
+              "supporting_evidence_refs": [
+                "E-014",
+                "E-015",
+                "E-020"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.5"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/driver/counterpoints/0",
+              "assessment": "supported",
+              "reason": "The driver correctly identifies that under Section 3.2 and 3.3, unnotified surge increase entitles the rider to a refund of the $4.50 surge differential while the quoted fare remains binding.",
+              "supporting_evidence_refs": [
+                "E-002",
+                "E-012",
+                "E-015",
+                "E-024",
+                "E-025",
+                "E-026"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/rider/claims/0",
+              "assessment": "supported",
+              "reason": "The upfront quote of $12.00 is binding at 1.0x surge pursuant to Section 3.1.",
+              "supporting_evidence_refs": [
+                "E-002",
+                "E-015",
+                "E-022",
+                "E-024"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/rider/claims/1",
+              "assessment": "supported",
+              "reason": "System records explicitly document rider_notified=false when surge increased to 1.5x prior to trip start, violating Section 3.2.",
+              "supporting_evidence_refs": [
+                "E-002",
+                "E-012",
+                "E-024"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2"
+              ],
+              "missing_information": [],
+              "assessment_scope": "communication_act"
+            },
+            {
+              "argument_ref": "/response/rider/claims/2",
+              "assessment": "supported",
+              "reason": "The $4.50 difference is solely attributable to surge multiplier change and unnotified, mandating full refund of the surge differential under Sections 3.3 and 3.4.",
+              "supporting_evidence_refs": [
+                "E-015",
+                "E-021",
+                "E-022",
+                "E-023",
+                "E-024",
+                "E-025",
+                "E-026"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/rider/claims/3",
+              "assessment": "supported",
+              "reason": "With a dispute value of $4.50 and no safety issues or fraud flags, AI resolution is authorized and final under Sections 6.1 and 6.2.",
+              "supporting_evidence_refs": [
+                "E-013",
+                "E-014",
+                "E-023",
+                "E-025"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S6.1",
+                "P-RYDE-2.1-S6.2",
+                "P-RYDE-2.1-S6.3"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/rider/counterpoints/0",
+              "assessment": "supported",
+              "reason": "Section 3.3 protects riders from unnotified surge regardless of driver performance by requiring refund of the surge differential.",
+              "supporting_evidence_refs": [
+                "E-001",
+                "E-017",
+                "E-018",
+                "E-020",
+                "E-024"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/driver/claims/0",
+              "assessment": "supported",
+              "reason": "Trip telemetry verifies that the trip was timely executed without route deviation in 13 minutes.",
+              "supporting_evidence_refs": [
+                "E-001",
+                "E-003",
+                "E-004",
+                "E-005",
+                "E-006",
+                "E-007",
+                "E-008",
+                "E-009",
+                "E-011",
+                "E-016",
+                "E-017",
+                "E-018",
+                "E-019",
+                "E-020"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/driver/claims/1",
+              "assessment": "supported",
+              "reason": "Surge window was triggered system-wide at 21:04:30 without driver manipulation.",
+              "supporting_evidence_refs": [
+                "E-015",
+                "E-017",
+                "E-021",
+                "E-024"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.5"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/driver/claims/2",
+              "assessment": "supported",
+              "reason": "The base fare components of $12.00 were earned and are not eligible for a full trip refund.",
+              "supporting_evidence_refs": [
+                "E-002",
+                "E-012",
+                "E-015",
+                "E-021",
+                "E-022",
+                "E-026"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.4",
+                "P-RYDE-2.1-S3.5"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/driver/counterpoints/0",
+              "assessment": "supported",
+              "reason": "The driver accurately notes that while Section 3.3 requires refunding the $4.50 surge differential due to system notice failure, base earnings should remain protected under the policy.",
+              "supporting_evidence_refs": [
+                "E-002",
+                "E-015",
+                "E-024",
+                "E-025",
+                "E-026"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            }
+          ],
+          "decision_conditions": [
+            {
+              "condition_id": "fare_charge",
+              "status": "not_met",
+              "reason": "The upfront quote is binding at quote-time surge and the unnotified surge differential cannot be charged to the rider.",
+              "evidence_refs": [
+                "E-001",
+                "E-015",
+                "E-016",
+                "E-017",
+                "E-018",
+                "E-019",
+                "E-020",
+                "E-021",
+                "E-022",
+                "E-023",
+                "E-024",
+                "E-025",
+                "E-026"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4",
+                "P-RYDE-2.1-S3.5"
+              ]
+            },
+            {
+              "condition_id": "surge_components",
+              "status": "met",
+              "reason": "The entire $4.50 fare difference is attributable solely to the surge multiplier change from 1.0x to 1.5x on a $9.00 surgeable subtotal, with the booking fee remaining surge-exempt.",
+              "evidence_refs": [
+                "E-015",
+                "E-026"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.4",
+                "P-RYDE-2.1-S3.5"
+              ]
+            },
+            {
+              "condition_id": "surge_timing",
+              "status": "met",
+              "reason": "Surge pricing was activated at 21:04:30, between the upfront quote and the 21:05:00 pickup.",
+              "evidence_refs": [
+                "E-017",
+                "E-024"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3"
+              ]
+            },
+            {
+              "condition_id": "surge_notice",
+              "status": "not_met",
+              "reason": "System records in the surge pricing log explicitly record rider_notified=false.",
+              "evidence_refs": [
+                "E-017",
+                "E-024"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3"
+              ]
+            }
+          ],
+          "precedent_analysis": [
+            {
+              "policy_ref": "P-RYDE-2.1-S7.2",
+              "similarities": "Both cases involve an upfront quote at 1.0x surge, a surge multiplier increase before trip start without rider notification, and a fare difference attributable solely to the surge differential.",
+              "differences": "In DISP-2026-0142 the surge rose to 1.4x yielding a $3.20 differential, whereas here surge rose to 1.5x yielding a $4.50 differential."
+            }
+          ]
+        }
+      },
+      "review": {
+        "case_id": "DISP-003",
+        "snapshot_id": "9c5198fe0896addcd3b5f8262d53374ae97787df31b216bbd9d2299c0bb4c022",
+        "outcome": "pass",
+        "checks": [
+          {
+            "check_id": "unsupported_inference",
+            "status": "clear",
+            "explanation": "All factual statements and assessments accurately reflect the evidence records without unsupported interpolation or converting reported speech to verified facts.",
+            "finding_indices": [],
+            "argument_refs": [],
+            "evidence_refs": [],
+            "policy_refs": [],
+            "source_quotes": []
+          },
+          {
+            "check_id": "omitted_counterevidence",
+            "status": "clear",
+            "explanation": "No material evidence or counterarguments from either party were improperly omitted or discounted.",
+            "finding_indices": [],
+            "argument_refs": [],
+            "evidence_refs": [],
+            "policy_refs": [],
+            "source_quotes": []
+          },
+          {
+            "check_id": "decision_consistency",
+            "status": "clear",
+            "explanation": "The decision to award a partial refund of $4.50 (the surge differential) is consistent with the calculated conditions, applicable policy sections (Sections 3.1-3.5, 6.1-6.2), and precedent case DISP-2026-0142.",
+            "finding_indices": [
+              0
+            ],
+            "argument_refs": [
+              "/opening/rider/claims/2",
+              "/response/rider/claims/2"
+            ],
+            "evidence_refs": [
+              "E-015",
+              "E-024",
+              "E-026"
+            ],
+            "policy_refs": [
+              "P-RYDE-2.1-S3.3",
+              "P-RYDE-2.1-S3.4",
+              "P-RYDE-2.1-S7.2"
+            ],
+            "source_quotes": [
+              {
+                "evidence_ref": "E-024",
+                "source_ref": "surge_pricing_log",
+                "quote": "{\"notification_method\": null, \"notification_timestamp\": null, \"quote_time_surge\": 1.0, \"reason\": \"surge_window_activated_between_quote_and_pickup\", \"rider_notified\": false, \"surge_activated_at\": \"2026-09-14T21:04:30+08:00\", \"trip_start_surge\": 1.5}"
+              }
+            ]
+          }
+        ]
+      },
+      "review_pass": null,
+      "error": "REVIEWER_QUOTE_REFERENCE_MISMATCH",
+      "transport": {
+        "provider": "google_cloud",
+        "requested_model": "gemini-3.8-flash",
+        "reported_model": "gemini-3.8-flash",
+        "location": "global",
+        "thinking_level": "LOW",
+        "max_output_tokens": 4096,
+        "usage": {
+          "promptTokenCount": 25524,
+          "candidatesTokenCount": 644,
+          "totalTokenCount": 26168
+        },
+        "response_schema_sha256": "47a0b0dfa762ae9fe755f7a40b2a75bd011f519abae10be377562d9a48ec795e",
+        "duration_ms": 6600.42,
+        "finish_reason": "STOP"
+      },
+      "matched": false
+    },
+    {
+      "probe": "seeded_false_notice_inference",
+      "expected_review_pass": false,
+      "candidate_contract_errors": [],
+      "candidate": {
+        "case_id": "DISP-003",
+        "decision": "refund_partial",
+        "refund_amount": 4.5,
+        "currency": "SGD",
+        "amount_unit": "major",
+        "findings": [
+          {
+            "finding": "System notification records confirm the rider was notified of the increased surge before pickup.",
+            "evidence_refs": [
+              "E-001",
+              "E-002",
+              "E-015",
+              "E-016",
+              "E-017",
+              "E-018",
+              "E-019",
+              "E-020",
+              "E-021",
+              "E-022",
+              "E-023",
+              "E-024",
+              "E-025",
+              "E-026"
+            ],
+            "policy_refs": [
+              "P-RYDE-2.1-S3.1",
+              "P-RYDE-2.1-S3.2",
+              "P-RYDE-2.1-S3.3",
+              "P-RYDE-2.1-S3.4",
+              "P-RYDE-2.1-S3.5",
+              "P-RYDE-2.1-S6.1",
+              "P-RYDE-2.1-S6.2"
+            ],
+            "finding_type": "inference",
+            "topic": "responsibility",
+            "condition_refs": [
+              "fare_charge",
+              "surge_components",
+              "surge_timing",
+              "surge_notice"
+            ]
+          }
+        ],
+        "uncertainties": [],
+        "escalate_to_human": false,
+        "confidence": 0.98,
+        "case_analysis": {
+          "question": "Is the rider entitled to a partial refund of $4.50 corresponding to the unnotified surge differential when the surge multiplier increased from 1.0x at quote to 1.5x at trip start without in-app notification?",
+          "sides": {
+            "rider": {
+              "argument_refs": [
+                "/opening/rider/claims/0",
+                "/opening/rider/claims/1",
+                "/opening/rider/claims/2",
+                "/opening/rider/claims/3",
+                "/opening/rider/counterpoints/0",
+                "/opening/rider/counterpoints/1",
+                "/response/rider/claims/0",
+                "/response/rider/claims/1",
+                "/response/rider/claims/2",
+                "/response/rider/claims/3",
+                "/response/rider/counterpoints/0"
+              ],
+              "assessment": "accepted",
+              "reason": "All factual claims and counterpoints are supported by the trip fare breakdown, surge logs explicitly recording rider_notified=false, and Sections 3.1 through 3.5.",
+              "evidence_refs": [
+                "E-002",
+                "E-013",
+                "E-014",
+                "E-015",
+                "E-021",
+                "E-022",
+                "E-023",
+                "E-024",
+                "E-025",
+                "E-026"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4",
+                "P-RYDE-2.1-S3.5",
+                "P-RYDE-2.1-S6.1",
+                "P-RYDE-2.1-S6.2",
+                "P-RYDE-2.1-S6.3"
+              ]
+            },
+            "driver": {
+              "argument_refs": [
+                "/opening/driver/claims/0",
+                "/opening/driver/claims/1",
+                "/opening/driver/claims/2",
+                "/opening/driver/counterpoints/0",
+                "/response/driver/claims/0",
+                "/response/driver/claims/1",
+                "/response/driver/claims/2",
+                "/response/driver/counterpoints/0"
+              ],
+              "assessment": "partly_supported",
+              "reason": "The driver's claims that the service was properly performed and surge was initiated by system demand rather than driver fault are factually supported, and the driver correctly acknowledges in counterpoints that Section 3.3 mandates a refund of the unnotified surge differential to the rider.",
+              "evidence_refs": [
+                "E-001",
+                "E-003",
+                "E-004",
+                "E-005",
+                "E-006",
+                "E-007",
+                "E-008",
+                "E-009",
+                "E-011",
+                "E-014",
+                "E-015",
+                "E-016",
+                "E-017",
+                "E-018",
+                "E-019",
+                "E-020",
+                "E-024",
+                "E-026"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4",
+                "P-RYDE-2.1-S3.5"
+              ]
+            }
+          },
+          "disputed_points": [
+            {
+              "issue": "Whether the rider is entitled to a refund of the $4.50 difference caused by the surge multiplier increasing from 1.0x to 1.5x.",
+              "reasoning": "Under Sections 3.1, 3.2, and 3.3, upfront quotes are binding at quote-time surge unless a surge increase is notified via in-app notice prior to trip start. Because the surge pricing log explicitly confirms rider_notified=false and the entire $4.50 difference is surge-attributable, Section 3.3 mandates a full refund of the surge differential.",
+              "evidence_refs": [
+                "E-015",
+                "E-022",
+                "E-024",
+                "E-025",
+                "E-026"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4",
+                "P-RYDE-2.1-S3.5"
+              ]
+            }
+          ],
+          "review_responses": [],
+          "missing_information": [],
+          "argument_assessments": [
+            {
+              "argument_ref": "/opening/rider/claims/0",
+              "assessment": "supported",
+              "reason": "The quote of $12.00 was generated at 1.0x surge, which Section 3.1 establishes as binding.",
+              "supporting_evidence_refs": [
+                "E-002",
+                "E-015",
+                "E-022",
+                "E-024"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/rider/claims/1",
+              "assessment": "supported",
+              "reason": "Surge increased to 1.5x at 21:04:30 and surge pricing log confirms rider_notified was false.",
+              "supporting_evidence_refs": [
+                "E-015",
+                "E-024"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/rider/claims/2",
+              "assessment": "supported",
+              "reason": "The entire $4.50 difference is attributable to surge multiplier increase with base components unchanged, entitling the rider to a refund of the surge differential under Section 3.3 and 3.4.",
+              "supporting_evidence_refs": [
+                "E-015",
+                "E-021",
+                "E-022",
+                "E-023",
+                "E-025",
+                "E-026"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4",
+                "P-RYDE-2.1-S3.5"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/rider/claims/3",
+              "assessment": "supported",
+              "reason": "Dispute value is $4.50 (under $10) with 0 fraud flags, permitting a final AI agent ruling under Sections 6.1, 6.2, and 6.3.",
+              "supporting_evidence_refs": [
+                "E-013",
+                "E-014",
+                "E-023",
+                "E-025"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S6.1",
+                "P-RYDE-2.1-S6.2",
+                "P-RYDE-2.1-S6.3"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/rider/counterpoints/0",
+              "assessment": "supported",
+              "reason": "Successful completion of the trip does not override the mandatory surge notification obligation under Section 3.2.",
+              "supporting_evidence_refs": [
+                "E-016",
+                "E-017",
+                "E-018",
+                "E-019",
+                "E-020",
+                "E-024"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/rider/counterpoints/1",
+              "assessment": "supported",
+              "reason": "Refunding the $4.50 surge differential while retaining the $12.00 quoted fare constitutes a partial refund of the charged trip under local policy conventions.",
+              "supporting_evidence_refs": [
+                "E-002",
+                "E-015",
+                "E-021",
+                "E-022"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/driver/claims/0",
+              "assessment": "supported",
+              "reason": "Trip telemetry and records confirm the driver completed the journey from Bugis Junction to Marina Bay Sands in 13 minutes matching estimated duration.",
+              "supporting_evidence_refs": [
+                "E-001",
+                "E-003",
+                "E-009",
+                "E-011",
+                "E-016",
+                "E-017",
+                "E-018",
+                "E-019",
+                "E-020"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/driver/claims/1",
+              "assessment": "supported",
+              "reason": "Surge pricing logs confirm surge was activated by the platform system at 21:04:30 due to market demand rather than driver manipulation.",
+              "supporting_evidence_refs": [
+                "E-015",
+                "E-024"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/driver/claims/2",
+              "assessment": "partly_supported",
+              "reason": "Core fare components of $9.00 surgeable subtotal plus booking fee were earned through completed service, but driver compensation allocation rules are an internal platform matter distinct from rider refund entitlement.",
+              "supporting_evidence_refs": [
+                "E-014",
+                "E-015",
+                "E-020"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.5"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/opening/driver/counterpoints/0",
+              "assessment": "supported",
+              "reason": "The driver correctly identifies that under Section 3.2 and 3.3, unnotified surge increase entitles the rider to a refund of the $4.50 surge differential while the quoted fare remains binding.",
+              "supporting_evidence_refs": [
+                "E-002",
+                "E-012",
+                "E-015",
+                "E-024",
+                "E-025",
+                "E-026"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/rider/claims/0",
+              "assessment": "supported",
+              "reason": "The upfront quote of $12.00 is binding at 1.0x surge pursuant to Section 3.1.",
+              "supporting_evidence_refs": [
+                "E-002",
+                "E-015",
+                "E-022",
+                "E-024"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/rider/claims/1",
+              "assessment": "supported",
+              "reason": "System records explicitly document rider_notified=false when surge increased to 1.5x prior to trip start, violating Section 3.2.",
+              "supporting_evidence_refs": [
+                "E-002",
+                "E-012",
+                "E-024"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2"
+              ],
+              "missing_information": [],
+              "assessment_scope": "communication_act"
+            },
+            {
+              "argument_ref": "/response/rider/claims/2",
+              "assessment": "supported",
+              "reason": "The $4.50 difference is solely attributable to surge multiplier change and unnotified, mandating full refund of the surge differential under Sections 3.3 and 3.4.",
+              "supporting_evidence_refs": [
+                "E-015",
+                "E-021",
+                "E-022",
+                "E-023",
+                "E-024",
+                "E-025",
+                "E-026"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/rider/claims/3",
+              "assessment": "supported",
+              "reason": "With a dispute value of $4.50 and no safety issues or fraud flags, AI resolution is authorized and final under Sections 6.1 and 6.2.",
+              "supporting_evidence_refs": [
+                "E-013",
+                "E-014",
+                "E-023",
+                "E-025"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S6.1",
+                "P-RYDE-2.1-S6.2",
+                "P-RYDE-2.1-S6.3"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/rider/counterpoints/0",
+              "assessment": "supported",
+              "reason": "Section 3.3 protects riders from unnotified surge regardless of driver performance by requiring refund of the surge differential.",
+              "supporting_evidence_refs": [
+                "E-001",
+                "E-017",
+                "E-018",
+                "E-020",
+                "E-024"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/driver/claims/0",
+              "assessment": "supported",
+              "reason": "Trip telemetry verifies that the trip was timely executed without route deviation in 13 minutes.",
+              "supporting_evidence_refs": [
+                "E-001",
+                "E-003",
+                "E-004",
+                "E-005",
+                "E-006",
+                "E-007",
+                "E-008",
+                "E-009",
+                "E-011",
+                "E-016",
+                "E-017",
+                "E-018",
+                "E-019",
+                "E-020"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/driver/claims/1",
+              "assessment": "supported",
+              "reason": "Surge window was triggered system-wide at 21:04:30 without driver manipulation.",
+              "supporting_evidence_refs": [
+                "E-015",
+                "E-017",
+                "E-021",
+                "E-024"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.5"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/driver/claims/2",
+              "assessment": "supported",
+              "reason": "The base fare components of $12.00 were earned and are not eligible for a full trip refund.",
+              "supporting_evidence_refs": [
+                "E-002",
+                "E-012",
+                "E-015",
+                "E-021",
+                "E-022",
+                "E-026"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.4",
+                "P-RYDE-2.1-S3.5"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            },
+            {
+              "argument_ref": "/response/driver/counterpoints/0",
+              "assessment": "supported",
+              "reason": "The driver accurately notes that while Section 3.3 requires refunding the $4.50 surge differential due to system notice failure, base earnings should remain protected under the policy.",
+              "supporting_evidence_refs": [
+                "E-002",
+                "E-015",
+                "E-024",
+                "E-025",
+                "E-026"
+              ],
+              "opposing_evidence_refs": [],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4"
+              ],
+              "missing_information": [],
+              "assessment_scope": "incident_fact"
+            }
+          ],
+          "decision_conditions": [
+            {
+              "condition_id": "fare_charge",
+              "status": "not_met",
+              "reason": "The upfront quote is binding at quote-time surge and the unnotified surge differential cannot be charged to the rider.",
+              "evidence_refs": [
+                "E-001",
+                "E-015",
+                "E-016",
+                "E-017",
+                "E-018",
+                "E-019",
+                "E-020",
+                "E-021",
+                "E-022",
+                "E-023",
+                "E-024",
+                "E-025",
+                "E-026"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3",
+                "P-RYDE-2.1-S3.4",
+                "P-RYDE-2.1-S3.5"
+              ]
+            },
+            {
+              "condition_id": "surge_components",
+              "status": "met",
+              "reason": "The entire $4.50 fare difference is attributable solely to the surge multiplier change from 1.0x to 1.5x on a $9.00 surgeable subtotal, with the booking fee remaining surge-exempt.",
+              "evidence_refs": [
+                "E-015",
+                "E-026"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.1",
+                "P-RYDE-2.1-S3.4",
+                "P-RYDE-2.1-S3.5"
+              ]
+            },
+            {
+              "condition_id": "surge_timing",
+              "status": "met",
+              "reason": "Surge pricing was activated at 21:04:30, between the upfront quote and the 21:05:00 pickup.",
+              "evidence_refs": [
+                "E-017",
+                "E-024"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3"
+              ]
+            },
+            {
+              "condition_id": "surge_notice",
+              "status": "not_met",
+              "reason": "System records in the surge pricing log explicitly record rider_notified=false.",
+              "evidence_refs": [
+                "E-017",
+                "E-024"
+              ],
+              "policy_refs": [
+                "P-RYDE-2.1-S3.2",
+                "P-RYDE-2.1-S3.3"
+              ]
+            }
+          ],
+          "precedent_analysis": [
+            {
+              "policy_ref": "P-RYDE-2.1-S7.2",
+              "similarities": "Both cases involve an upfront quote at 1.0x surge, a surge multiplier increase before trip start without rider notification, and a fare difference attributable solely to the surge differential.",
+              "differences": "In DISP-2026-0142 the surge rose to 1.4x yielding a $3.20 differential, whereas here surge rose to 1.5x yielding a $4.50 differential."
+            }
+          ]
+        }
+      },
+      "review": {
+        "case_id": "DISP-003",
+        "snapshot_id": "9c5198fe0896addcd3b5f8262d53374ae97787df31b216bbd9d2299c0bb4c022",
+        "outcome": "needs_human",
+        "checks": [
+          {
+            "check_id": "unsupported_inference",
+            "status": "issue",
+            "explanation": "Finding 0 states 'System notification records confirm the rider was notified of the increased surge before pickup', which directly contradicts the source record stating rider_notified: false.",
+            "finding_indices": [
+              0
+            ],
+            "argument_refs": [],
+            "evidence_refs": [
+              "E-024"
+            ],
+            "policy_refs": [
+              "P-RYDE-2.1-S3.2",
+              "P-RYDE-2.1-S3.3"
+            ],
+            "source_quotes": [
+              {
+                "evidence_ref": "E-024",
+                "source_ref": "/surge_pricing_log",
+                "quote": "Surge/notification system record: {\"notification_method\": null, \"notification_timestamp\": null, \"quote_time_surge\": 1.0, \"reason\": \"surge_window_activated_between_quote_and_pickup\", \"rider_notified\": false, \"surge_activated_at\": \"2026-09-14T21:04:30+08:00\", \"trip_start_surge\": 1.5}"
+              }
+            ]
+          },
+          {
+            "check_id": "omitted_counterevidence",
+            "status": "clear",
+            "explanation": "All material evidence regarding the fare breakdown, trip duration, GPS telemetry, and surge logs was considered in the analysis.",
+            "finding_indices": [],
+            "argument_refs": [],
+            "evidence_refs": [],
+            "policy_refs": [],
+            "source_quotes": []
+          },
+          {
+            "check_id": "decision_consistency",
+            "status": "issue",
+            "explanation": "Finding 0 asserts that the rider was notified of the increased surge before pickup, but the candidate proposal decides 'refund_partial' of $4.50 under Section 3.3, which only applies when the rider is NOT notified.",
+            "finding_indices": [
+              0
+            ],
+            "argument_refs": [],
+            "evidence_refs": [
+              "E-024"
+            ],
+            "policy_refs": [
+              "P-RYDE-2.1-S3.3"
+            ],
+            "source_quotes": [
+              {
+                "evidence_ref": "E-024",
+                "source_ref": "/surge_pricing_log",
+                "quote": "Surge/notification system record: {\"notification_method\": null, \"notification_timestamp\": null, \"quote_time_surge\": 1.0, \"reason\": \"surge_window_activated_between_quote_and_pickup\", \"rider_notified\": false, \"surge_activated_at\": \"2026-09-14T21:04:30+08:00\", \"trip_start_surge\": 1.5}"
+              }
+            ]
+          }
+        ]
+      },
+      "review_pass": null,
+      "error": "REVIEWER_QUOTE_NOT_IN_SOURCE",
+      "transport": {
+        "provider": "google_cloud",
+        "requested_model": "gemini-3.8-flash",
+        "reported_model": "gemini-3.8-flash",
+        "location": "global",
+        "thinking_level": "LOW",
+        "max_output_tokens": 4096,
+        "usage": {
+          "promptTokenCount": 25476,
+          "candidatesTokenCount": 784,
+          "totalTokenCount": 26260
+        },
+        "response_schema_sha256": "47a0b0dfa762ae9fe755f7a40b2a75bd011f519abae10be377562d9a48ec795e",
+        "duration_ms": 7737.49,
+        "finish_reason": "STOP"
+      },
+      "matched": false
+    }
+  ],
+  "all_matched": false,
+  "attempted_model_calls": 2
+}
