@@ -4,6 +4,7 @@ from html import escape
 from pathlib import Path
 import argparse
 import json
+import os
 import re
 from ryde_resolve.ui import render_html
 
@@ -23,9 +24,14 @@ def build(sources, output):
         raise ValueError('Choose a new output directory; retain previous recordings.')
     output.mkdir(parents=True, exist_ok=True)
     cards, entries, seen = [], [], set()
+    source_reports = []
     for source in sources:
         source = Path(source)
+        if not source.resolve().is_relative_to(output.parent.resolve()):
+            raise ValueError('Keep source reports under the recording directory parent.')
         report = json.loads(source.read_text())
+        source_reports.append({'path':os.path.relpath(source.resolve(),output.resolve()),
+                               'sha256':sha256(source.read_bytes()).hexdigest()})
         replay = report['kind'].startswith('offline revalidation')
         if not replay and not report['kind'].startswith('fresh '):
             raise ValueError('Recording package requires an explicitly fresh or offline-revalidation report.')
@@ -67,7 +73,10 @@ def build(sources, output):
             '<p>全部页面可以离线打开，不需要账号，不会调用模型或执行退款。真实调用保存记录与离线复验分别标明；这些已知开发案例不代表模型准确率。</p><ol>'
             + ''.join(card for _, card in sorted(cards, key=lambda x: x[0])) + '</ol></html>')
     (output / 'index.html').write_text(html)
-    manifest = {'kind': 'static recording package', 'opening_provider_calls': 0, 'entries': entries}
+    manifest = {'kind': 'static recording package', 'opening_provider_calls': 0,
+                'source_reports':source_reports, 'entries': entries,
+                'files':{p.name:sha256(p.read_bytes()).hexdigest() for p in sorted(output.iterdir())
+                         if p.suffix in ('.html','.json')}}
     (output / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
     return manifest
 

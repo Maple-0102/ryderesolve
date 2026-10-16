@@ -133,3 +133,5 @@ outputs/latest-flow-2026-10-16/recording/*
 outputs/latest-flow-2026-10-16/recording-offline/*
 !outputs/latest-flow-2026-10-16/recording-offline/*.html
 !outputs/latest-flow-2026-10-16/recording-offline/*.json
+
+!outputs/latest-flow-2026-10-16/recording-verification.json

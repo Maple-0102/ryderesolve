@@ -21,6 +21,7 @@ def main(argv=None):
     parser.add_argument('--judge', choices=['offline', 'remote', 'adp', 'vertex'], default='offline')
     parser.add_argument('--advocate', choices=['offline', 'teammate-vertex'], default='offline')
     parser.add_argument('--thinking-level', choices=['LOW','MEDIUM','HIGH'], help='Explicit thinking level for Vertex Judge and Advocate.')
+    parser.add_argument('--compact-context',action='store_true',help='Opt-in Vertex JSON whitespace compaction; preserves every source and literal, not a semantic summary.')
     parser.add_argument('--advocate-file', type=Path, help='Snapshot-bound JSON with opening/response for both sides')
     parser.add_argument('--output-dir', type=Path, default=None)
     parser.add_argument('--checkpoint-dir', type=Path, help='Defaults to OUTPUT_DIR/checkpoints; contains full private case data.')
@@ -40,6 +41,7 @@ def main(argv=None):
         if args.judge in ('adp', 'vertex'): args.output_dir /= args.judge + '-live'
     if args.advocate_file and args.advocate != 'offline': parser.error('--advocate-file cannot be combined with a live Advocate')
     if args.thinking_level and args.judge != 'vertex' and args.advocate != 'teammate-vertex' and args.reviewer!='vertex': parser.error('--thinking-level requires a Vertex agent')
+    if args.compact_context and args.judge != 'vertex' and args.advocate != 'teammate-vertex' and args.reviewer!='vertex': parser.error('--compact-context requires a Vertex agent')
     if args.parallel_advocates and args.advocate_file:parser.error('--parallel-advocates requires offline or live isolated Advocates')
     if args.advocate_file and args.case == 'all':
         parser.error('--advocate-file requires a single --case')
@@ -47,6 +49,7 @@ def main(argv=None):
         limits = RunLimits(args.max_calls,args.max_seconds,args.max_recorded_tokens,args.transient_retries,args.judge_repairs)
         config = VertexConfig.from_env() if args.judge == 'vertex' or args.advocate == 'teammate-vertex' or args.reviewer=='vertex' else None
         if config is not None and args.thinking_level: config = replace(config, thinking_level=args.thinking_level)
+        if config is not None and args.compact_context: config = replace(config, compact_context=True)
         from .reviewer import InferenceReviewer
         reviewer=InferenceReviewer(VertexJudge(config)) if args.reviewer=='vertex' else None
         judge = (VertexJudge(config) if args.judge == 'vertex' else

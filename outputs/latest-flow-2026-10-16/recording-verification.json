@@ -1,0 +1,51 @@
+{
+  "recording": {
+    "kind": "offline recording integrity verification",
+    "verified": true,
+    "verification_provider_calls": 0,
+    "cases": 3,
+    "source_recorded_provider_calls": 15,
+    "final_formal_acceptance": 2,
+    "raw_first_pass_acceptance": 0,
+    "runs_with_program_adjustments": 2,
+    "retained_failures": 1,
+    "boundary": "File and record consistency only. No new model run, semantic proof, authenticity signature or accuracy estimate."
+  },
+  "recording-offline": {
+    "kind": "offline recording integrity verification",
+    "verified": true,
+    "verification_provider_calls": 0,
+    "cases": 5,
+    "source_recorded_provider_calls": 0,
+    "final_formal_acceptance": 5,
+    "raw_first_pass_acceptance": 1,
+    "runs_with_program_adjustments": 4,
+    "retained_failures": 0,
+    "boundary": "File and record consistency only. No new model run, semantic proof, authenticity signature or accuracy estimate."
+  },
+  "context_compaction": {
+    "kind": "offline serialization measurement",
+    "provider_calls": 0,
+    "cases": [
+      {
+        "exercise_id": "R21-ROUTE-ORIGINAL",
+        "original_bytes": 99054,
+        "compact_bytes": 95605,
+        "byte_reduction_percent": 3.48
+      },
+      {
+        "exercise_id": "R21-NOSHOW-ORIGINAL",
+        "original_bytes": 93910,
+        "compact_bytes": 90738,
+        "byte_reduction_percent": 3.38
+      },
+      {
+        "exercise_id": "R21-FARE-ORIGINAL",
+        "original_bytes": 71925,
+        "compact_bytes": 69510,
+        "byte_reduction_percent": 3.36
+      }
+    ],
+    "boundary": "Input bytes only; no token, cost, latency or model-quality claim. All JSON data retained."
+  }
+}

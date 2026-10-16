@@ -1,6 +1,12 @@
 {
   "kind": "static recording package",
   "opening_provider_calls": 0,
+  "source_reports": [
+    {
+      "path": "../final-live-official/fresh-pipeline.json",
+      "sha256": "d51113c43b1a22da715d786c1a987974df7f533d4f54738f5b6c9092911a638d"
+    }
+  ],
   "entries": [
     {
       "exercise_id": "R21-ROUTE-ORIGINAL",
@@ -53,5 +59,14 @@
       "html": "r21-fare-original.html",
       "run_json": "r21-fare-original.run.json"
     }
-  ]
+  ],
+  "files": {
+    "index.html": "f5feafc861804e4e696b7a08178440c422208fc65b92b150781103d011982728",
+    "r21-fare-original.html": "68fa6d95a8b27c7a7cc50534e046d3af227f2c849dd14e8e16ad5ef6beeb86eb",
+    "r21-fare-original.run.json": "ad9bdaabf336f0e6e6398ceaaddf84afaf8c4a6f5463fd1e4bd20496db5ae9bd",
+    "r21-noshow-original.html": "27f30a3975bc1b4491cdddc8cffa6881b3f84cfe907e640a3bb10491114c9b82",
+    "r21-noshow-original.run.json": "967c73a1bb6b92c441a3e18722d201f3b03ec358e87b59d4bc523f48566ee4e5",
+    "r21-route-original.html": "73d8fb35e59a1b71c181bc40b0244f8dca7f5d8955103939b9bd941d5832ddad",
+    "r21-route-original.run.json": "2b86e0ce8f74630bbc6daa733f275190358efb1af55b049b7e595f63269a1a5a"
+  }
 }
