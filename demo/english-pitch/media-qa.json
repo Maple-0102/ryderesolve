@@ -1,0 +1,212 @@
+{
+  "source_commit": "52e5b5321ef9f6e5f1ba82c103c8f9832f8cda6a",
+  "workbench_source_commit": "f2bfd30c25ca64b302f3b6d6dfc0276808f9a920",
+  "duration_seconds": 449.7,
+  "width": 1920,
+  "height": 1080,
+  "fps": 25,
+  "video_codec": "h264",
+  "audio_codec": "aac",
+  "size_bytes": 48505843,
+  "subtitle_cues": 133,
+  "chapter_count": 20,
+  "sync": [
+    {
+      "scene": "01-hook",
+      "trim_start": 2.08,
+      "duration": 20.72,
+      "frames": 518
+    },
+    {
+      "scene": "02-value",
+      "trim_start": 1.84,
+      "duration": 21.16,
+      "frames": 529
+    },
+    {
+      "scene": "03-workflow",
+      "trim_start": 1.84,
+      "duration": 22.36,
+      "frames": 559
+    },
+    {
+      "scene": "04-case",
+      "trim_start": 1.96,
+      "duration": 18.88,
+      "frames": 472
+    },
+    {
+      "scene": "05-evidence",
+      "trim_start": 2.04,
+      "duration": 22.0,
+      "frames": 550
+    },
+    {
+      "scene": "06-policy",
+      "trim_start": 1.92,
+      "duration": 20.8,
+      "frames": 520
+    },
+    {
+      "scene": "07-advocates",
+      "trim_start": 1.92,
+      "duration": 20.4,
+      "frames": 510
+    },
+    {
+      "scene": "08-response",
+      "trim_start": 2.12,
+      "duration": 21.76,
+      "frames": 544
+    },
+    {
+      "scene": "09-decision",
+      "trim_start": 2.08,
+      "duration": 14.84,
+      "frames": 371
+    },
+    {
+      "scene": "09a-audit",
+      "trim_start": 2.2,
+      "duration": 27.52,
+      "frames": 688
+    },
+    {
+      "scene": "10-no-show",
+      "trim_start": 1.92,
+      "duration": 21.92,
+      "frames": 548
+    },
+    {
+      "scene": "11-route",
+      "trim_start": 2.0,
+      "duration": 29.72,
+      "frames": 743
+    },
+    {
+      "scene": "12-workbench",
+      "trim_start": 1.92,
+      "duration": 20.32,
+      "frames": 508
+    },
+    {
+      "scene": "13-supplement",
+      "trim_start": 1.88,
+      "duration": 22.08,
+      "frames": 552
+    },
+    {
+      "scene": "14-human",
+      "trim_start": 1.96,
+      "duration": 22.88,
+      "frames": 572
+    },
+    {
+      "scene": "15-recovery",
+      "trim_start": 1.92,
+      "duration": 23.04,
+      "frames": 576
+    },
+    {
+      "scene": "16-evaluation",
+      "trim_start": 1.92,
+      "duration": 29.68,
+      "frames": 742
+    },
+    {
+      "scene": "17-build",
+      "trim_start": 1.96,
+      "duration": 19.72,
+      "frames": 493
+    },
+    {
+      "scene": "18-tips",
+      "trim_start": 2.0,
+      "duration": 25.72,
+      "frames": 643
+    },
+    {
+      "scene": "19-close",
+      "trim_start": 2.12,
+      "duration": 24.12,
+      "frames": 603
+    }
+  ],
+  "visual_qa": "Reviewed 40 final-video frames across all 20 scenes and five additional full-resolution audit, Route rejection and evaluation frames. Captions and primary content were readable in the sampled frames. Real interactions and preserved failures were inspected.",
+  "full_decode": "passed, both audio and video",
+  "frame_count": 11241,
+  "audio_integrated_lufs": -16.5,
+  "audio_true_peak_dbfs": -4.5,
+  "silences_over_1_6_seconds": [
+    2.015021,
+    2.015833,
+    2.015375,
+    2.030542,
+    2.007229,
+    2.032521,
+    2.042875,
+    2.007604,
+    2.029604,
+    2.019521,
+    2.015854,
+    2.022687,
+    2.037958,
+    2.008396,
+    2.006979,
+    2.023667,
+    2.074542,
+    2.073708,
+    2.035062
+  ],
+  "captions_match_narration": true,
+  "narration_word_count": 1122,
+  "original_archives_verified": [
+    "DISP-001",
+    "DISP-002",
+    "DISP-003",
+    "policy"
+  ],
+  "recording_package_verified": {
+    "commit": "52e5b5321ef9f6e5f1ba82c103c8f9832f8cda6a",
+    "files": [
+      {
+        "file": "outputs/latest-flow-2026-10-16/recording/r21-fare-original.html",
+        "sha256": "68fa6d95a8b27c7a7cc50534e046d3af227f2c849dd14e8e16ad5ef6beeb86eb"
+      },
+      {
+        "file": "outputs/latest-flow-2026-10-16/recording/r21-fare-original.run.json",
+        "sha256": "ad9bdaabf336f0e6e6398ceaaddf84afaf8c4a6f5463fd1e4bd20496db5ae9bd"
+      },
+      {
+        "file": "outputs/latest-flow-2026-10-16/recording/r21-noshow-original.html",
+        "sha256": "27f30a3975bc1b4491cdddc8cffa6881b3f84cfe907e640a3bb10491114c9b82"
+      },
+      {
+        "file": "outputs/latest-flow-2026-10-16/recording/r21-noshow-original.run.json",
+        "sha256": "967c73a1bb6b92c441a3e18722d201f3b03ec358e87b59d4bc523f48566ee4e5"
+      },
+      {
+        "file": "outputs/latest-flow-2026-10-16/recording/r21-route-original.html",
+        "sha256": "73d8fb35e59a1b71c181bc40b0244f8dca7f5d8955103939b9bd941d5832ddad"
+      },
+      {
+        "file": "outputs/latest-flow-2026-10-16/recording/r21-route-original.run.json",
+        "sha256": "2b86e0ce8f74630bbc6daa733f275190358efb1af55b049b7e595f63269a1a5a"
+      }
+    ]
+  },
+  "saved_run_summary": {
+    "cases": 3,
+    "recorded_model_calls": 15,
+    "final_checks_passed": 2,
+    "raw_first_pass_passed": 0,
+    "new_model_calls_for_video": 0,
+    "boundary": "Development checks, not an accuracy score."
+  },
+  "video_sha256": "8dfb98fa05daae4d85ccd5f985de3504ce78eb023f36393e7e3bc43ec3083b89",
+  "visual_sample_count": 45,
+  "interaction_verification": "20 actual browser captures. Evidence and policy links opened; Fare errors, three corrections and original output inspected; Route validation blockers and undetermined amount shown. One new offline run completed with zero model calls. Synthetic supplement preview succeeded; no confirmed rerun or saved human outcome.",
+  "ui_translation_check": "All 20 final scene setup snapshots contained no untranslated Chinese UI labels outside original JSON/source excerpts.",
+  "publication_status": "Private review copy. Owner approval required before external hosting or competition submission.",
+  "audio_review_scope": "Full audio decode, loudness, true peak and silence analysis; captions matched to speech-service word timing. No human listening approval is claimed."
+}
