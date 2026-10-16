@@ -1,0 +1,26 @@
+[
+  {
+    "file": "index.html",
+    "sha256": "dd73e1f945234dc4fdaaf4c4f7d77e77ecaec1bcdbeb939234ac2c41d3f93e99",
+    "credit_count": 1,
+    "links_payloads_scripts_unchanged": true
+  },
+  {
+    "file": "r21-fare-original.html",
+    "sha256": "9d29164eaf7f068cd3113d7116c0c9a309845c0e5fcad1bfc1f0d489c2c8750e",
+    "credit_count": 1,
+    "links_payloads_scripts_unchanged": true
+  },
+  {
+    "file": "r21-noshow-original.html",
+    "sha256": "a871701d25088b9b0cd0a8965b1bbaf2946cae04850247c033c19cadaadb60ed",
+    "credit_count": 1,
+    "links_payloads_scripts_unchanged": true
+  },
+  {
+    "file": "r21-route-original.html",
+    "sha256": "2c8315c240cf01f6492332757c8d37130b7e218c70a81a8d6656ee9e0c386fe9",
+    "credit_count": 1,
+    "links_payloads_scripts_unchanged": true
+  }
+]

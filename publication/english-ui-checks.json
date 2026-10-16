@@ -2,25 +2,28 @@
   {
     "file": "r21-fare-original.html",
     "original_sha256": "68fa6d95a8b27c7a7cc50534e046d3af227f2c849dd14e8e16ad5ef6beeb86eb",
-    "english_sha256": "6ba1fd03a5ad7e0072ac8f81a10e255eb227c596da9b449526dfa9e487f817ba",
+    "english_sha256": "9d29164eaf7f068cd3113d7116c0c9a309845c0e5fcad1bfc1f0d489c2c8750e",
     "raw_payloads_and_scripts_preserved": true,
-    "structure_and_references_preserved": true,
+    "structure_and_references_preserved_except_team_credit": true,
+    "team_credit": "Built by Team AgentForge",
     "untranslated_ui_texts": 0
   },
   {
     "file": "r21-noshow-original.html",
     "original_sha256": "27f30a3975bc1b4491cdddc8cffa6881b3f84cfe907e640a3bb10491114c9b82",
-    "english_sha256": "6517ebb0ca7fa58bd3b0f6af999fb12ab0a138e509f982bd92ac1bf1b8db3549",
+    "english_sha256": "a871701d25088b9b0cd0a8965b1bbaf2946cae04850247c033c19cadaadb60ed",
     "raw_payloads_and_scripts_preserved": true,
-    "structure_and_references_preserved": true,
+    "structure_and_references_preserved_except_team_credit": true,
+    "team_credit": "Built by Team AgentForge",
     "untranslated_ui_texts": 0
   },
   {
     "file": "r21-route-original.html",
     "original_sha256": "73d8fb35e59a1b71c181bc40b0244f8dca7f5d8955103939b9bd941d5832ddad",
-    "english_sha256": "6ac0788342aba04f0f7f58669733db24a4fa8d3be5b576cee0720e11b7ae3bfa",
+    "english_sha256": "2c8315c240cf01f6492332757c8d37130b7e218c70a81a8d6656ee9e0c386fe9",
     "raw_payloads_and_scripts_preserved": true,
-    "structure_and_references_preserved": true,
+    "structure_and_references_preserved_except_team_credit": true,
+    "team_credit": "Built by Team AgentForge",
     "untranslated_ui_texts": 0
   }
 ]
