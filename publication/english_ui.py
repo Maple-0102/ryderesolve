@@ -198,6 +198,7 @@ for source in sorted(SOURCE.glob('r21-*.html')):
  assert PROTECTED.findall(original)==PROTECTED.findall(translated),'Raw JSON, CSS or scripts changed'
  a=Structure();a.feed(original);b=Structure();b.feed(translated.replace('<p class="eyebrow">Built by Team AgentForge</p>','',1))
  assert a.tags==b.tags and a.refs==b.refs,'Document structure or reference targets changed'
+ translated=translated.replace('<p class="eyebrow">Built by Team AgentForge</p>','<p class="team-credit"><span>Built by Team</span> <strong>AgentForge</strong></p>',1).replace('</head>','<style>.team-credit{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 .32em;margin:8px 0 20px;font-size:clamp(20px,2.2vw,24px);font-weight:400;letter-spacing:-.015em;line-height:1.4;color:var(--muted)}.team-credit span{font-size:inherit;font-weight:400}.team-credit strong{font-size:inherit;font-weight:650;color:var(--ink)}</style></head>',1)
  (SITE/source.name).write_text(translated)
  checks.append({'file':source.name,'original_sha256':hashlib.sha256(original.encode()).hexdigest(),'english_sha256':hashlib.sha256(translated.encode()).hexdigest(),'raw_payloads_and_scripts_preserved':True,'structure_and_references_preserved_except_team_credit':True,'team_credit':'Built by Team AgentForge','untranslated_ui_texts':0})
 landing=SITE/'index.html'
