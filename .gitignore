@@ -95,3 +95,11 @@ outputs/workflow-followups-2026-10-16/fresh-main/*
 outputs/workflow-followups-2026-10-16/final-parallel-live/*
 !outputs/workflow-followups-2026-10-16/final-parallel-live/DISP-003.run.json
 !outputs/workflow-followups-2026-10-16/final-parallel-live/ryde-evaluation.html
+
+# Reviewed Judge source-scope regression; runtime checkpoints stay private
+!outputs/judge-statement-scope-2026-10-16/
+outputs/judge-statement-scope-2026-10-16/*
+!outputs/judge-statement-scope-2026-10-16/review-summary.json
+!outputs/judge-statement-scope-2026-10-16/live/
+outputs/judge-statement-scope-2026-10-16/live/*
+!outputs/judge-statement-scope-2026-10-16/live/judge-regressions.json

@@ -76,6 +76,8 @@ def build_judge_messages(snapshot, arguments, calculations):
     prompt = (ROOT / 'prompts/judge_prompt.md').read_text(encoding='utf-8')
     payload = {k: snapshot[k] for k in ('case_id', 'snapshot_id', 'raw', 'evidence_pack', 'audit', 'source_index')}
     payload.update(arguments=arguments, calculations=calculations)
+    from .claim_support import claim_support_guide
+    payload['claim_support_guide']=claim_support_guide(snapshot,arguments)
     if snapshot.get('policy_documents'):
         payload['policy_documents'] = snapshot['policy_documents']
     return [{'role': 'system', 'content': prompt},

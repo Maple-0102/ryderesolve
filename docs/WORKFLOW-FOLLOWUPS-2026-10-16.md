@@ -17,7 +17,7 @@ All calls used the existing Google Cloud project, Gemini `gemini-3.8-flash`, LOW
 
 - Initial fresh main flow: five calls, rejected for `ARGUMENT_CONFLICTING_REFERENCE_ROLE`; reviewer not reached. A compound claim mixed a recorded event with entitlement. The same source was listed in opposing and supporting roles.
 - Frozen three-case comparison: 19 calls, no retries or repairs. One original Fare case and two team-authored variations of the same seed. They are development examples, not a held-out dataset, official answer key or trained model.
-- Final integrated concurrent Fare run: **six fresh calls**, no replay, no repair; refund suggestion **SGD 4.50**; all production checks passed; reviewer passed. Runtime implementation digest matches the completed source. Recorded active time was about 65.9 seconds for this one run. This is not a controlled speedup measurement.
+- Final integrated concurrent Fare run: **six fresh calls**, no replay, no repair; refund suggestion **SGD 4.50**; all production checks passed; reviewer passed. Runtime implementation digest matches commit `a2d21d3`; the later Judge prompt follow-up is recorded separately in `JUDGE-STATEMENT-SCOPE-2026-10-16.md`. Recorded active time was about 65.9 seconds for this one run. This is not a controlled speedup measurement.
 
 The comparison has two separate measurements:
 

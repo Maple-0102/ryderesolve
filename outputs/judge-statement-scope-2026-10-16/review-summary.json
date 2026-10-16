@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-16",
+  "kind": "Judge source-scope follow-up review",
+  "base_commit": "a2d21d32b54f5c923c7585ae3faaafb7f0850a0f",
+  "runtime_implementation": "bfc254465b0adfb1eca6b8dc031db8c27b7dd2ea573c16c13711f19112362303",
+  "local_tests": {
+    "root": 229,
+    "unchanged_evidence_previously_passed": 121,
+    "unchanged_advocate_previously_passed": 15
+  },
+  "live": {
+    "cases": 3,
+    "formal_expected_results": 2,
+    "all_advocates_replayed": true,
+    "fresh_judge_calls": 3,
+    "retries": 0,
+    "repairs": 0,
+    "recorded_usage": {
+      "provider_calls": 3,
+      "recorded_tokens": 107361,
+      "unknown_usage_calls": 0
+    }
+  },
+  "manual_review": [
+    {
+      "exercise_id": "R21-FARE-NOTIFIED",
+      "status": "production_rejected",
+      "note": "Mixed attributed statements and alleged incident remain rated partly_supported with no incident support in the supporting list; both original errors persist."
+    },
+    {
+      "exercise_id": "R21-FARE-NOTICE-MISSING",
+      "argument_ref": "/response/rider/claims/2",
+      "status": "semantic_followup_required",
+      "note": "Formally valid communication_act now cites E-012 alone, but its reason discusses only the dropoff query while the original claim also attributes lack of notification to the rider. Acceptance is not proof of full-claim entailment. Effective decision remains escalation, not a monetary award."
+    }
+  ],
+  "claim": "Input guidance added; production gates unchanged. Do not claim the scope issue solved or a measured accuracy gain. Request atomic claims and actual sample outputs from the Advocate teammate, then repeat on the new transcript."
+}
