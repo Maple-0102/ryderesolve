@@ -101,6 +101,32 @@ class ExecutionTests(unittest.TestCase):
         self.assertEqual(self.a.calls,4);self.assertFalse(r['validation_errors'])
         self.assertEqual(r['execution_usage']['unknown_usage_calls'],1)
 
+    def test_hard_process_stop_resumes_running_event_with_unknown_usage(self):
+        store=self.store
+        class HardStopJudge(Judge):
+            def __call__(judge,*args):
+                if not hasattr(judge,'captured'):
+                    path=next(store.directory.glob('*.json'))
+                    judge.captured=store.load(path.stem)
+                    raise KeyboardInterrupt()
+                return super().__call__(*args)
+        self.j=HardStopJudge()
+        with self.assertRaises(KeyboardInterrupt):self.runner().run('DISP-003')
+        captured=self.j.captured
+        self.assertEqual(captured['result']['communication_log'][-1]['status'],'running')
+        self.assertNotIn('duration_ms',captured['result']['communication_log'][-1])
+        # Restore the exact pre-call disk state a hard kill would leave behind.
+        store.save(captured['run_id'],captured)
+        restored=self.runner().run('DISP-003',resume=captured['run_id'])
+        self.assertFalse(restored['validation_errors'])
+        self.assertEqual(self.a.calls,4)
+        self.assertEqual(restored['execution_usage']['provider_calls'],6)
+        self.assertEqual(restored['execution_usage']['unknown_usage_calls'],1)
+        self.assertFalse(restored['first_pass_valid'])
+        self.assertTrue(any(e.get('error')=='PREVIOUS_ATTEMPT_NOT_COMPLETED' for e in restored['communication_log']))
+        text=render_html([restored],Path(self.temp.name)/'hard-stop.html').read_text()
+        self.assertIn('耗时未知',text)
+
     def test_snapshot_and_code_and_model_changes_reject_before_provider(self):
         first=self.runner().run('DISP-003');calls=(self.a.calls,self.j.calls)
         changed=variant(first['snapshot'],lambda raw:raw['dispute_ticket'].update(description='Changed case record'))

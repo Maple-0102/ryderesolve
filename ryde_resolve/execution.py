@@ -140,6 +140,12 @@ class ExecutionSession:
             self.entries=deepcopy(self.old['entries']);self.usage=deepcopy(self.old['usage'])
             self.prior_seconds=self.old['active_seconds']
             previous=deepcopy(self.old['result']['communication_log'])
+            for event in previous:
+                if event.get('status') == 'running':
+                    # A hard process stop bypasses invoke()'s finally block. The
+                    # external request may have completed, so retain unknown usage.
+                    event.update(status='interrupted', error='PREVIOUS_ATTEMPT_NOT_COMPLETED',
+                                 duration_ms=None, finished_at=None)
             self.result['communication_log'][:0]=previous
             for i,event in enumerate(self.result['communication_log'],1):event['sequence']=i
             self.result['resumed_from_run_id']=self.run_id

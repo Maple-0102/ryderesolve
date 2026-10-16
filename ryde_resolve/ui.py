@@ -123,7 +123,7 @@ def render_html(results, output_path='outputs/ryde-evaluation.html'):
                          if result['modes']['judge'] == 'offline_review' else
                          '以下为通过结构和引用检查的分析；这些检查不能证明自然语言推理正确。')
             analysis_html = f'<p class="muted">{mode_note}</p><h4>核心问题</h4><p>{esc(analysis["question"])}</p><div class="columns">{"".join(side_cards)}</div><h4>逐条论点评估</h4><ul>{"".join(ledger_rows)}</ul><h4>裁决关键条件</h4><ul>{conditions_html}</ul><h4>争议点分析</h4><ul>{points}</ul><h4>复核问题逐项处理</h4><ul>{responses}</ul><h4>仍需补充的信息</h4><ul>{missing}</ul>'
-        logs = ''.join(f'<details><summary>{e["sequence"]}. {esc(e["step"])} · {esc(e["agent"])} · {esc(e["status"])} · {e["duration_ms"]} ms</summary><p>{esc(e["started_at"])}</p>{pretty({k:v for k,v in e.items() if k in ("input", "output", "error")})}</details>' for e in result['communication_log'])
+        logs = ''.join(f'<details><summary>{e["sequence"]}. {esc(e["step"])} · {esc(e["agent"])} · {esc(e["status"])} · {esc(str(e["duration_ms"])+" ms" if e.get("duration_ms") is not None else "耗时未知")}</summary><p>{esc(e["started_at"])}</p>{pretty({k:v for k,v in e.items() if k in ("input", "output", "error")})}</details>' for e in result['communication_log'])
         uncertainties = ''.join(f'<li>{esc(x)}</li>' for x in ruling.get('uncertainties', []))
         notes = ''.join(f'<li>{esc(n)}</li>' for n in ruling.get('notes', []))
         provenance = result['calculations'].get('policy_provenance')
