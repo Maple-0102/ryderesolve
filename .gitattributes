@@ -4,3 +4,6 @@ vendor/ryderesolve-evidence-tools/sources/official/**/*.md -text -whitespace
 # Preserve experiment/report hashes; patch context contains intentional blank lines.
 outputs/latest-flow-2026-10-16/** -text
 outputs/latest-flow-2026-10-16/judge-v2/runtime.patch -whitespace
+
+# Keep generated HTML reports and demo pages out of GitHub language statistics.
+*.html linguist-detectable=false
